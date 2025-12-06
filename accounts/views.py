@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-
+from accounts.models import Product, CarouselSlide, AboutHeroImages
 from accounts.models import Product
 # Create your views here.
 
@@ -14,7 +14,18 @@ def customer(request):
     return HttpResponse('Customer_page')
 
 def indexFur(request):
-    return render(request, 'furniture/index.html')
+    # 1. Fetch all carousel slides, ordered by the 'order' field
+    slides = CarouselSlide.objects.all() 
+    
+    # 2. Fetch the AboutHeroImages object
+    # We use .first() because we expect only one entry for this single-instance model
+    about_images = AboutHeroImages.objects.first() 
+    
+    context = {
+        'slides': slides,
+        'about_images': about_images,  # Pass the About images object to the template
+    }
+    return render(request, 'furniture/index.html', context)
 
 def aboutFur(request):
     return render(request, 'furniture/about.html')

@@ -16,38 +16,34 @@
     <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2" class=""></button>
     <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3" class=""></button>
   </div>
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="img/3.jpg" class="d-block w-100" alt="...">
+<div class="carousel-inner">
+  {% for slide in slides %}
+    <div class="carousel-item {% if slide.is_active %}active{% endif %}">
+      
+      {% if slide.image %}
+        <img src="{{ slide.image.url }}" class="d-block w-100" alt="{{ slide.headline }}">
+      {% else %}
+        <img src="{% static 'path/to/placeholder.jpg' %}" class="d-block w-100" alt="No image uploaded">
+        {% endif %}
+      
       <div class="carousel-caption">
-       <h1 class="font_60">Design Your Kitchen with the Experts</h1>
-	   <p class="text-light mt-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-eiusmod tempor incididunt ut labore et dolore</p>
-      <h6 class="mb-0 mt-4"><a class="button" href="#">VISIT  SHOWROOM <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
-	  
+        <h1 class="font_60">{{ slide.headline }}</h1>
+        <p class="text-light mt-3">{{ slide.description }}</p>
+        
+        <h6 class="mb-0 mt-4">
+          <a class="button" href="{{ slide.button_link }}">
+            {{ slide.button_text }} 
+            <i class="fa fa-long-arrow-right ms-1"></i>
+          </a>
+        </h6>
       </div>
     </div>
-    <div class="carousel-item">
-      <img src="img/4.jpg" class="d-block w-100" alt="...">
-       <div class="carousel-caption">
-       <h1 class="font_60"> Tempor Incididunt ut Labore et Dolore</h1>
-	   <p class="text-light mt-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-eiusmod tempor incididunt ut labore et dolore</p>
-      <h6 class="mb-0 mt-4"><a class="button" href="#">VISIT  SHOWROOM <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
-	  
-      </div>
+  {% empty %}
+    <div class="carousel-item active">
+      <h1>No Slides Available</h1>
     </div>
-    <div class="carousel-item">
-      <img src="img/5.jpg" class="d-block w-100" alt="...">
-       <div class="carousel-caption">
-       <h1 class="font_60"> Enim ad Minim ven Iam quis Nostrud</h1>
-	   <p class="text-light mt-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-eiusmod tempor incididunt ut labore et dolore</p>
-      <h6 class="mb-0 mt-4"><a class="button" href="#">VISIT  SHOWROOM <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
-	  
-      </div>
-    </div>
-  </div>
+  {% endfor %}
+</div>
   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Previous</span>
@@ -77,7 +73,7 @@ eiusmod tempor incididunt ut labore et dolore</p>
 	  <h5 class="col_yell">ABOUT US</h5>
 	  <h1 class="mt-3 mb-4">Creative solutions <br> by professional <br>  designers</h1>
 	  <p>Your kitchen is an expression of who you are, and its design should match your lifestyle. Whether you have traditional tastes or desire a modern feel, we can design your dream kitchen to suit any purpose.</p>
-	  <h6 class="mb-0 mt-4"><a class="button_1" href="#">CONTINUE READING <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
+	  <h6 class="mb-0 mt-4"><a class="button_1" href="{% url 'aboutFur' %}">CONTINUE READING <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
 	 </div>
 	</div>
   </div>

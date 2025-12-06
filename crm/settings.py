@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,6 +41,15 @@ INSTALLED_APPS = [
     'accounts',
     'ckeditor',
 ]
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Furniture Admin",
+    "site_header": "Furniture Dashboard",
+    "welcome_sign": "Welcome to the Furniture Admin Panel",
+    "site_brand": "Furniture Admin",
+}
+
+
 CKEDITOR_UPLOAD_PATH = 'uploads/'
 
 CKEDITOR_CONFIGS = {
@@ -137,3 +147,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
