@@ -1,21 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Furniture</title>
-
-	<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-	<link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
-	<link href="{% static 'css/global.css' %}" rel="stylesheet">
-	<link href="{% static 'css/index.css' %}" rel="stylesheet">
-
-	<link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet">
-
-	<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-</head>
+{% include 'furniture/Header.html' %}
 <body>
 
 
@@ -50,66 +36,84 @@
 <section id="header">
 <nav class="navbar navbar-expand-md navbar-light bg-white mx-auto shadow_box px-3" id="navbar_sticky">
   <div class="container-fluid">
-    <a class="navbar-brand p-0  fw-bold" href="index.html"><i class="fa fa-home col_yell"></i> Furniture</a>
+    <a class="navbar-brand p-0  fw-bold" href="{% url 'indexFur' %}"><i class="fa fa-home col_yell"></i> Furniture</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 	   <ul class="navbar-nav mb-0 nav_1">
 	    
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="index.html">Home</a>
-        </li>
-		 
-		<li class="nav-item">
-          <a class="nav-link" href="about.html">About </a>
-        </li>
-		
-		<li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Shop
-          </a>
-          <ul class="dropdown-menu drop_1" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="shop.html"><i class="fa fa-long-arrow-right font_14 me-1 align-middle"></i> Shop</a></li>
-            <li><a class="dropdown-item border-0" href="detail.html"><i class="fa fa-long-arrow-right font_14 me-1 align-middle"></i> Shop Detail</a></li>
-          </ul>
-        </li>
+       <li class="nav-item">
+  <a class="nav-link active" aria-current="page" href="{% url 'indexFur' %}">Home</a>
+</li>
 
-		<li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Blog
-          </a>
-          <ul class="dropdown-menu drop_1" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="blog.html"><i class="fa fa-long-arrow-right font_14 me-1 align-middle"></i> Blog</a></li>
-            <li><a class="dropdown-item border-0" href="blog_detail.html"><i class="fa fa-long-arrow-right font_14 me-1 align-middle"></i> Blog Detail</a></li>
-          </ul>
-        </li>
-		
-		<li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Team
-          </a>
-          <ul class="dropdown-menu drop_1" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="team.html"><i class="fa fa-long-arrow-right font_14 me-1 align-middle"></i> Team</a></li>
-            <li><a class="dropdown-item border-0" href="team_detail.html"><i class="fa fa-long-arrow-right font_14 me-1 align-middle"></i> Team Detail</a></li>
-          </ul>
-        </li>
-       
-		
-		<li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Pages
-          </a>
-          <ul class="dropdown-menu drop_1" aria-labelledby="navbarDropdown">
-		    <li><a class="dropdown-item" href="cart.html"><i class="fa fa-long-arrow-right font_14 me-1 align-middle"></i> Shopping Cart</a></li>
-            <li><a class="dropdown-item" href="checkout.html"><i class="fa fa-long-arrow-right font_14 me-1 align-middle"></i> Checkout</a></li>
-            <li><a class="dropdown-item border-0" href="pricing.html"><i class="fa fa-long-arrow-right font_14 me-1 align-middle"></i> Pricing</a></li>
-          </ul>
-        </li>
-		
-		<li class="nav-item">
-          <a class="nav-link" href="contact.html">Contact </a>
-        </li>
+<li class="nav-item">
+  <a class="nav-link" href="{% url 'aboutFur' %}">About</a>
+</li>
+
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Shop
+  </a>
+  <ul class="dropdown-menu drop_1" aria-labelledby="navbarDropdown">
+    <li><a class="dropdown-item" href="{% url 'shop' %}">
+      <i class="fa fa-long-arrow-right font_14 me-1 align-middle"></i> Shop</a>
+    </li>
+    <li><a class="dropdown-item border-0" href="{% url 'detail' %}">
+      <i class="fa fa-long-arrow-right font_14 me-1 align-middle"></i> Shop Detail</a>
+    </li>
+  </ul>
+</li>
+
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Blog
+  </a>
+  <ul class="dropdown-menu drop_1" aria-labelledby="navbarDropdown">
+    <li><a class="dropdown-item" href="{% url 'blog' %}">
+      <i class="fa fa-long-arrow-right font_14 me-1 align-middle"></i> Blog</a>
+    </li>
+    <li><a class="dropdown-item border-0" href="{% url 'blogDetail' %}">
+      <i class="fa fa-long-arrow-right font_14 me-1 align-middle"></i> Blog Detail</a>
+    </li>
+  </ul>
+</li>
+
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Team
+  </a>
+  <ul class="dropdown-menu drop_1" aria-labelledby="navbarDropdown">
+    <li><a class="dropdown-item" href="{% url 'team' %}">
+      <i class="fa fa-long-arrow-right font_14 me-1 align-middle"></i> Team</a>
+    </li>
+    <li><a class="dropdown-item border-0" href="{% url 'teamDetail' %}">
+      <i class="fa fa-long-arrow-right font_14 me-1 align-middle"></i> Team Detail</a>
+    </li>
+  </ul>
+</li>
+
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Pages
+  </a>
+  <ul class="dropdown-menu drop_1" aria-labelledby="navbarDropdown">
+    <li><a class="dropdown-item" href="{% url 'cart' %}">
+      <i class="fa fa-long-arrow-right font_14 me-1 align-middle"></i> Shopping Cart</a>
+    </li>
+    <li><a class="dropdown-item" href="{% url 'checkout' %}">
+      <i class="fa fa-long-arrow-right font_14 me-1 align-middle"></i> Checkout</a>
+    </li>
+    <li><a class="dropdown-item border-0" href="{% url 'pricing' %}">
+      <i class="fa fa-long-arrow-right font_14 me-1 align-middle"></i> Pricing</a>
+    </li>
+  </ul>
+</li>
+
+<li class="nav-item">
+  <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+</li>
+
 
       </ul>
        <ul class="navbar-nav mb-0 ms-auto">
@@ -159,7 +163,7 @@
 						   <div class="drop_1il"><h5>2 ITEMS</h5></div>
 						  </div>
 						  <div class="col-md-6 col-6">
-						   <div class="drop_1il text-end"><h5><a href="cart.html">VIEW CART</a></h5></div>
+						   <div class="drop_1il text-end"><h5><a href="{% url 'cart' %}">VIEW CART</a></h5></div>
 						  </div>
 						 </div>
 						 <div class="drop_1i1 row">
@@ -167,7 +171,7 @@
 						   <div class="drop_1i1l"><h6><a href="#">Nulla Quis</a> <br> <span class="fw-normal d-inline-block mt-1">1x - $89.00</span></h6></div>
 						  </div>
 						  <div class="col-md-4 col-4">
-						   <div class="drop_1i1r"><a href="#"><img src="img/1.jpg" class="w-100" alt="abc"></a></div>
+						   <div class="drop_1i1r"><a href="#"><img src="{% static 'img/1.jpg' %}" class="w-100" alt="abc"></a></div>
 						  </div>
 						  <div class="col-md-2 col-2">
 						   <div class="drop_1i1l text-end"><h6> <span><i class="fa fa-trash"></i></span></h6></div>
@@ -178,7 +182,7 @@
 						   <div class="drop_1i1l"><h6><a href="#">Eget Nulla</a> <br> <span class="fw-normal d-inline-block mt-1">1x - $49.00</span></h6></div>
 						  </div>
 						  <div class="col-md-4 col-4">
-						   <div class="drop_1i1r"><a href="#"><img src="img/2.jpg" class="w-100" alt="abc"></a></div>
+						   <div class="drop_1i1r"><a href="#"><img src="{% static 'img/2.jpg' %}" class="w-100" alt="abc"></a></div>
 						  </div>
 						  <div class="col-md-2 col-2">
 						   <div class="drop_1i1l text-end"><h6> <span><i class="fa fa-trash"></i></span></h6></div>
@@ -194,12 +198,12 @@
 						 </div>
 						 <div class="drop_1i3 text-center row">
 						  <div class="col-md-12 col-12">
-						   <h6 class="mb-0"><a class="button_2 d-block" href="cart.html">SHOPPING CART <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
+						   <h6 class="mb-0"><a class="button_2 d-block" href="{% url 'cart.html' ">SHOPPING CART <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
 						  </div>
 						 </div>
 						 <div class="drop_1i3 text-center row">
 						  <div class="col-md-12 col-12">
-						    <h6 class="mb-0 mt-3"><a class="button_1 d-block" href="checkout.html">CHECKOUT <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
+						    <h6 class="mb-0 mt-3"><a class="button_1 d-block" href="{% url 'checkout' %} ">CHECKOUT <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
 						  </div>
 						 </div>
 						</li>
@@ -221,7 +225,7 @@
   </div>
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="img/3.jpg" class="d-block w-100" alt="...">
+      <img src="{% static 'img/3.jpg' %}" class="d-block w-100" alt="...">
       <div class="carousel-caption">
        <h1 class="font_60">Design Your Kitchen with the Experts</h1>
 	   <p class="text-light mt-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
@@ -231,7 +235,7 @@ eiusmod tempor incididunt ut labore et dolore</p>
       </div>
     </div>
     <div class="carousel-item">
-      <img src="img/4.jpg" class="d-block w-100" alt="...">
+      <img src="{% static 'img/4.jpg' %}" class="d-block w-100" alt="...">
        <div class="carousel-caption">
        <h1 class="font_60"> Tempor Incididunt ut Labore et Dolore</h1>
 	   <p class="text-light mt-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
@@ -241,7 +245,7 @@ eiusmod tempor incididunt ut labore et dolore</p>
       </div>
     </div>
     <div class="carousel-item">
-      <img src="img/5.jpg" class="d-block w-100" alt="...">
+      <img src="{% static 'img/5.jpg' %}" class="d-block w-100" alt="...">
        <div class="carousel-caption">
        <h1 class="font_60"> Enim ad Minim ven Iam quis Nostrud</h1>
 	   <p class="text-light mt-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
@@ -268,10 +272,10 @@ eiusmod tempor incididunt ut labore et dolore</p>
     <div class="col-md-7">
 	 <div class="about_h1l position-relative">
 	  <div class="about_h1l1 position-absolute w-100">
-	   <img src="img/6.jpg" alt="abc">
+	   <img src="{% static 'img/6.jpg' %}" alt="abc">
 	  </div>
 	  <div class="about_h1l2 position-absolute w-100">
-	     <img src="img/7.jpg" alt="abc">
+	     <img src="{% static 'img/7.jpg' %}" alt="abc">
 	  </div>
 	 </div>
 	</div>
@@ -403,7 +407,7 @@ Design Process</h5>
 		  <div class="project_2i1 text-center">
 		    <div class="grid clearfix">
 				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="img/8.jpg" class="w-100" alt="abc"></a>
+					<a href="#"><img src="{% static 'img/8.jpg' %}" class="w-100" alt="abc"></a>
 				  </figure>
 			  </div>
 			<h4 class="mt-3"><a class="text-white" href="#">Kitchen project 01</a></h4>
@@ -418,7 +422,7 @@ Design Process</h5>
 		  <div class="project_2i1 text-center">
 		    <div class="grid clearfix">
 				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="img/9.jpg" class="w-100" alt="abc"></a>
+					<a href="#"><img src="{% static 'img/9.jpg' %}" class="w-100" alt="abc"></a>
 				  </figure>
 			  </div>
 			<h4 class="mt-3"><a class="text-white" href="#">Kitchen project 02</a></h4>
@@ -433,7 +437,7 @@ Design Process</h5>
 		  <div class="project_2i1 text-center">
 		    <div class="grid clearfix">
 				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="img/10.jpg" class="w-100" alt="abc"></a>
+					<a href="#"><img src="{% static 'img/10.jpg' %}" class="w-100" alt="abc"></a>
 				  </figure>
 			  </div>
 			<h4 class="mt-3"><a class="text-white" href="#">Kitchen project 03</a></h4>
@@ -452,7 +456,7 @@ Design Process</h5>
 		  <div class="project_2i1 text-center">
 		    <div class="grid clearfix">
 				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="img/11.jpg" class="w-100" alt="abc"></a>
+					<a href="#"><img src="{% static 'img/11.jpg' %}" class="w-100" alt="abc"></a>
 				  </figure>
 			  </div>
 			<h4 class="mt-3"><a class="text-white" href="#">Kitchen project 04</a></h4>
@@ -467,7 +471,7 @@ Design Process</h5>
 		  <div class="project_2i1 text-center">
 		    <div class="grid clearfix">
 				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="img/12.jpg" class="w-100" alt="abc"></a>
+					<a href="#"><img src="{% static 'img/12.jpg' %}" class="w-100" alt="abc"></a>
 				  </figure>
 			  </div>
 			<h4 class="mt-3"><a class="text-white" href="#">Kitchen project 05</a></h4>
@@ -482,7 +486,7 @@ Design Process</h5>
 		  <div class="project_2i1 text-center">
 		    <div class="grid clearfix">
 				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="img/13.jpg" class="w-100" alt="abc"></a>
+					<a href="#"><img src="{% static 'img/13.jpg' %}" class="w-100" alt="abc"></a>
 				  </figure>
 			  </div>
 			<h4 class="mt-3"><a class="text-white" href="#">Kitchen project 06</a></h4>
@@ -559,7 +563,7 @@ Design Process</h5>
 	    <div class="promo_1r1">
 		  <div class="grid clearfix">
 				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="img/14.jpg" class="w-100" alt="abc"></a>
+					<a href="#"><img src="{% static 'img/14.jpg' %}" class="w-100" alt="abc"></a>
 				  </figure>
 			  </div>
 		</div>
@@ -588,7 +592,7 @@ Design Process</h5>
 	      <div class="team_1mi1">
 	       <div class="grid clearfix">
 				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="img/15.jpg" class="w-100" alt="abc"></a>
+					<a href="#"><img src="{% static 'img/15.jpg' %}" class="w-100" alt="abc"></a>
 				  </figure>
 			  </div>
 	    </div>
@@ -613,7 +617,7 @@ Design Process</h5>
 	      <div class="team_1mi1">
 	       <div class="grid clearfix">
 				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="img/16.jpg" class="w-100" alt="abc"></a>
+					<a href="#"><img src="{% static 'img/16.jpg' %}" class="w-100" alt="abc"></a>
 				  </figure>
 			  </div>
 	    </div>
@@ -638,7 +642,7 @@ Design Process</h5>
 	      <div class="team_1mi1">
 	       <div class="grid clearfix">
 				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="img/17.jpg" class="w-100" alt="abc"></a>
+					<a href="#"><img src="{% static 'img/17.jpg' %}" class="w-100" alt="abc"></a>
 				  </figure>
 			  </div>
 	    </div>
@@ -663,7 +667,7 @@ Design Process</h5>
 	      <div class="team_1mi1">
 	       <div class="grid clearfix">
 				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="img/18.jpg" class="w-100" alt="abc"></a>
+					<a href="#"><img src="{% static 'img/18.jpg' %}" class="w-100" alt="abc"></a>
 				  </figure>
 			  </div>
 	    </div>
@@ -694,7 +698,7 @@ Design Process</h5>
 	  <div class="quote_1l1">
 	    <div class="grid clearfix">
 				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="img/6.jpg" class="w-100" alt="abc"></a>
+					<a href="#"><img src="{% static 'img/6.jpg' %}" class="w-100" alt="abc"></a>
 				  </figure>
 			  </div>
 	  </div>
@@ -754,7 +758,7 @@ Design Process</h5>
 		 <div class="testim_1i1 bg-light p-4 clearfix">
 		 <span class="d-inline-block bg_yell text-white text-center span_1 rounded-circle"><i class="fa fa-quote-left"></i></span>
 		 <div class="testim_1i1i clearfix mt-3">
-		   <span><img src="img/15.jpg" alt="abc" class="rounded-circle me-3 float-start"></span>
+		   <span><img src="{% static 'img/15.jpg' %}" alt="abc" class="rounded-circle me-3 float-start"></span>
 		   <h6 class="mb-0 fw-bold text-uppercase lh-base"> Eget Nulla <br> <span class="col_yell font_14 fw-normal">MARKETING MANAGER</span></h6>
 		   </div>
 		   <p class="mb-0 mt-3">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
@@ -764,7 +768,7 @@ Design Process</h5>
 		 <div class="testim_1i1 bg-light p-4 clearfix">
 		 <span class="d-inline-block bg_yell text-white text-center span_1 rounded-circle"><i class="fa fa-quote-left"></i></span>
 		 <div class="testim_1i1i clearfix mt-3">
-		   <span><img src="img/16.jpg" alt="abc" class="rounded-circle me-3 float-start"></span>
+		   <span><img src="{% static 'img/16.jpg' %}" alt="abc" class="rounded-circle me-3 float-start"></span>
 		   <h6 class="mb-0 fw-bold text-uppercase lh-base"> Lorem Porta <br> <span class="col_yell font_14 fw-normal">MARKETING MANAGER</span></h6>
 		   </div>
 		   <p class="mb-0 mt-3">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
@@ -774,7 +778,7 @@ Design Process</h5>
 		 <div class="testim_1i1 bg-light p-4 clearfix">
 		 <span class="d-inline-block bg_yell text-white text-center span_1 rounded-circle"><i class="fa fa-quote-left"></i></span>
 		 <div class="testim_1i1i clearfix mt-3">
-		   <span><img src="img/17.jpg" alt="abc" class="rounded-circle me-3 float-start"></span>
+		   <span><img src="{% static 'img/17.jpg' %}" alt="abc" class="rounded-circle me-3 float-start"></span>
 		   <h6 class="mb-0 fw-bold text-uppercase lh-base"> Dolor Amet <br> <span class="col_yell font_14 fw-normal">MARKETING MANAGER</span></h6>
 		   </div>
 		   <p class="mb-0 mt-3">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
@@ -788,7 +792,7 @@ Design Process</h5>
 		 <div class="testim_1i1 bg-light p-4 clearfix">
 		 <span class="d-inline-block bg_yell text-white text-center span_1 rounded-circle"><i class="fa fa-quote-left"></i></span>
 		 <div class="testim_1i1i clearfix mt-3">
-		   <span><img src="img/15.jpg" alt="abc" class="rounded-circle me-3 float-start"></span>
+		   <span><img src="{% static 'img/15.jpg' %}" alt="abc" class="rounded-circle me-3 float-start"></span>
 		   <h6 class="mb-0 fw-bold text-uppercase lh-base"> Eget Nulla <br> <span class="col_yell font_14 fw-normal">MARKETING MANAGER</span></h6>
 		   </div>
 		   <p class="mb-0 mt-3">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
@@ -798,7 +802,7 @@ Design Process</h5>
 		 <div class="testim_1i1 bg-light p-4 clearfix">
 		 <span class="d-inline-block bg_yell text-white text-center span_1 rounded-circle"><i class="fa fa-quote-left"></i></span>
 		 <div class="testim_1i1i clearfix mt-3">
-		   <span><img src="img/16.jpg" alt="abc" class="rounded-circle me-3 float-start"></span>
+		   <span><img src="{% static 'img/16.jpg' %}" alt="abc" class="rounded-circle me-3 float-start"></span>
 		   <h6 class="mb-0 fw-bold text-uppercase lh-base"> Lorem Porta <br> <span class="col_yell font_14 fw-normal">MARKETING MANAGER</span></h6>
 		   </div>
 		   <p class="mb-0 mt-3">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
@@ -808,7 +812,7 @@ Design Process</h5>
 		 <div class="testim_1i1 bg-light p-4 clearfix">
 		 <span class="d-inline-block bg_yell text-white text-center span_1 rounded-circle"><i class="fa fa-quote-left"></i></span>
 		 <div class="testim_1i1i clearfix mt-3">
-		   <span><img src="img/17.jpg" alt="abc" class="rounded-circle me-3 float-start"></span>
+		   <span><img src="{% static 'img/17.jpg' %}" alt="abc" class="rounded-circle me-3 float-start"></span>
 		   <h6 class="mb-0 fw-bold text-uppercase lh-base"> Dolor Amet <br> <span class="col_yell font_14 fw-normal">MARKETING MANAGER</span></h6>
 		   </div>
 		   <p class="mb-0 mt-3">Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
@@ -882,7 +886,7 @@ Design Process</h5>
 		 <div class="blog_1m">
             <div class="grid clearfix">
 				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="img/19.jpg" class="w-100" alt="abc"></a>
+					<a href="#"><img src="{% static 'img/19.jpg' %}" class="w-100" alt="abc"></a>
 				  </figure>
 			  </div>
 			   <h6 class="font_14 text-muted mt-3"><i class="fa fa-user col_yell me-1"></i> By Admin
@@ -896,7 +900,7 @@ Design Process</h5>
 		 <div class="blog_1m">
             <div class="grid clearfix">
 				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="img/20.jpg" class="w-100" alt="abc"></a>
+					<a href="#"><img src="{% static 'img/20.jpg' %}" class="w-100" alt="abc"></a>
 				  </figure>
 			  </div>
 			   <h6 class="font_14 text-muted mt-3"><i class="fa fa-user col_yell me-1"></i> By Admin
@@ -910,7 +914,7 @@ Design Process</h5>
 		 <div class="blog_1m">
             <div class="grid clearfix">
 				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="img/21.jpg" class="w-100" alt="abc"></a>
+					<a href="#"><img src="{% static 'img/21.jpg' %}" class="w-100" alt="abc"></a>
 				  </figure>
 			  </div>
 			   <h6 class="font_14 text-muted mt-3"><i class="fa fa-user col_yell me-1"></i> By Admin
@@ -943,7 +947,7 @@ Design Process</h5>
    <div class="footer_1 row">
     <div class="col-md-3">
 	 <div class="footer_1i">
-	 <h3><a class="text-white text-uppercase" href="index.html"><i class="fa fa-home col_yell"></i> Furniture</a></h3>
+	 <h3><a class="text-white text-uppercase" href="index.html' %}"><i class="fa fa-home col_yell"></i> Furniture</a></h3>
 	 <p class="col_light mt-3">Subscribe to receive inspiration, ideas, and news in your inbox.</p>
 	 <h4 class="text-white"><i class="fa fa-phone me-1 col_yell"></i> +123 4567 890</h4>
 	 <ul class="mt-3 mb-0">
@@ -1016,21 +1020,7 @@ Design Process</h5>
 
 
 
-<script>
-window.onscroll = function() {myFunction()};
-var navbar_sticky = document.getElementById("navbar_sticky");
-var sticky = navbar_sticky.offsetTop;
-var navbar_height = document.querySelector('.navbar').offsetHeight;
-function myFunction() {
-  if (window.pageYOffset >= sticky + navbar_height) {
-    navbar_sticky.classList.add("sticky")
-	document.body.style.paddingTop = navbar_height + 'px';
-  } else {
-    navbar_sticky.classList.remove("sticky");
-	document.body.style.paddingTop = '0'
-  }
-}
-</script>
+{% include 'furniture/script.html' %}
 
 </body>
 

@@ -2,19 +2,20 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.home),
-    path('products/', views.products),
-    path('customer/', views.customer),
+    path('', views.home, name='home'),
+    path('products/', views.products, name='products'),
+    path('customer/', views.customer, name='customer'),
+
     path('indexFur/', views.indexFur, name='indexFur'),
-    path('aboutFur/', views.indexFur, name='aboutFur'),
-    path('blogDetial/', views.indexFur, name='blogDetial'),
-    path('blog/', views.indexFur, name='blog'),
-    path('cart/', views.indexFur, name='cart'),
-    path('checkOut/', views.indexFur, name='checkOut'),
-    path('contact/', views.indexFur, name='contact'),
-    path('detail/', views.indexFur, name='detail'),
-    path('pricing/', views.indexFur, name='pricing'),
-    path('shop/', views.indexFur, name='shop'),
-    path('teamDetail/', views.indexFur, name='teamDetail'),
-    path('team/', views.indexFur, name='team')
+    path('aboutFur/', views.aboutFur, name='aboutFur'),
+    path('blogDetail/', views.blogDetial, name='blogDetail'),
+    path('blog/', views.blog, name='blog'),
+    path('cart/', views.cart, name='cart'),
+    path('checkout/', views.checkOut, name='checkout'),
+    path('contact/', views.contact, name='contact'),
+    path('detail/', views.detail, name='detail'),
+    path('pricing/', views.pricing, name='pricing'),
+    path('shop/', views.shop, name='shop'),
+    path('teamDetail/', views.teamDetail, name='teamDetail'),
+    path('team/', views.team, name='team'),
 ]
