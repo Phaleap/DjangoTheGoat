@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from accounts.models import Product, CarouselSlide, AboutHeroImages
-from accounts.models import Product
+from accounts.models import *
 # Create your views here.
 
 def home(request):
@@ -55,6 +55,7 @@ def shop(request):
     DTproducts = Product.objects.all()
     context = {
         'Objproducts': DTproducts
+
     }
     return render(request, 'furniture/shop.html', context)
 
