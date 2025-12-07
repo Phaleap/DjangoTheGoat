@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from accounts.models import Product, CarouselSlide, AboutHeroImages, ProjectSectionHeader, Project,TeamSectionHeader,TeamMember
 from accounts.models import Product
+
 # Create your views here.
 
 def home(request):
@@ -66,6 +67,7 @@ def shop(request):
     DTproducts = Product.objects.all()
     context = {
         'Objproducts': DTproducts
+
     }
     return render(request, 'furniture/shop.html', context)
 
