@@ -36,13 +36,8 @@ class CarouselSlide(models.Model):
 
 # accounts/models.py
 
-from django.db import models
-from ckeditor_uploader.fields import RichTextUploadingField # Keep this if needed for other models
-
-# ... (Existing models)
-
 class AboutHeroImages(models.Model):
-    # This ensures only one entry can exist in the admin
+
     name = models.CharField(max_length=50, default="About Section Images & Text", unique=True, editable=False)
     
     # --- Existing Image Fields ---
@@ -60,7 +55,7 @@ class AboutHeroImages(models.Model):
         blank=True
     )
     
-    # --- New Text Fields ---
+
     tagline = models.CharField(
         max_length=100, 
         default="ABOUT US", 
@@ -77,18 +72,112 @@ class AboutHeroImages(models.Model):
         verbose_name="Paragraph Content",
         help_text="The main description paragraph."
     )
-    
-    # Optional: For the button at the bottom of the text block
+
     button_text = models.CharField(
         max_length=50, 
         default="CONTINUE READING", 
         verbose_name="Button Text"
     )
-    # The button link already uses {% url 'aboutFur' %}, so we don't need a field for it unless the destination changes.
 
     class Meta:
         verbose_name = "About Section Image & Text"
         verbose_name_plural = "About Section Image & Text"
+
+    def __str__(self):
+        return self.name
+
+class ProjectSectionHeader(models.Model):
+    name = models.CharField(max_length=50, default="Project Section Header", unique=True, editable=False)
+    tagline = models.CharField(
+        max_length=100, 
+        default="OUR PROJECT", 
+        verbose_name="H6 Tagline (e.g., OUR PROJECT)"
+    )
+    title = models.CharField(
+        max_length=255, 
+        default="Explore our kitchen designs",
+        verbose_name="H1 Title"
+    )
+    content = models.TextField(
+        verbose_name="Paragraph Content",
+        help_text="The main description paragraph. Use <br> for line breaks."
+    )
+
+    class Meta:
+        verbose_name = "Project Section Header Text"
+        verbose_name_plural = "Project Section Header Text"
+
+    def __str__(self):
+        return self.name
+
+class Project(models.Model):
+    title = models.CharField(
+        max_length=150, 
+        verbose_name="Project Title (e.g., Kitchen project 01)"
+    )
+    image = models.ImageField(
+        upload_to='images/projects/',
+        verbose_name="Project Image",
+    )
+    categories = models.CharField(
+        max_length=255,
+        help_text="Enter categories separated by commas (e.g., Modern, Coastal, Top Sellers)"
+    )
+    
+    # Optional: If you have a separate Detail page for each project
+    # project_url = models.URLField(max_length=200, blank=True, null=True) 
+
+    class Meta:
+        verbose_name = "Project"
+        verbose_name_plural = "Projects"
+        ordering = ['id'] # Ensure projects are retrieved in a consistent order
+
+    def get_categories_list(self):
+        """Returns a list of categories for easier template iteration."""
+        return [c.strip() for c in self.categories.split(',')]
+
+    def __str__(self):
+        return self.title
+
+class TeamSectionHeader(models.Model):
+    name = models.CharField(max_length=50, default="Team Section Header", unique=True, editable=False)
+    tagline = models.CharField(
+        max_length=100, 
+        default="MEET OUR TEAM", 
+        verbose_name="H6 Tagline (e.g., MEET OUR TEAM)"
+    )
+    title = models.CharField(
+        max_length=255, 
+        default="Creative minds always <br> think someting",
+        verbose_name="H1 Title",
+        help_text="Use <br> for line breaks."
+    )
+
+    class Meta:
+        verbose_name = "Team Section Header Text"
+        verbose_name_plural = "Team Section Header Text"
+
+    def __str__(self):
+        return self.name
+
+class TeamMember(models.Model):
+    name = models.CharField(
+        max_length=150, 
+        verbose_name="Member Name"
+    )
+    designation = models.CharField(
+        max_length=100, 
+        verbose_name="Designation (Role, e.g., Designer, Architect)"
+    )
+    image = models.ImageField(
+        upload_to='images/team_members/',
+        verbose_name="Member Image",
+    )
+
+    class Meta:
+        verbose_name = "Team Member"
+        verbose_name_plural = "Team Members"
+        ordering = ['id']
 
     def __str__(self):
         return self.name

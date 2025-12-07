@@ -12,3 +12,7 @@ admin.site.register(ProductDetailImage)
 # Register the new CarouselSlide model
 admin.site.register(CarouselSlide)
 admin.site.register(AboutHeroImages)
+admin.site.register(ProjectSectionHeader)
+admin.site.register(Project)
+admin.site.register(TeamSectionHeader)
+admin.site.register(TeamMember)

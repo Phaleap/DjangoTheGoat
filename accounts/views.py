@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from accounts.models import Product, CarouselSlide, AboutHeroImages
+from accounts.models import Product, CarouselSlide, AboutHeroImages, ProjectSectionHeader, Project,TeamSectionHeader,TeamMember
 from accounts.models import Product
 # Create your views here.
 
@@ -14,16 +14,25 @@ def customer(request):
     return HttpResponse('Customer_page')
 
 def indexFur(request):
-    # 1. Fetch all carousel slides, ordered by the 'order' field
+
     slides = CarouselSlide.objects.all() 
-    
-    # 2. Fetch the AboutHeroImages object
-    # We use .first() because we expect only one entry for this single-instance model
     about_images = AboutHeroImages.objects.first() 
+    
+    # Retrieve the Project Header Text
+    project_header = ProjectSectionHeader.objects.first()
+    
+    # Retrieve all Projects
+    projects = Project.objects.all()
+    team_header = TeamSectionHeader.objects.first()
+    team_members = TeamMember.objects.all()
     
     context = {
         'slides': slides,
-        'about_images': about_images,  # Pass the About images object to the template
+        'about_images': about_images,
+        'project_header': project_header, # New context variable
+        'projects': projects,             # New context variable
+        'team_header': team_header,       
+        'team_members': team_members,
     }
     return render(request, 'furniture/index.html', context)
 
@@ -44,10 +53,12 @@ def checkOut(request):
 
 def contact(request):
     return render(request, 'furniture/contact.html')
-
-def detail(request):
-    return render(request, 'furniture/detail.html')
-
+def detail(request, pk): 
+    project_item = get_object_or_404(Project, pk=pk) 
+    context = {
+        'project_item': project_item 
+    }
+    return render(request, 'furniture/detail.html', context)
 def pricing(request):
     return render(request, 'furniture/pricing.html')
 
