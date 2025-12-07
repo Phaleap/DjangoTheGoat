@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from accounts.models import Product, CarouselSlide, AboutHeroImages, ProjectSectionHeader, Project,TeamSectionHeader,TeamMember
+from accounts.models import Product, CarouselSlide, AboutHeroImages, ProjectSectionHeader, Project,TeamSectionHeader,TeamMember, TeamMembers
 from accounts.models import Product
 
 # Create your views here.
@@ -71,8 +71,40 @@ def shop(request):
     }
     return render(request, 'furniture/shop.html', context)
 
-def teamDetail(request):
-    return render(request, 'furniture/team_detail.html')
-
 def team(request):
-    return render(request, 'furniture/team.html')
+    DTmembers = TeamMembers.objects.all()
+    context = {
+        "objDTmembers": DTmembers,
+    }
+    return render(request, 'furniture/team.html', context)
+
+
+def team_detail(request, id):
+    # Get the team member by ID
+    member = get_object_or_404(TeamMembers, id=id)
+
+    # Social links loop
+    social_links = []
+    if member.facebook:
+        social_links.append({"url": member.facebook, "icon": "fa-facebook"})
+    if member.telegram:
+        social_links.append({"url": member.telegram, "icon": "fa-telegram"})
+    if member.youtube:
+        social_links.append({"url": member.youtube, "icon": "fa-youtube-play"})
+
+    # Skills loop (using your model fields)
+    skills = []
+    if member.skill_1_name and member.skill_1_value is not None:
+        skills.append({"name": member.skill_1_name, "percent": member.skill_1_value})
+    if member.skill_2_name and member.skill_2_value is not None:
+        skills.append({"name": member.skill_2_name, "percent": member.skill_2_value})
+    if member.skill_3_name and member.skill_3_value is not None:
+        skills.append({"name": member.skill_3_name, "percent": member.skill_3_value})
+
+    context = {
+        "member": member,
+        "social_links": social_links,
+        "skills": skills,
+    }
+
+    return render(request, 'furniture/team_detail.html', context)

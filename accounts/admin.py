@@ -16,3 +16,6 @@ admin.site.register(ProjectSectionHeader)
 admin.site.register(Project)
 admin.site.register(TeamSectionHeader)
 admin.site.register(TeamMember)
+
+# Team 
+admin.site.register(TeamMembers)
