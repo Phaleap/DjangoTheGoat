@@ -1,29 +1,28 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-{% include 'furniture/Head.html' %}
+  {% include 'furniture/Head.html' %}
 
-<body>
+  <body>
+    {% include 'furniture/SecTop.html' %} {% include 'furniture/Header.html' %}
 
-{% include 'furniture/SecTop.html' %}
+    <section id="center" class="center_team">
+      <div class="promo_m center_om">
+        <div class="container-fluid">
+          <div class="center_o1 row text-center">
+            <div class="col-md-12">
+              <h6 class="col_yell fw-bold">
+                <a class="text-white" href="#">HOME PAGE</a>
+                <span class="mx-2 text-muted">/</span> TEAM
+              </h6>
+              <h1 class="mb-0 font_60 text-white mt-3">Team</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-{% include 'furniture/Header.html' %}
-
-<section id="center" class="center_team">
- <div class="promo_m center_om">
-  <div class="container-fluid">
-    <div class="center_o1 row text-center">
-	 <div class="col-md-12">
-	   <h6 class="col_yell fw-bold"><a class="text-white" href="#">HOME PAGE</a> <span class="mx-2 text-muted">/</span> TEAM</h6>
-	   <h1 class="mb-0 font_60 text-white mt-3">Team</h1>
-	 </div>
-	</div>
- </div>
- </div>
-</section>
-
-
-<section id="team" class="p_3 px-4">
+    <section id="team" class="p_3 px-4">
       <div class="container-fluid">
         <div class="row">
           {% for member in objDTmembers %}
@@ -34,7 +33,11 @@
                   <div class="grid clearfix">
                     <figure class="effect-jazz mb-0">
                       <a href="{% url 'team_detail' member.id %}">
-                        <img src="{{ member.image.url }}" alt="{{ member.name }}" class="w-100">
+                        <img
+                          src="{{ member.image.url }}"
+                          alt="{{ member.name }}"
+                          class="w-100"
+                        />
                       </a>
                     </figure>
                   </div>
@@ -43,31 +46,18 @@
                   class="team_1mi2 position-absolute promo_m w-100 h-100 top-0"
                 >
                   <ul class="social-network social-circle mb-0">
-                    {% if member.facebook %}
                     <li>
-                      <a href="{{ member.facebook }}" class="icoFacebook"
-                        ><i class="fa fa-facebook"></i
-                      ></a>
+                      {% if member.facebook %}
+                      <a
+                        href="{{ member.facebook }}"
+                        class="icoFacebook"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <i class="fab fa-facebook-f"></i>
+                      </a>
+                      {% endif %}
                     </li>
-                    {% endif %} {% if member.pinterest %}
-                    <li>
-                      <a href="{{ member.pinterest }}" class="icoGoogle"
-                        ><i class="fa fa-pinterest"></i
-                      ></a>
-                    </li>
-                    {% endif %} {% if member.linkedin %}
-                    <li>
-                      <a href="{{ member.linkedin }}" class="icoLinkedin"
-                        ><i class="fa fa-linkedin"></i
-                      ></a>
-                    </li>
-                    {% endif %} {% if member.dribbble %}
-                    <li>
-                      <a href="{{ member.dribbble }}" class="icoRss"
-                        ><i class="fa fa-dribbble"></i
-                      ></a>
-                    </li>
-                    {% endif %}
                   </ul>
                 </div>
               </div>
@@ -87,12 +77,7 @@
       </div>
     </section>
 
-{% include 'furniture/Chatsec.html' %}
-
-{% include 'furniture/Footer.html' %}
-
-{% include 'furniture/script.html' %}
-
-</body>
-
+    {% include 'furniture/Chatsec.html' %} {% include 'furniture/Footer.html' %}
+    {% include 'furniture/script.html' %}
+  </body>
 </html>
