@@ -85,12 +85,13 @@ def team_detail(request, id):
 
     # Social links loop
     social_links = []
+    social_links = []
     if member.facebook:
-        social_links.append({"url": member.facebook, "icon": "fa-facebook"})
+        social_links.append({"url": member.facebook, "icon": "fab fa-facebook"})
     if member.telegram:
-        social_links.append({"url": member.telegram, "icon": "fa-telegram"})
+        social_links.append({"url": member.telegram, "icon": "fab fa-telegram-plane"})
     if member.youtube:
-        social_links.append({"url": member.youtube, "icon": "fa-youtube-play"})
+        social_links.append({"url": member.youtube, "icon": "fab fa-youtube"})
 
     # Skills loop (using your model fields)
     skills = []
@@ -100,6 +101,7 @@ def team_detail(request, id):
         skills.append({"name": member.skill_2_name, "percent": member.skill_2_value})
     if member.skill_3_name and member.skill_3_value is not None:
         skills.append({"name": member.skill_3_name, "percent": member.skill_3_value})
+    
 
     context = {
         "member": member,
