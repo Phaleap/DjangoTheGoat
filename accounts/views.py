@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from accounts.models import Product, CarouselSlide, AboutHeroImages, ProjectSectionHeader, Project,TeamSectionHeader,TeamMember, TeamMembers
+from accounts.models import Product, CarouselSlide, AboutHeroImages, ProjectSectionHeader, Project,TeamSectionHeader,TeamMember, TeamMembers, TestimonialClient, BlogPost
 from accounts.models import Product
 
 # Create your views here.
@@ -27,13 +27,32 @@ def indexFur(request):
     team_header = TeamSectionHeader.objects.first()
     team_members = TeamMember.objects.all()
     
+    # --- New Testimonial Logic ---
+    testimonials = TestimonialClient.objects.all() # Ordered by slide_group and order_in_group
+    
+    # Get unique slide_group values
+    slide_groups = testimonials.values_list('slide_group', flat=True).distinct()
+    
+    # Create a list of lists, where each inner list is a carousel item (slide)
+    testimonial_slides = []
+    for group_id in slide_groups:
+        slide_testimonials = testimonials.filter(slide_group=group_id)
+        # Ensure only up to 3 are added to a slide 
+        testimonial_slides.append(list(slide_testimonials[:3]))
+    # --- End New Testimonial Logic ---
+
+    #Blog post
+    latest_posts = BlogPost.objects.all()[:3]
+
     context = {
         'slides': slides,
         'about_images': about_images,
-        'project_header': project_header, # New context variable
-        'projects': projects,             # New context variable
-        'team_header': team_header,       
+        'project_header': project_header,
+        'projects': projects,
+        'team_header': team_header, 
         'team_members': team_members,
+        'testimonial_slides': testimonial_slides, # New context variable
+        'latest_posts': latest_posts,     # Passed to template
     }
     return render(request, 'furniture/index.html', context)
 

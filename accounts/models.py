@@ -1,5 +1,6 @@
 from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.utils import timezone
 
 # Create your models here.
 
@@ -256,3 +257,63 @@ class TeamMembers(models.Model):
 
     def __str__(self):
         return self.name
+    
+class TestimonialClient(models.Model):
+    client_name = models.CharField(max_length=100)
+    designation = models.CharField(max_length=100, verbose_name="Client Role/Designation")
+    quote = models.TextField()
+    image = models.ImageField(
+        upload_to='images/testimonials/',
+        verbose_name="Client Image (e.g. 100x100 recommended)"
+    )
+    
+    # Use this to group testimonials into slides of 3
+    slide_group = models.IntegerField(default=1, help_text="Group number for the carousel slide (e.g., 1 for slide 1, 2 for slide 2, etc.)")
+    
+    order_in_group = models.IntegerField(default=1, help_text="Position within the slide group (1, 2, or 3)")
+
+    class Meta:
+        verbose_name = "Testimonial"
+        verbose_name_plural = "Testimonials"
+        ordering = ['slide_group', 'order_in_group']
+
+    def __str__(self):
+        return f"{self.client_name} (Group {self.slide_group})"    
+    
+class BlogPost(models.Model):
+    title = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True, help_text="A unique, URL-friendly version of the title.")
+    image = models.ImageField(
+        upload_to='images/blog/',
+        verbose_name="Blog Post Image"
+    )
+    author = models.CharField(
+        max_length=100, 
+        default="Admin"
+    )
+    # Using RichTextUploadingField for the main body content
+    content = RichTextUploadingField(verbose_name="Full Blog Content")
+    
+    # Short summary for the index page card
+    summary = models.TextField(
+        max_length=300, 
+        help_text="A brief summary for the homepage card."
+    )
+    
+    # Assuming comments will be a separate feature, but we can store the count if needed
+    comment_count = models.IntegerField(default=0)
+    
+    # Store the publish date
+    published_date = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        verbose_name = "Blog Post"
+        verbose_name_plural = "Blog Posts"
+        ordering = ['-published_date']
+
+    def __str__(self):
+        return self.title
+        
+    def get_absolute_url(self):
+        # Assuming you will map this to a blog detail page
+        return f"/blog/{self.slug}/"    

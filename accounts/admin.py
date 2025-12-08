@@ -19,3 +19,7 @@ admin.site.register(TeamMember)
 
 # Team 
 admin.site.register(TeamMembers)
+#Client
+admin.site.register(TestimonialClient)
+#BlogPost
+admin.site.register(BlogPost)
