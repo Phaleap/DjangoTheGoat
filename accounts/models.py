@@ -198,6 +198,7 @@ class Product(models.Model):
     date = models.CharField(max_length=200, null=True)
     productImage = models.ImageField(upload_to='images/Products/',null=True,blank=True)
     productDate = models.DateTimeField(auto_now_add=True, null=True)
+    is_bestseller = models.BooleanField(default=False)
     def __str__(self):         
         return f'{self.id} - {self.productName} - {self.categoryID.categoryName}'
 class ProductDetail(models.Model):

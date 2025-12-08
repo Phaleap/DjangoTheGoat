@@ -1,184 +1,220 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-{% include 'furniture/Head.html' %}
+  {% include 'furniture/Head.html' %}
 
-<body>
+  <body>
+    {% include 'furniture/SecTop.html' %} {% include 'furniture/Header.html' %}
 
-{% include 'furniture/SecTop.html' %}
+    <!-- Page Banner -->
+    <section id="center" class="center_shop">
+      <div class="promo_m center_om">
+        <div class="container-fluid">
+          <div class="center_o1 row text-center">
+            <div class="col-md-12">
+              <h6 class="col_yell fw-bold">
+                <a class="text-white" href="#">HOME PAGE</a>
+                <span class="mx-2 text-muted">/</span> SHOP
+              </h6>
+              <h1 class="mb-0 font_60 text-white mt-3">Shop</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-{% include 'furniture/Header.html' %}
+    <!-- Shop Section -->
+    <section id="shop" class="p_3 px-4">
+      <div class="container-fluid">
+        <div class="shop_1 row">
+          <!-- Sidebar -->
+          <div class="col-md-3">
+            <div class="shop_1l">
+              <!-- Categories -->
+              <div class="shop_1l1">
+                <h5>Categories</h5>
+                <hr class="line mb-4" />
+                <ul class="category-list mb-0 list-unstyled">
+                  <li class="mb-2">
+                    <a href="#" class="category-btn" data-filter="all"
+                      >All Categories</a
+                    >
+                  </li>
+                  {% for category in ObjDTCategory %}
+                  <li class="mb-2">
+                    <a
+                      href="#"
+                      class="category-btn"
+                      data-filter="{{ category.id }}"
+                    >
+                      {{ category.categoryName }}
+                      <span class="text-muted"
+                        >({{ category.product_set.count }})</span
+                      >
+                    </a>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
 
+              <!-- Filter by Price -->
+              <div class="shop_1l1 mt-4">
+                <h5>Filter By Price</h5>
+                <hr class="line mb-4" />
+                <h6 class="mb-0 font_14">
+                  Price: $80 — $400
+                  <a
+                    class="bg_yell text-white p-2 ms-3 px-4 d-inline-block"
+                    href="#"
+                    >FILTER</a
+                  >
+                </h6>
+              </div>
 
-<section id="center" class="center_shop">
- <div class="promo_m center_om">
-  <div class="container-fluid">
-    <div class="center_o1 row text-center">
-	 <div class="col-md-12">
-	   <h6 class="col_yell fw-bold"><a class="text-white" href="#">HOME PAGE</a> <span class="mx-2 text-muted">/</span> SHOP</h6>
-	   <h1 class="mb-0 font_60 text-white mt-3">Shop</h1>
-	 </div>
-	</div>
- </div>
- </div>
- 
-</section>
+              <!-- Bestsellers -->
+              <div class="shop_1l1 mt-4">
+                <h5>Bestsellers</h5>
+                <hr class="line mb-4" />
+                {% for product in bestsellers %}
+                <div class="row shop_1l1i mb-3">
+                  <div class="col-4 pe-0">
+                    <figure class="effect-jazz mb-0">
+                      <a href="{% url 'detail' product.id %}">
+                        <img
+                          src="{{ product.productImage.url }}"
+                          class="w-100"
+                          alt="{{ product.productName }}"
+                        />
+                      </a>
+                    </figure>
+                  </div>
+                  <div class="col-8">
+                    <h6 class="fw-bold">
+                      <a href="{% url 'detail' product.id %}"
+                        >{{ product.productName }}</a
+                      >
+                    </h6>
+                    <h5 class="mb-0 col_yell">
+                      ${{ product.price|floatformat:2 }}
+                    </h5>
+                  </div>
+                </div>
+                {% empty %}
+                <p>No bestsellers available.</p>
+                {% endfor %}
+              </div>
 
-<section id="shop" class="p_3  px-4">
- <div class="container-fluid">
-   <div class="shop_1 row">
-    <div class="col-md-3">
-	 <div class="shop_1l">
-	   <div class="shop_1l1">
-	     <h5>Categories</h5>
-		 <hr class="line mb-4">
-		 <h6 class="mb-0"><a href="#">Accessories <span class="pull-right">(6)</span></a></h6><hr>
-<h6 class="mb-0"><a href="#">Clothing <span class="pull-right">(4)</span></a></h6><hr>
-<h6 class="mb-0"><a href="#">Hoodies <span class="pull-right">(5)</span></a></h6><hr>
-<h6 class="mb-0"><a href="#">Music <span class="pull-right">(8)</span></a></h6><hr>
-<h6 class="mb-0"><a href="#">Uncategorized <span class="pull-right">(7)</span></a></h6>
+              <!-- Product Tags -->
+              <div class="blog_pg1r1 mt-4">
+                <h5>Product Tags</h5>
+                <hr class="line mb-4" />
+                <ul class="mb-0">
+                  <li class="d-inline-block"><a href="#">Architecture</a></li>
+                  <li class="d-inline-block"><a href="#">Construction</a></li>
+                  <li class="d-inline-block"><a href="#">Design</a></li>
+                  <li class="d-inline-block"><a href="#">Decoration</a></li>
+                  <li class="d-inline-block"><a href="#">Furniture</a></li>
+                  <li class="d-inline-block"><a href="#">Interior</a></li>
+                  <li class="d-inline-block"><a href="#">Mattresses</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
 
-	    </div>
-		<div class="shop_1l1 mt-4">
-	     <h5>Filter By Price</h5>
-		 <hr class="line mb-4">
-		 <h6 class="mb-0 font_14">Price: $80 — $400<a class="bg_yell text-white p-2 ms-3 px-4 d-inline-block" href="#">FILTER</a>
-</h6>
-	    </div>
-		<div class="shop_1l1 mt-4">
-	     <h5>Bestsellers</h5>
-		 <hr class="line mb-4">
-	    <div class="row shop_1l1i">
-		     <div class="col-md-4 col-4 pe-0">
-			  <div class="shop_1l1il">
-			    <figure class="effect-jazz mb-0">
-					<a href="#"><img src="img/31.jpg" class="w-100" alt="abc"></a>
+          <!-- Products -->
+          <div class="col-md-9">
+            <div class="shop_1r">
+              <!-- Sorting Info -->
+              <div class="shop_1r1 row">
+                <div class="col-md-8">
+                  <div class="shop_1r1l pt-3">
+                    <p class="mb-0">Showing {{ Objproducts|length }} results</p>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="shop_1r1r">
+                    <select
+                      class="form-select"
+                      aria-label="Default select example"
+                    >
+                      <option selected="">Default Sorting</option>
+                      <option value="1">Sort by Price</option>
+                      <option value="2">Sort by Popularity</option>
+                      <option value="3">Sort by Rating</option>
+                      <option value="4">Sort by Time</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
 
-				  </figure>
-			  </div>
-			 </div>
-			 <div class="col-md-8 col-8">
-			  <div class="shop_1l1ir">
-			   <h6 class="fw-bold"><a href="#">Semper Porta Nulla</a></h6>
-			   <h5 class="mb-0 col_yell">$50.00</h5>
-			  </div>
-			 </div>
-	    </div><hr>
-		<div class="row shop_1l1i">
-		     <div class="col-md-4 col-4 pe-0">
-			  <div class="shop_1l1il">
-			    <figure class="effect-jazz mb-0">
-					<a href="#"><img src="img/32.jpg" class="w-100" alt="abc"></a>
-				  </figure>
-			  </div>
-			 </div>
-			 <div class="col-md-8 col-8">
-			  <div class="shop_1l1ir">
-			   <h6 class="fw-bold"><a href="#">Lorem Ipsum Amet</a></h6>
-			   <h5 class="mb-0 col_yell">$40.00</h5>
-			  </div>
-			 </div>
-	    </div><hr>
-		<div class="row shop_1l1i">
-		     <div class="col-md-4 col-4 pe-0">
-			  <div class="shop_1l1il">
-			    <figure class="effect-jazz mb-0">
-					<a href="#"><img src="img/33.jpg" class="w-100" alt="abc"></a>
-				  </figure>
-			  </div>
-			 </div>
-			 <div class="col-md-8 col-8">
-			  <div class="shop_1l1ir">
-			   <h6 class="fw-bold"><a href="#">Sed Augue Dolor</a></h6>
-			   <h5 class="mb-0 col_yell">$60.00</h5>
-			  </div>
-			 </div>
-	    </div>
-	    </div>
-		<div class="blog_pg1r1 mt-4">
-	     <h5>Product Tags</h5>
-		 <hr class="line mb-4">
-		 <ul class="mb-0">
-				 <li class="d-inline-block"><a href="#">Architecture</a>
-</li>
-				 <li class="d-inline-block"><a href="#">Construction</a></li>
-				 <li class="d-inline-block"><a href="#">Design</a></li>
-				 <li class="d-inline-block"><a href="#">Decoration</a></li>
-				 <li class="d-inline-block"><a href="#">Furniture</a></li>
-				 <li class="d-inline-block"><a href="#">Interior</a></li>
-				 <li class="d-inline-block"><a href="#">Mattresses</a></li>
-		</ul>
-	    </div>
-	 </div>
-	</div>
+              <!-- Product Grid -->
+              <div class="shop_1r1 mt-4 row">
+                {% for product in Objproducts %}
+                <div
+                  class="col-md-4 mb-4 product-item"
+                  data-category="{{ product.categoryID.id }}"
+                >
+                  <div class="shop_1r1l border_1">
+                    <div class="shop_1r1l1 position-relative">
+                      <figure class="effect-jazz mb-0">
+                        <a href="{% url 'detail' product.id %}">
+                          <img
+                            src="{{ product.productImage.url }}"
+                            class="w-100"
+                            alt="{{ product.productName }}"
+                          />
+                        </a>
+                      </figure>
+                    </div>
+                    <div class="shop_1r1l2 text-center p-4">
+                      <h5 class="fw-bold mt-2">
+                        <a href="{% url 'detail' product.id %}"
+                          >{{ product.productName }}</a
+                        >
+                      </h5>
+                      <h4 class="col_yell">
+                        ${{ product.price|floatformat:2 }}
+                      </h4>
+                      <h6 class="mb-0 mt-3">
+                        <a class="button_1" href="{% url 'detail' product.id %}"
+                          >READ MORE
+                          <i class="fa fa-long-arrow-right ms-1"></i>
+                        </a>
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-	<div class="col-md-9">
-	 <div class="shop_1r">
-	   <div class="shop_1r1 row">
-	      <div class="col-md-8">
-		   <div class="shop_1r1l pt-3">
-		    <p class="mb-0">Showing 1–9 of 18 results</p>
-		   </div>
-		  </div>
-		  <div class="col-md-4">
-		   <div class="shop_1r1r">
-		     <select class="form-select" aria-label="Default select example">
-			<option selected="">Default Sorting</option>
-			<option value="1">Sort by Price</option>
-			<option value="2">Sort by Popularity</option>
-			<option value="3">Sort by Rating</option>
-			<option value="4">Sort by Time</option>
-			</select>
-		   </div>
-		  </div>
-	    </div>
-{% comment %} img {% endcomment %}
-{% for Objproducts in Objproducts %}
-		{{Objproducts.id}}
-	   <div class="shop_1r1 mt-4 row">
-	    <div class="col-md-6">
-		 <div class="shop_1r1l border_1">
-		   <div class="shop_1r1l1 position-relative">
-		     <div class="shop_1r1l1i">
-			   <div class="grid clearfix">
-				  <figure class="effect-jazz mb-0">
-					<a href="{% url 'detail' Objproducts.id %}"><img src=" {{ Objproducts.productImage.url }} " class="w-100" alt="abc"></a>
-				  </figure>
-			  </div>
-			 </div>
-			 <div class="shop_1r1l1i1 position-absolute top-0 text-end w-100 p-4 h-100">
-			   <ul class="mb-0">
-			    <li><a class="border_1 rounded-circle text-center" href="{% url 'detail' Objproducts.id %}"><i class="fa fa-heart-o"></i></a></li>
-				 <li class="mt-2"><a class="border_1 rounded-circle text-center" href="{% url 'detail' Objproducts.id %}"><i class="fa fa-eye"></i></a></li>
-				  <li class="mt-2"><a class="border_1 rounded-circle text-center" href="{% url 'detail' Objproducts.id %}"><i class="fa fa-share-alt"></i></a></li>
-			   </ul>
-			 </div>
-		   </div>
-		   <div class="shop_1r1l2 text-center p-4">
-		    <span class="col_yell font_14">
-			 <i class="fa fa-star"></i>
-			 <i class="fa fa-star"></i>
-			 <i class="fa fa-star"></i>
-			 <i class="fa fa-star"></i>
-			 <i class="fa fa-star"></i>
-			</span>
-		    <h5 class="fw-bold mt-2"><a href="{% url 'detail' Objproducts.id %}">{{Objproducts.productName}}</a></h5>
-			<h4 class="col_yell">${{Objproducts.price}}.00</h4>
+    {% include 'furniture/Chatsec.html' %} {% include 'furniture/Footer.html' %}
+    {% include 'furniture/script.html' %}
 
-			<h6 class="mb-0 mt-3"><a class="button_1" href="{% url 'detail' Objproducts.id %}">READ MORE <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
-		</div>
-	</div>
-	</div>
-	</div>
-{% endfor %} 
-</section>
+    <!-- JS Filter Script -->
+    <script>
+      document.querySelectorAll(".category-btn").forEach((btn) => {
+        btn.addEventListener("click", function (e) {
+          e.preventDefault();
+          const filter = this.getAttribute("data-filter");
+          const products = document.querySelectorAll(".product-item");
 
-{% include 'furniture/Chatsec.html' %}
-
-{% include 'furniture/Footer.html' %}
-
-{% include 'furniture/script.html' %}
-
-</body>
-
+          products.forEach((item) => {
+            if (
+              filter === "all" ||
+              item.getAttribute("data-category") === filter
+            ) {
+              item.style.display = "block";
+            } else {
+              item.style.display = "none";
+            }
+          });
+        });
+      });
+    </script>
+  </body>
 </html>

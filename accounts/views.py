@@ -1,7 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from accounts.models import Product, CarouselSlide, AboutHeroImages, ProjectSectionHeader, Project,TeamSectionHeader,TeamMember, TeamMembers, TestimonialClient, BlogPost
-from accounts.models import Product
+from accounts.models import *
 
 # Create your views here.
 
@@ -84,8 +83,12 @@ def pricing(request):
 
 def shop(request):
     DTproducts = Product.objects.all()
+    DTCategory = Category.objects.all()
+    bestsellers = Product.objects.filter(is_bestseller=True)[:3]
     context = {
-        'Objproducts': DTproducts
+        'Objproducts': DTproducts,
+        'ObjDTCategory': DTCategory,
+        'bestsellers': bestsellers,
 
     }
     return render(request, 'furniture/shop.html', context)
