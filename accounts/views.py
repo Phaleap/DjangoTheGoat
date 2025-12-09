@@ -22,7 +22,6 @@ def indexFur(request):
     project_header = ProjectSectionHeader.objects.first()
     projects = Project.objects.all()
     team_header = TeamSectionHeader.objects.first()
-    team_members = TeamMember.objects.all()
     
     # --- Testimonial Logic ---
     testimonials = TestimonialClient.objects.all()
@@ -41,7 +40,6 @@ def indexFur(request):
         'project_header': project_header,
         'projects': projects,
         'team_header': team_header, 
-        'team_members': team_members,
         'testimonial_slides': testimonial_slides,
         'latest_posts': latest_posts,
     }

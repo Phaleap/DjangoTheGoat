@@ -129,6 +129,11 @@
                       </figure>
                     </div>
                     <div class="shop_1r1l2 text-center p-4">
+                      <span class="col_yell">
+                  {% for _ in full_stars %}
+                  <i class="fa fa-star"></i>
+                  {% endfor %}
+                </span>
                       <h5 class="fw-bold mt-2">
                         <a href="{% url 'detail' product.id %}"
                           >{{ product.productName }}</a
