@@ -297,3 +297,17 @@ class BlogPost(models.Model):
         
     def get_absolute_url(self):
         return reverse('blog_detail', kwargs={'id': self.id})  
+class BillingDetail(models.Model):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+    address = models.CharField(max_length=255)
+    town = models.CharField(max_length=100)
+    postcode = models.CharField(max_length=20)
+    phone = models.CharField(max_length=20)
+    email = models.EmailField()
+    qr_code_image = models.ImageField(upload_to='qrcodes/', null=True, blank=True)
+    total = models.FloatField()
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"

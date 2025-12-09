@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from accounts.models import *
 from .models import BlogCategory, BlogTag
@@ -392,4 +392,34 @@ def remove_from_cart(request):
         print(f"Server Error in remove_from_cart: {e}")
         return JsonResponse({'error': f'Internal Server Error: {str(e)}'}, status=500)
     
+def billing_add(request):
+    cart = request.session.get('cart', {})
+    # total_price = sum(item['total'] for item in cart.values())
+
+    if request.method == "POST":
+        data = request.POST
+        qr_image = request.FILES.get('qr_code_image')
+
+        billing = BillingDetail(
+            first_name=data['first_name'],
+            last_name=data['last_name'],
+            country=data['country'],
+            address=data['address'],
+            town=data['town'],
+            postcode=data['postcode'],
+            phone=data['phone'],
+            email=data['email'],
+            qr_code_image=qr_image,
+            # total=data['total']
+        )
+        billing.save()
+        return redirect('BillingList')
     
+    return render(request, 'furniture/checkout.html', {
+        'cart': cart,
+        # 'total_price': total_price,
+    })  
+def billing_list(request):
+    billings = BillingDetail.objects.all()
+    return render(request, 'furniture/BillingList.html', {'billings': billings})
+
