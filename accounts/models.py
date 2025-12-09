@@ -195,7 +195,6 @@ class Product(models.Model):
     categoryID = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
     price = models.CharField(max_length=200, null=True)
     productDescript =  RichTextUploadingField(null=True)
-    is_bestseller = models.BooleanField(default=False)
     availability = models.CharField(max_length=200, null=True)
     date = models.CharField(max_length=200, null=True)
     productImage = models.ImageField(upload_to='images/Products/',null=True,blank=True)
