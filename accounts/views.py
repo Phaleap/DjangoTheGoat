@@ -193,14 +193,13 @@ def contact(request):
     return render(request, 'furniture/contact.html')
 
 def detail(request, id): 
-    product = Product.objects.get(id=id)
-    detail = ProductDetail.objects.filter(productID=product).first()
-    images = ProductDetailImage.objects.filter(productID=product)
-
+    DTproduct = Product.objects.get(id=id)
+    DTdetail = ProductDetail.objects.filter(productID=DTproduct).first()
+    full_stars = range(int(DTproduct.rating))
     context = {
-        "product": product,
-        "detail": detail,
-        "images": images,
+        "product": DTproduct,
+        "detail": DTdetail,
+        "full_stars": full_stars,
     }
     return render(request, 'furniture/detail.html', context)
 

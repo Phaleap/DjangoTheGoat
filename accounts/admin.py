@@ -7,13 +7,11 @@ from accounts.models import *
 admin.site.register(Category)
 admin.site.register(Product)
 admin.site.register(ProductDetail)
-admin.site.register(ProductDetailImage)
 admin.site.register(CarouselSlide)
 admin.site.register(AboutHeroImages)
 admin.site.register(ProjectSectionHeader)
 admin.site.register(Project)
 admin.site.register(TeamSectionHeader)
-admin.site.register(TeamMember)
 admin.site.register(TeamMembers)
 admin.site.register(TestimonialClient)
 

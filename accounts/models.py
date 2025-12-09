@@ -162,31 +162,9 @@ class TeamSectionHeader(models.Model):
     def __str__(self):
         return self.name
 
-class TeamMember(models.Model):
-    name = models.CharField(
-        max_length=150, 
-        verbose_name="Member Name"
-    )
-    designation = models.CharField(
-        max_length=100, 
-        verbose_name="Designation (Role, e.g., Designer, Architect)"
-    )
-    image = models.ImageField(
-        upload_to='images/team_members/',
-        verbose_name="Member Image",
-    )
-
-    class Meta:
-        verbose_name = "Team Member"
-        verbose_name_plural = "Team Members"
-        ordering = ['id']
-
-    def __str__(self):
-        return self.name
     
 class Category(models.Model):
     categoryName = models.CharField(max_length=200, null=True)
-    categoryImage = models.ImageField(upload_to='images/Categories/',null=True,blank=True)
     def __str__(self):         
         return self.categoryName
     
@@ -196,29 +174,19 @@ class Product(models.Model):
     price = models.CharField(max_length=200, null=True)
     productDescript =  RichTextUploadingField(null=True)
     availability = models.CharField(max_length=200, null=True)
-    date = models.CharField(max_length=200, null=True)
     productImage = models.ImageField(upload_to='images/Products/',null=True,blank=True)
-    productDate = models.DateTimeField(auto_now_add=True, null=True)
+    rating = models.FloatField(default=0)
     is_bestseller = models.BooleanField(default=False)
     def __str__(self):         
         return f'{self.id} - {self.productName} - {self.categoryID.categoryName}'
 class ProductDetail(models.Model):
-    productDetailName = models.CharField(max_length=200, null=True)
     productID = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
     Description =  RichTextUploadingField(null=True)
     Information = RichTextUploadingField(null=True)
     Reviews = RichTextUploadingField(null=True)
-    productDetailDate = models.DateTimeField (auto_now_add=True, null=True)
     def __str__(self):         
-        return f'{self.id} - {self.productDetailName} - {self.productID.productName}'
+        return f'{self.id} - {self.productID.productName}'
     
-class ProductDetailImage(models.Model):
-    productDetailImageName = models.CharField(max_length=200, null=True)
-    productID = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
-    productDetailImage = models.ImageField(upload_to='images/productDetail/',null=True,blank=True)
-    imageDate = models.DateTimeField(auto_now_add=True, null=True)
-    def __str__(self):         
-       return f'{self.id} - {self.productDetailImageName} - {self.productID.productName}'
 
 # Ozai Team and Team Detail 
     

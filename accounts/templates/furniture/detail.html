@@ -6,6 +6,7 @@
   <body>
     {% include 'furniture/SecTop.html' %} {% include 'furniture/Header.html' %}
 
+    <!-- Center Section -->
     <section id="center" class="center_shop_dt">
       <div class="promo_m center_om">
         <div class="container-fluid">
@@ -13,7 +14,7 @@
             <div class="col-md-12">
               <h6 class="col_yell fw-bold">
                 <a class="text-white" href="#">HOME PAGE</a>
-                <span class="mx-2 text-muted">/</span>SHOP DETAIL
+                <span class="mx-2 text-muted">/</span> SHOP DETAIL
               </h6>
               <h1 class="mb-0 font_60 text-white mt-3">Shop Detail</h1>
             </div>
@@ -22,59 +23,130 @@
       </div>
     </section>
 
+    <!-- Shop Detail -->
     <section id="shop_dt" class="p_3 px-4">
       <div class="container-fluid">
         <div class="shop_dt1 row">
-          <!-- LEFT: PRODUCT IMAGES -->
+          <!-- Left Image -->
           <div class="col-md-6">
             <div class="shop_dt1l">
-              <div
-                id="carouselExampleCaptions"
-                class="carousel slide"
-                data-bs-ride="carousel"
-              >
+              <div>
                 <div class="carousel-inner">
-                  <!-- Main Product Image -->
-                  <div class="carousel-item active">
-                    <img
-                      src="{{ product.productImage.url }}"
-                      class="d-block w-100"
-                      alt="{{ product.productName }}"
-                    />
-                  </div>
-
-                  <!-- Product Detail Images -->
-                  {% for img in images %}
-                  <div class="carousel-item">
-                    <img
-                      src="{{ img.productDetailImage.url }}"
-                      class="d-block w-100"
-                      alt="{{ img.productDetailImageName }}"
-                    />
-                  </div>
-                  {% endfor %}
+                  <img
+                    src="{{ product.productImage.url }}"
+                    class="d-block w-100"
+                    alt="abc"
+                  />
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- RIGHT: PRODUCT DETAILS -->
+          <!-- Right Content -->
           <div class="col-md-6">
             <div class="shop_dt1r">
-              <h2>{{ product.productName }}</h2>
+              <h6 class="bg_yell font_14 p-1 px-2 text-white d-inline-block">
+                {{ product.availability }}
+              </h6>
+              <h1 class="product_name">{{ product.productName }}</h1>
 
-              <h4 class="mt-3 text-success">$ {{ product.price }}</h4>
+              <h6>
+                <span class="col_yell">
+                  {% for _ in full_stars %}
+                  <i class="fa fa-star"></i>
+                  {% endfor %}
+                </span>
 
-              <div class="mt-3">{{ product.productDescript|safe }}</div>
+                ({{ product.rating }})
 
-              <h6 class="mt-3">
-                Category:
-                <span class="text-primary"
-                  >{{ product.categoryID.categoryName }}</span
-                >
+                <span class="text-muted mx-2">|</span>
+                SKU: {{ product.productName }}12345678
               </h6>
 
-              <button class="btn btn-danger mt-4 px-4 py-2">Add to Cart</button>
+              <hr />
+
+              <h4 class="col_yell">{{ product.price }}$</h4>
+
+              <p class="mt-3">{{ detail.Description|safe }}</p>
+
+              <hr />
+              <h5 class="mt-3">Quantity</h5>
+              <input
+                type="number"
+                min="1"
+                value="1"
+                class="form-control float-start me-3 rounded-0 mt-2"
+                placeholder="Qty"
+                style="width: 80px; height: 54px"
+              />
+
+              <h6 class="mb-0 mt-3">
+                <a class="button_2" href="#">ADD TO CART</a>
+              </h6>
+
+              <h6 class="mt-4">
+                <i class="fa fa-heart-o me-1"></i> Add To Wishlist &nbsp;
+                <i class="fa fa-recycle me-1"></i> Compare
+              </h6>
+
+              <h6 class="mt-4 text-black">
+                Categories: {{ product.categoryID.categoryName }}
+              </h6>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="shop_dt2 row mt-4">
+          <div class="col-md-12">
+            <ul class="nav nav-tabs mb-0">
+              <li class="nav-item d-inline-block me-2">
+                <a href="#home" data-bs-toggle="tab" class="nav-link active">
+                  <span class="d-md-block">DESCRIPTION</span>
+                </a>
+              </li>
+
+              <li class="nav-item d-inline-block me-2">
+                <a href="#profile" data-bs-toggle="tab" class="nav-link">
+                  <span class="d-md-block">INFORMATION</span>
+                </a>
+              </li>
+
+              <li class="nav-item d-inline-block">
+                <a href="#profile1" data-bs-toggle="tab" class="nav-link">
+                  <span class="d-md-block">REVIEWS</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="shop_dt3 row">
+          <div class="col-md-12">
+            <div class="tab-content border_1 border-top-0 p-4">
+              <!-- Description -->
+              <div class="tab-pane active" id="home">
+                <div class="homei">
+                  <p class="mb-0">{{ detail.Description|safe }}</p>
+                </div>
+              </div>
+
+              <!-- Additional Info -->
+              <div class="tab-pane" id="profile">
+                <div class="profilei">
+                  <div class="table-responsive">
+                    <p class="mb-0">{{ detail.Information|safe }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Reviews -->
+              <div class="tab-pane" id="profile1">
+                <div class="profile1i">
+                  <p class="mb-0">{{ detail.Reviews|safe }}</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
