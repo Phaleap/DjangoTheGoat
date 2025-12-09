@@ -20,75 +20,52 @@
 	 </div>
 	</div>
 	<div class="cart_3 row mt-3">
-	 <div class="col-md-8">
-	  <div class="cart_3l">
-	   <h6>PRODUCT</h6>
-	  </div>
-	  <div class="cart_3l1 mt-3 row ms-0 me-0">
-	   <div class="col-md-3 ps-0 col-3">
-	    <div class="cart_3l1i">
-		 <a href="#"><img src="img/31.jpg" alt="abc" class="w-100"></a>		</div>
-	   </div>
-	   <div class="col-md-9 col-9">
-	    <div class="cart_3l1i1">
-		 <h6 class="fw-bold"><a href="#">Naminos elementum disus tincidunts cosmo de cosmopolis</a></h6>
-		 <h6 class="fw-normal font_14 mt-3">RED / XS</h6>
-		 <h6 class="font_14 mt-3">Vendor</h6>
-		 <h5 class="col_red mt-3">$175.00</h5>
-		 <h6 class="font_14 mt-3 mb-3">Quantity</h6>
-		</div>
-		<div class="cart_3l1i2">
-         <input type="number" min="1" value="1" class="form-control" placeholder="Qty">
-		 <h6><a class="button_1" href="#">REMOVE</a></h6>
-         <h6><a class="button_2" href="#">UPDATE CART</a></h6>
-		</div>
-	   </div>
-	  </div>
-	  <div class="cart_3l1 mt-3 row ms-0 me-0">
-	   <div class="col-md-3 ps-0 col-3">
-	    <div class="cart_3l1i">
-		 <a href="#"><img src="img/32.jpg" alt="abc" class="w-100"></a>		</div>
-	   </div>
-	   <div class="col-md-9 col-9">
-	    <div class="cart_3l1i1">
-		 <h6 class="fw-bold"><a href="#">Naminos elementum disus tincidunts cosmo de cosmopolis</a></h6>
-		 <h6 class="fw-normal font_14 mt-3">RED / XS</h6>
-		 <h6 class="font_14 mt-3">Vendor</h6>
-		 <h5 class="col_red mt-3">$175.00</h5>
-		 <h6 class="font_14 mt-3 mb-3">Quantity</h6>
-		</div>
-		<div class="cart_3l1i2">
-         <input type="number" min="1" value="1" class="form-control" placeholder="Qty">
-		 <h6><a class="button_1" href="#">REMOVE</a></h6>
-         <h6><a class="button_2" href="#">UPDATE CART</a></h6>
-		</div>
-	   </div>
-	  </div>
-	  <div class="cart_3l1 mt-3 row ms-0 me-0 pb-0 border-0">
-	   <div class="col-md-3 ps-0 col-3">
-	    <div class="cart_3l1i">
-		 <a href="#"><img src="img/33.jpg" alt="abc" class="w-100"></a>		</div>
-	   </div>
-	   <div class="col-md-9 col-9">
-	    <div class="cart_3l1i1">
-		 <h6 class="fw-bold"><a href="#">Naminos elementum disus tincidunts cosmo de cosmopolis</a></h6>
-		 <h6 class="fw-normal font_14 mt-3">RED / XS</h6>
-		 <h6 class="font_14 mt-3">Vendor</h6>
-		 <h5 class="col_red mt-3">$175.00</h5>
-		 <h6 class="font_14 mt-3 mb-3">Quantity</h6>
-		</div>
-		<div class="cart_3l1i2">
-         <input type="number" min="1" value="1" class="form-control" placeholder="Qty">
-		 <h6><a class="button_1" href="#">REMOVE</a></h6>
-         <h6><a class="button_2" href="#">UPDATE CART</a></h6>
-		</div>
-	   </div>
-	  </div>
-	 </div>
+	 <div class="cart_3 row mt-3">
+ <div class="col-md-8">
+
+    {% if items %}
+        {% for item in items %}
+        <div class="cart_3l1 mt-3 row ms-0 me-0">
+            <div class="col-md-3 ps-0 col-3">
+                <div class="cart_3l1i">
+                    <a href="#">
+                        <img src="{{ item.image }}" alt="{{ item.name }}" class="w-100">
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-md-9 col-9">
+                <div class="cart_3l1i1">
+                    <h6 class="fw-bold"><a href="#">{{ item.name }}</a></h6>
+                    <h5 class="col_red mt-3">${{ item.price }}</h5>
+                    <h6 class="font_14 mt-3 mb-3">Quantity</h6>
+                </div>
+
+                <div class="cart_3l1i2">
+                    <input type="number" min="1" value="{{ item.qty }}" 
+                           class="form-control qty-input" 
+                           data-product-id="{{ item.id }}">
+
+                    <h6><a class="button_1 remove-item" 
+                           data-product-id="{{ item.id }}" 
+                           style="cursor:pointer;">REMOVE</a></h6>
+
+                    <h6><a class="button_2 update-item" 
+                           data-product-id="{{ item.id }}" 
+                           style="cursor:pointer;">UPDATE CART</a></h6>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>Your cart is empty.</p>
+    {% endif %}
+ </div>
+
 	 <div class="col-md-4">
 	  <div class="cart_3r">
 	   <h6 class="head_1">SUBTOTAL</h6>
-	   <h5 class="text-center col_red mt-3">$1,347.00</h5>
+	   <h5 class="text-center col_red mt-3">${{ total }}</h5>
 	   <hr>
 	   <h6 class="font_14">Additional comments</h6>
 	   <textarea class="form-control"></textarea>

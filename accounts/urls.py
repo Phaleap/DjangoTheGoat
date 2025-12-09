@@ -21,9 +21,14 @@ urlpatterns = [
     path('blog/tag/<slug:slug>/', views.blogTag, name='blog_tag_detail'),
     path('add-to-cart/', views.add_to_cart, name='add_to_cart'),
     path('remove-from-cart/', views.remove_from_cart, name='remove_from_cart'),
+<<<<<<< HEAD
     path('billing_list/', views.billing_list, name='billing_list'),
     path('billing/add/', views.billing_add, name='billing_add'),
     path('BillingList/', views.billing_list, name='BillingList'),
 
 
+=======
+    path('shopping-cart/', views.shopping_cart, name='shoppingcart'),
+    path('update_cart_quantity/', views.update_cart_quantity, name='update_cart_quantity'),
+>>>>>>> 37958e88bf964f9d4d35192bccb62fd214363430
 ]
