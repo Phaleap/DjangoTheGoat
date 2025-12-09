@@ -1,0 +1,22 @@
+{% load static %}
+
+{% for recent_post in recent_posts %}
+<div class="row blog_pg1r1i">
+    <div class="col-md-4 col-4 pe-0">
+        <div class="blog_pg1r1il">
+            <figure class="effect-jazz mb-0">
+                <a href="{% url 'blog_detail' recent_post.id %}"><img src="{{ recent_post.image.url }}" class="w-100" alt="{{ recent_post.title }}"></a>
+            </figure>
+        </div>
+    </div>
+    <div class="col-md-8 col-8">
+        <div class="blog_pg1r1ir">
+            <h6 class="fw-bold"><a href="{% url 'blog_detail' recent_post.id %}">{{ recent_post.title }}</a></h6>
+            <h6 class="text-muted mb-0">{{ recent_post.published_date|date:"F j, Y" }}</h6>
+        </div>
+    </div>
+</div>
+{% if not forloop.last %}<hr>{% endif %}
+{% empty %}
+<p>No recent posts available.</p>
+{% endfor %}

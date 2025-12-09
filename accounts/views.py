@@ -1,7 +1,13 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from accounts.models import Product, CarouselSlide, AboutHeroImages, ProjectSectionHeader, Project,TeamSectionHeader,TeamMember, TeamMembers, TestimonialClient, BlogPost
-from accounts.models import Product
+from accounts.models import (
+    Product, CarouselSlide, AboutHeroImages, ProjectSectionHeader, 
+    Project, TeamSectionHeader, TeamMember, TeamMembers, TestimonialClient, BlogPost
+)
+# Note: You were importing 'Product' twice. Removed the redundant import.
+from .models import BlogCategory, BlogTag
+from django.core.paginator import Paginator
+from django.db.models import Count, Q # Q needed for advanced filtering/searching if implemented
 
 # Create your views here.
 
@@ -15,33 +21,22 @@ def customer(request):
     return HttpResponse('Customer_page')
 
 def indexFur(request):
-
     slides = CarouselSlide.objects.all() 
     about_images = AboutHeroImages.objects.first() 
-    
-    # Retrieve the Project Header Text
     project_header = ProjectSectionHeader.objects.first()
-    
-    # Retrieve all Projects
     projects = Project.objects.all()
     team_header = TeamSectionHeader.objects.first()
     team_members = TeamMember.objects.all()
     
-    # --- New Testimonial Logic ---
-    testimonials = TestimonialClient.objects.all() # Ordered by slide_group and order_in_group
-    
-    # Get unique slide_group values
+    # --- Testimonial Logic ---
+    testimonials = TestimonialClient.objects.all()
     slide_groups = testimonials.values_list('slide_group', flat=True).distinct()
-    
-    # Create a list of lists, where each inner list is a carousel item (slide)
     testimonial_slides = []
     for group_id in slide_groups:
         slide_testimonials = testimonials.filter(slide_group=group_id)
-        # Ensure only up to 3 are added to a slide 
         testimonial_slides.append(list(slide_testimonials[:3]))
-    # --- End New Testimonial Logic ---
+    # --- End Testimonial Logic ---
 
-    #Blog post
     latest_posts = BlogPost.objects.all()[:3]
 
     context = {
@@ -51,19 +46,132 @@ def indexFur(request):
         'projects': projects,
         'team_header': team_header, 
         'team_members': team_members,
-        'testimonial_slides': testimonial_slides, # New context variable
-        'latest_posts': latest_posts,     # Passed to template
+        'testimonial_slides': testimonial_slides,
+        'latest_posts': latest_posts,
     }
     return render(request, 'furniture/index.html', context)
 
 def aboutFur(request):
     return render(request, 'furniture/about.html')
 
-def blogDetial(request):
-    return render(request, 'furniture/blog_detail.html')
+def blogDetial(request, id):
+    post = get_object_or_404(BlogPost, id=id) 
+    
+    # Fetch 2 related posts from the same category
+    related_posts = BlogPost.objects.filter(
+        category=post.category
+    ).exclude(
+        id=post.id
+    ).order_by('-published_date')[:2]
 
+    # Get all categories for the sidebar with post count
+    categories = BlogCategory.objects.annotate(post_count=Count('blogpost')).filter(post_count__gt=0).all()
+    
+    # Get all tags for the sidebar
+    tags = BlogTag.objects.all()
+
+    context = {
+        'post': post,
+        'related_posts': related_posts, 
+        'categories': categories, 
+        'tags': tags, 
+    }
+    return render(request, 'furniture/blog_detail.html', context)
+
+# ----------------------------------------------------
+# 🌟 NEW: Blog Category View (Fixes the blogCategory error)
+# ----------------------------------------------------
+def blogCategory(request, slug):
+    category = get_object_or_404(BlogCategory, slug=slug)
+    post_list = BlogPost.objects.filter(category=category).order_by('-published_date')
+    
+    # Reusing the logic from blog_list_view for the sidebar
+    paginator = Paginator(post_list, 5)
+    page_number = request.GET.get('page')
+    posts = paginator.get_page(page_number)
+    recent_posts = BlogPost.objects.order_by('-published_date')[:3]
+    category_counts = BlogCategory.objects.annotate(count=Count('blogpost')).filter(count__gt=0)
+    categories_with_count = {cat.name: cat.count for cat in category_counts}
+    tags = BlogTag.objects.annotate(count=Count('blogpost')).order_by('-count')[:8]
+    gallery_images = BlogPost.objects.all()[:6]
+
+    context = {
+        'posts': posts,
+        'current_category': category,
+        'recent_posts': recent_posts,
+        'categories_with_count': categories_with_count,
+        'tags': tags,
+        'gallery_images': gallery_images,
+    }
+    return render(request, 'furniture/blog.html', context)
+# ----------------------------------------------------
+
+# ----------------------------------------------------
+# 🌟 NEW: Blog Tag View (Fixes the blogTag error)
+# ----------------------------------------------------
+def blogTag(request, slug):
+    tag = get_object_or_404(BlogTag, slug=slug)
+    # Filter posts where the tags M2M field contains the current tag
+    post_list = BlogPost.objects.filter(tags=tag).order_by('-published_date')
+    
+    # Reusing the logic from blog_list_view for the sidebar
+    paginator = Paginator(post_list, 5)
+    page_number = request.GET.get('page')
+    posts = paginator.get_page(page_number)
+    recent_posts = BlogPost.objects.order_by('-published_date')[:3]
+    category_counts = BlogCategory.objects.annotate(count=Count('blogpost')).filter(count__gt=0)
+    categories_with_count = {cat.name: cat.count for cat in category_counts}
+    tags_sidebar = BlogTag.objects.annotate(count=Count('blogpost')).order_by('-count')[:8]
+    gallery_images = BlogPost.objects.all()[:6]
+
+    context = {
+        'posts': posts,
+        'current_tag': tag,
+        'recent_posts': recent_posts,
+        'categories_with_count': categories_with_count,
+        'tags': tags_sidebar, # Using tags_sidebar to avoid conflict with 'current_tag'
+        'gallery_images': gallery_images,
+    }
+    return render(request, 'furniture/blog.html', context)
+# ----------------------------------------------------
+
+def blog_list_view(request):
+    all_posts = BlogPost.objects.all().order_by('-published_date')
+
+    paginator = Paginator(all_posts, 5) 
+    page_number = request.GET.get('page')
+    posts = paginator.get_page(page_number)
+
+    recent_posts = BlogPost.objects.order_by('-published_date')[:3]
+    
+    # categories with count (optimized query)
+    category_counts = BlogCategory.objects.annotate(count=Count('blogpost')).filter(count__gt=0)
+    categories_with_count = {
+        cat.name: {'count': cat.count, 'slug': cat.slug} for cat in category_counts
+    }
+    
+    # tags (optimized query)
+    tags = BlogTag.objects.annotate(count=Count('blogpost')).order_by('-count')[:8]
+    
+    # gallery (6 latest posts)
+    gallery_images = BlogPost.objects.all()[:6] 
+
+    context = {
+        'posts': posts, 
+        'recent_posts': recent_posts, 
+        'categories_with_count': categories_with_count, 
+        'tags': tags,
+        'gallery_images': gallery_images,
+    }
+    return render(request, 'furniture/blog.html', context)
+    
 def blog(request):
-    return render(request, 'furniture/blog.html')
+    # NOTE: Your function blog_list_view is already doing this logic. 
+    # It's highly recommended to delete this 'blog' function 
+    # and just use 'blog_list_view' with the URL path 'blog/' pointing to it.
+    # For now, it will use the correct logic from blog_list_view below.
+    return blog_list_view(request) 
+
 
 def cart(request):
     return render(request, 'furniture/cart.html')
@@ -73,12 +181,14 @@ def checkOut(request):
 
 def contact(request):
     return render(request, 'furniture/contact.html')
+
 def detail(request, pk): 
     project_item = get_object_or_404(Project, pk=pk) 
     context = {
         'project_item': project_item 
     }
     return render(request, 'furniture/detail.html', context)
+
 def pricing(request):
     return render(request, 'furniture/pricing.html')
 
@@ -86,7 +196,6 @@ def shop(request):
     DTproducts = Product.objects.all()
     context = {
         'Objproducts': DTproducts
-
     }
     return render(request, 'furniture/shop.html', context)
 
@@ -99,11 +208,8 @@ def team(request):
 
 
 def team_detail(request, id):
-    # Get the team member by ID
     member = get_object_or_404(TeamMembers, id=id)
 
-    # Social links loop
-    social_links = []
     social_links = []
     if member.facebook:
         social_links.append({"url": member.facebook, "icon": "fab fa-facebook"})
@@ -112,7 +218,6 @@ def team_detail(request, id):
     if member.youtube:
         social_links.append({"url": member.youtube, "icon": "fab fa-youtube"})
 
-    # Skills loop (using your model fields)
     skills = []
     if member.skill_1_name and member.skill_1_value is not None:
         skills.append({"name": member.skill_1_name, "percent": member.skill_1_value})
@@ -121,7 +226,6 @@ def team_detail(request, id):
     if member.skill_3_name and member.skill_3_value is not None:
         skills.append({"name": member.skill_3_name, "percent": member.skill_3_value})
     
-
     context = {
         "member": member,
         "social_links": social_links,

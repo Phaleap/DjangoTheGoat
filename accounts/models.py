@@ -280,9 +280,28 @@ class TestimonialClient(models.Model):
     def __str__(self):
         return f"{self.client_name} (Group {self.slide_group})"    
     
+class BlogCategory(models.Model):
+  name = models.CharField(max_length=100, unique=True)
+  slug = models.SlugField(unique=True)
+
+  class Meta:
+    verbose_name_plural = "Blog Categories"
+    
+  def __str__(self):
+    return self.name
+
+class BlogTag(models.Model):
+  name = models.CharField(max_length=100, unique=True)
+  slug = models.SlugField(unique=True)
+
+  def __str__(self):
+    return self.name
+  
 class BlogPost(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(unique=True, help_text="A unique, URL-friendly version of the title.")
+    category = models.ForeignKey(BlogCategory, on_delete=models.SET_NULL, null=True, blank=True)
+    tags = models.ManyToManyField(BlogTag, blank=True)
     image = models.ImageField(
         upload_to='images/blog/',
         verbose_name="Blog Post Image"
