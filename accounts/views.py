@@ -211,12 +211,24 @@ def shop(request):
     DTproducts = Product.objects.all()
     DTCategory = Category.objects.all()
     bestsellers = Product.objects.filter(is_bestseller=True)[:3]
+
+    min_price = request.GET.get('min')
+    max_price = request.GET.get('max')
+
+    if min_price:
+        DTproducts = DTproducts.filter(price__gte=min_price)
+
+    if max_price:
+        DTproducts = DTproducts.filter(price__lte=max_price)
+
     context = {
-    'Objproducts': DTproducts,
-    'ObjDTCategory': DTCategory,
-    'bestsellers': bestsellers,
-}
+        'Objproducts': DTproducts,
+        'ObjDTCategory': DTCategory,
+        'bestsellers': bestsellers,
+    }
+
     return render(request, 'furniture/shop.html', context)
+
 
 def team(request):
     DTmembers = TeamMembers.objects.all()

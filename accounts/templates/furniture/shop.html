@@ -42,16 +42,19 @@
                   </li>
                   {% for category in ObjDTCategory %}
                   <li class="mb-2">
-                    <a
-                      href="#"
-                      class="category-btn"
-                      data-filter="{{ category.id }}"
-                    >
-                      {{ category.categoryName }}
-                      <span class="text-muted"
-                        >({{ category.product_set.count }})</span
-                      >
-                    </a>
+                   <div class="d-flex justify-content-between align-items-center">
+  <a
+    href="#"
+    class="category-btn"
+    data-filter="{{ category.id }}"
+  >
+    {{ category.categoryName }}
+  </a>
+
+  <span class="text-muted">
+    ({{ category.product_set.count }})
+  </span>
+</div>
                   </li>
                   {% endfor %}
                 </ul>
@@ -61,16 +64,31 @@
               <div class="shop_1l1 mt-4">
                 <h5>Filter By Price</h5>
                 <hr class="line mb-4" />
-                <h6 class="mb-0 font_14">
-                  Price: $80 — $400
-                  <a
-                    class="bg_yell text-white p-2 ms-3 px-4 d-inline-block"
-                    href="#"
-                    >FILTER</a
-                  >
-                </h6>
-              </div>
 
+                <form method="GET" action="">
+                  <input
+                    type="number"
+                    name="min"
+                    placeholder="Min Price"
+                    class="form-control mb-2"
+                    value="{{ request.GET.min }}"
+                  />
+                  <input
+                    type="number"
+                    name="max"
+                    placeholder="Max Price"
+                    class="form-control mb-2"
+                    value="{{ request.GET.max }}"
+                  />
+
+                  <button
+                    class="bg_yell text-white p-2 px-4 border-0"
+                    type="submit"
+                  >
+                    FILTER
+                  </button>
+                </form>
+              </div>
               <!-- Bestsellers -->
               <div class="shop_1l1 mt-4">
                 <h5>Bestsellers</h5>
@@ -130,10 +148,10 @@
                     </div>
                     <div class="shop_1r1l2 text-center p-4">
                       <span class="col_yell">
-                  {% for _ in full_stars %}
-                  <i class="fa fa-star"></i>
-                  {% endfor %}
-                </span>
+                        {% for _ in full_stars %}
+                        <i class="fa fa-star"></i>
+                        {% endfor %}
+                      </span>
                       <h5 class="fw-bold mt-2">
                         <a href="{% url 'detail' product.id %}"
                           >{{ product.productName }}</a
