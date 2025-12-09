@@ -1,9 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from accounts.models import (
-    Product, CarouselSlide, AboutHeroImages, ProjectSectionHeader, 
-    Project, TeamSectionHeader, TeamMember, TeamMembers, TestimonialClient, BlogPost, Category
-)
+from accounts.models import *
 from .models import BlogCategory, BlogTag
 from django.core.paginator import Paginator
 from django.db.models import Count, Q  # Q needed for advanced filtering/searching if implemented
@@ -181,10 +178,15 @@ def checkOut(request):
 def contact(request):
     return render(request, 'furniture/contact.html')
 
-def detail(request, pk): 
-    project_item = get_object_or_404(Project, pk=pk) 
+def detail(request, id): 
+    product = Product.objects.get(id=id)
+    detail = ProductDetail.objects.filter(productID=product).first()
+    images = ProductDetailImage.objects.filter(productID=product)
+
     context = {
-        'project_item': project_item 
+        "product": product,
+        "detail": detail,
+        "images": images,
     }
     return render(request, 'furniture/detail.html', context)
 

@@ -224,11 +224,11 @@ Design Process</h5>
                             <div class="project_2i1 text-center">
                                 <div class="grid clearfix">
                                     <figure class="effect-jazz mb-0">
-        <a href="{% url 'detail' pk=project.pk %}"><img src="{{ project.image.url }}" class="w-100" alt="{{ project.title }}"></a>
+        <a href="{% url 'detail' id=project.id %}"><img src="{{ project.image.url }}" class="w-100" alt="{{ project.title }}"></a>
     </figure>
                                 </div>
                                 <h4 class="mt-3">
-        <a class="text-white" href="{% url 'detail' pk=project.pk %}">{{ project.title }}</a>
+        <a class="text-white" href="{% url 'detail' id=project.id %}">{{ project.title }}</a>
     </h4>
                             </div>
                         </div>
