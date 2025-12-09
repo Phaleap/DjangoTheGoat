@@ -50,29 +50,26 @@ def indexFur(request):
 def aboutFur(request):
     return render(request, 'furniture/about.html')
 
-def blogDetial(request, id):
-    post = get_object_or_404(BlogPost, id=id) 
-    
-    # Fetch 2 related posts from the same category
+def blog_detail(request, id):
+    post = get_object_or_404(BlogPost, id=id)
+
     related_posts = BlogPost.objects.filter(
         category=post.category
     ).exclude(
         id=post.id
     ).order_by('-published_date')[:2]
 
-    # Get all categories for the sidebar with post count
-    categories = BlogCategory.objects.annotate(post_count=Count('blogpost')).filter(post_count__gt=0).all()
-    
-    # Get all tags for the sidebar
+    categories = BlogCategory.objects.annotate(post_count=Count('blogpost')).filter(post_count__gt=0)
     tags = BlogTag.objects.all()
 
     context = {
         'post': post,
-        'related_posts': related_posts, 
-        'categories': categories, 
-        'tags': tags, 
+        'related_posts': related_posts,
+        'categories': categories,
+        'tags': tags,
     }
     return render(request, 'furniture/blog_detail.html', context)
+
 
 # ----------------------------------------------------
 # 🌟 NEW: Blog Category View (Fixes the blogCategory error)
@@ -162,10 +159,6 @@ def blog_list_view(request):
     return render(request, 'furniture/blog.html', context)
     
 def blog(request):
-    # NOTE: Your function blog_list_view is already doing this logic. 
-    # It's highly recommended to delete this 'blog' function 
-    # and just use 'blog_list_view' with the URL path 'blog/' pointing to it.
-    # For now, it will use the correct logic from blog_list_view below.
     return blog_list_view(request) 
 
 
