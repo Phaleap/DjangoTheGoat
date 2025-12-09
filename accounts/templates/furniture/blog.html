@@ -74,24 +74,22 @@
   <div class="blog_pg1r">
     
     {# Search remains static (requires JavaScript/form handling to be dynamic) #}
-    <div class="blog_pg1r1">
-    <h5>Search Blog</h5>
-    <hr class="line mb-4">
-    <div class="input-group border_1 p-2 rounded-3">
-        <input type="text" class="form-control border-0" placeholder="Search Here">
-        <span class="input-group-btn">
-          <button class="btn btn-primary bg-transparent rounded-0 border-0 col_yell" type="button">
-            <i class="fa fa-search"></i> </button>
-        </span>
-    </div>
-    </div>
+    <form method="GET" action="{% url 'blog' %}">
+  <div class="input-group border_1 p-2 rounded-3">
+    <input type="text" name="q" class="form-control border-0"
+           placeholder="Search Here" value="{{ query }}">
+    <button class="btn bg-transparent border-0 col_yell" type="submit">
+      <i class="fa fa-search"></i>
+    </button>
+  </div>
+</form>
 
     {# Dynamic Categories (Requires a Category model and context variable: 'categories') #}
     <div class="blog_pg1r1 mt-4">
     <h5>Categories</h5>
     <hr class="line mb-4">
     {% for category, count in categories_with_count.items %}
-      <h6 class="mb-0"><a href="{% url 'blog_category' category %}">{{ category }} <span class="pull-right">({{ count }})</span></a></h6><hr>
+      <h6 class="mb-0"><a href="{% url 'blog_category_detail' category %}">{{ category }} <span class="pull-right">({{ count }})</span></a></h6><hr>
     {% endfor %}
     </div>
 
@@ -151,7 +149,7 @@
     <hr class="line mb-4">
     <ul class="mb-0">
       {% for tag in tags %}
-       <li class="d-inline-block"><a href="{% url 'blog_tag' tag.slug %}">{{ tag.name }}</a></li>
+       <li class="d-inline-block"><a href="{% url 'blog_tag_detail' tag.slug %}">{{ tag.name }}</a></li>
       {% endfor %}
     </ul>
     </div>

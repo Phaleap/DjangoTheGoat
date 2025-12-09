@@ -53,22 +53,31 @@ def aboutFur(request):
 def blog_detail(request, id):
     post = get_object_or_404(BlogPost, id=id)
 
+    # Recent posts (excluding the current one)
+    recent_posts = BlogPost.objects.exclude(id=post.id).order_by('-published_date')[:3]
+
     related_posts = BlogPost.objects.filter(
         category=post.category
     ).exclude(
         id=post.id
     ).order_by('-published_date')[:2]
 
-    categories = BlogCategory.objects.annotate(post_count=Count('blogpost')).filter(post_count__gt=0)
+    categories = BlogCategory.objects.annotate(
+        post_count=Count('blogpost')
+    ).filter(post_count__gt=0)
+
     tags = BlogTag.objects.all()
 
     context = {
         'post': post,
+        'recent_posts': recent_posts,     # <<< IMPORTANT
         'related_posts': related_posts,
         'categories': categories,
         'tags': tags,
     }
+
     return render(request, 'furniture/blog_detail.html', context)
+
 
 
 # ----------------------------------------------------
@@ -129,32 +138,44 @@ def blogTag(request, slug):
 # ----------------------------------------------------
 
 def blog_list_view(request):
-    all_posts = BlogPost.objects.all().order_by('-published_date')
+    query = request.GET.get('q')  # Get the search text
 
-    paginator = Paginator(all_posts, 5) 
+    if query:
+        all_posts = BlogPost.objects.filter(
+            Q(title__icontains=query) |
+            Q(summary__icontains=query) |
+            Q(content__icontains=query)
+        ).order_by('-published_date')
+    else:
+        all_posts = BlogPost.objects.all().order_by('-published_date')
+
+    # Pagination (still applied after search)
+    paginator = Paginator(all_posts, 5)
     page_number = request.GET.get('page')
     posts = paginator.get_page(page_number)
 
+    # Recent posts (not filtered by search)
     recent_posts = BlogPost.objects.order_by('-published_date')[:3]
-    
-    # categories with count (optimized query)
+
+    # Categories with count
     category_counts = BlogCategory.objects.annotate(count=Count('blogpost')).filter(count__gt=0)
     categories_with_count = {
         cat.name: {'count': cat.count, 'slug': cat.slug} for cat in category_counts
     }
-    
-    # tags (optimized query)
+
+    # Tags with count
     tags = BlogTag.objects.annotate(count=Count('blogpost')).order_by('-count')[:8]
-    
-    # gallery (6 latest posts)
-    gallery_images = BlogPost.objects.all()[:6] 
+
+    # Gallery (latest 6)
+    gallery_images = BlogPost.objects.all()[:6]
 
     context = {
-        'posts': posts, 
-        'recent_posts': recent_posts, 
-        'categories_with_count': categories_with_count, 
+        'posts': posts,
+        'recent_posts': recent_posts,
+        'categories_with_count': categories_with_count,
         'tags': tags,
         'gallery_images': gallery_images,
+        'query': query,
     }
     return render(request, 'furniture/blog.html', context)
     

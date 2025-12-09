@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 {% include 'furniture/Head.html' %}
 
 <body>
@@ -8,178 +9,146 @@
 {% include 'furniture/SecTop.html' %}
 {% include 'furniture/Header.html' %}
 
-<!-- Page Header -->
+<!-- HEADER SECTION -->
 <section id="center" class="center_blog_dt">
  <div class="promo_m center_om">
   <div class="container-fluid">
-    <div class="center_o1 row text-center">
+    <div class="row text-center">
      <div class="col-md-12">
        <h6 class="col_yell fw-bold">
-         <a class="text-white" href="{% url 'home' %}">HOME PAGE</a>
-         <span class="mx-2 text-muted">/</span> BLOG DETAIL
+           <a class="text-white" href="{% url 'blog' %}">BLOG</a>
+           <span class="mx-2 text-muted">/</span>
+           {{ post.title }}
        </h6>
        <h1 class="mb-0 font_60 text-white mt-3">{{ post.title }}</h1>
      </div>
     </div>
- </div>
+  </div>
  </div>
 </section>
 
+<!-- BLOG DETAIL CONTENT -->
 <section id="blog_pg" class="p_3 px-4">
- <div class="container-fluid">
-   <div class="blog_pg1 row">
-     <!-- Main Content -->
-    <div class="col-md-8">
-      <div class="blog_pgdt">
-        <div class="blog_pgdt">
-    {% if post.image %}
-    <div class="grid clearfix">
-     <figure class="effect-jazz mb-0">
-      <img src="{{ post.image.url }}" class="w-100" alt="{{ post.title }}">
-     </figure>
-    </div>
-    {% endif %}
-        <h1 class="mt-3">{{ post.title }}</h1>
-        <h6 class="font_14 mt-3 text-muted">
-          <i class="fa fa-user col_yell me-1"></i> By {{ post.author.username }}
-          <i class="fa fa-comments col_yell me-1 ms-2"></i> {{ post.comments.count }} Comments
-          <i class="fa fa-calendar col_yell me-1 ms-2"></i> {{ post.published_date|date:"d M Y" }}
-        </h6>
+<div class="container-fluid">
+ <div class="row">
 
-        <div class="mt-3">
-          {{ post.content|safe }}
-        </div>
+  <!-- MAIN CONTENT -->
+  <div class="col-md-8">
+    <div class="blog_pg1l">
 
-        <!-- Related Tags -->
-        {% if post.tags.all %}
-        <h3 class="mt-4 center_sm">Tags</h3>
-        <div class="blog_pg1r1 mt-3">
-          <ul class="mb-0">
-            {% for tag in post.tags.all %}
-              <li class="d-inline-block">
-                <a href="{% url 'blogTag' slug=tag.slug %}">{{ tag.name }}</a>
-              </li>
-            {% endfor %}
-          </ul>
-        </div>
-        {% endif %}
+      <div class="row blog_pg1li">
 
-        <!-- Related Posts -->
-        {% if related_posts %}
-        <h3 class="mt-4 center_sm">Related Blogs</h3>
-        <div class="row blog_1 mt-3">
-          {% for related in related_posts %}
-          <div class="col-md-6">
-            <div class="blog_1m">
-              <div class="grid clearfix">
-              <div class="grid clearfix">
-        {% if related.image %}
-        <figure class="effect-jazz mb-0">
-         <a href="{% url 'blog_detail' id=related.id %}">
-          <img src="{{ related.image.url }}" class="w-100" alt="{{ related.title }}">
-         </a>
-        </figure>
-        {% endif %}
-       </div>
-              </div>
-              <h6 class="font_14 text-muted mt-3">
-                <i class="fa fa-user col_yell me-1"></i> By {{ related.author.username }}
-                <i class="fa fa-comments col_yell me-1 ms-2"></i> {{ related.comments.count }} Comments
-              </h6>
-              <h4 class="mt-3">
-                <a href="{% url 'blog_detail' id=related.id %}">{{ related.title }}</a>
-              </h4>
-              <p>{{ related.excerpt }}</p>
-              <h6 class="mb-0 fw-bold font_14">
-                <a class="col_yell" href="{% url 'blog_detail' id=related.id %}">
-                  READ MORE <i class="fa fa-long-arrow-right ms-1"></i>
-                </a>
-              </h6>
-            </div>
+        <div class="col-md-6">
+          <div class="blog_pg1lil">
+            <figure class="effect-jazz mb-0">
+              <img src="{{ post.image.url }}" class="w-100" alt="{{ post.title }}">
+            </figure>
           </div>
-          {% endfor %}
-        </div>
-        {% endif %}
-
-      </div>
-    </div>
-
-    <!-- Sidebar -->
-    <div class="col-md-4">
-      <div class="blog_pg1r">
-        <!-- Search -->
-        <div class="blog_pg1r1">
-          <h5>Search Blog</h5>
-          <hr class="line mb-4">
-          <form method="get" action="{% url 'blog' %}">
-            <div class="input-group border_1 p-2 rounded-3">
-              <input type="text" name="q" class="form-control border-0" placeholder="Search Here" value="{{ request.GET.q }}">
-              <button class="btn btn-primary bg-transparent rounded-0 border-0 col_yell" type="submit">
-                <i class="fa fa-search"></i>
-              </button>
-            </div>
-          </form>
         </div>
 
-        <!-- Categories -->
-        <div class="blog_pg1r1 mt-4">
-          <h5>Categories</h5>
-          <hr class="line mb-4">
-          {% for category, data in categories_with_count.items %}
-            <h6 class="mb-0">
-              <a href="{% url 'blogCategory' slug=data.slug %}">{{ category }} <span class="pull-right">({{ data.count }})</span></a>
+        <div class="col-md-6">
+          <div class="blog_pg1lir">
+            <h6 class="font_14 text-muted">
+              <i class="fa fa-user col_yell me-1"></i> By {{ post.author }}
+              <i class="fa fa-calendar col_yell me-1 ms-2"></i> {{ post.published_date|date:"F j, Y" }}
             </h6>
-            <hr>
-          {% endfor %}
-        </div>
-
-        <!-- Recent Posts -->
-        <div class="blog_pg1r1 mt-4">
-          <h5>Recent Posts</h5>
-          <hr class="line mb-4">
-          {% for recent in recent_posts %}
-          <div class="row blog_pg1r1i">
-            <div class="col-md-4 col-4 pe-0">
-             <div class="col-md-4 col-4 pe-0">
-       {% if recent.image %}
-       <div class="blog_pg1r1il">
-        <figure class="effect-jazz mb-0">
-         <a href="{% url 'blog_detail' id=recent.id %}">
-          <img src="{{ recent.image.url }}" class="w-100" alt="{{ recent.title }}">
-         </a>
-        </figure>
-       </div>
-       {% endif %}
-      </div>
-            </div>
-            <div class="col-md-8 col-8">
-              <div class="blog_pg1r1ir">
-                <h6 class="fw-bold"><a href="{% url 'blog_detail' id=recent.id %}">{{ recent.title }}</a></h6>
-                <h6 class="text-muted mb-0">{{ recent.published_date|date:"d M, Y" }}</h6>
-              </div>
-            </div>
+            <h3 class="mt-3">{{ post.title }}</h3>
+            <p>{{ post.summary }}</p>
           </div>
-          <hr>
-          {% endfor %}
-        </div>
-
-        <!-- Tags -->
-        <div class="blog_pg1r1 mt-4">
-          <h5>Tags</h5>
-          <hr class="line mb-4">
-          <ul class="mb-0">
-            {% for tag in tags %}
-              <li class="d-inline-block">
-                <a href="{% url 'blogTag' slug=tag.slug %}">{{ tag.name }}</a>
-              </li>
-            {% endfor %}
-          </ul>
         </div>
 
       </div>
+
+      <!-- FULL CONTENT -->
+      <div class="mt-4">
+        <p>{{ post.content|safe }}</p>
+      </div>
+
+      <!-- DYNAMIC COMMENTS -->
+      {% if comments %}
+      <div class="blog_pgdt2 mt-5">
+        <h3 class="mb-3">Recent Comments</h3>
+
+        {% for c in comments %}
+        <div class="blog_pgdt2i row">
+
+         <div class="col-md-2 col-2">
+          <img src="{% static 'images/default-avatar.png' %}" class="w-100 rounded-circle" alt="User">
+         </div>
+
+         <div class="col-md-10 col-10">
+          <h6 class="fw-bold">{{ c.name }}</h6>
+          <h6 class="space_3 col_oran font_14">{{ c.date|date:"F j, Y" }}</h6>
+          <p class="mt-3">{{ c.message }}</p>
+          <h6 class="mb-0"><a class="col_yell" href="#"><i class="fa fa-reply me-1"></i> Reply</a></h6>
+         </div>
+
+        </div>
+        {% if not forloop.last %}<hr>{% endif %}
+        {% endfor %}
+
+      </div>
+      {% endif %}
+
     </div>
-   </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="col-md-4">
+    <div class="blog_pg1r">
+
+      <!-- Search -->
+      <form method="GET" action="{% url 'blog' %}">
+  <div class="input-group border_1 p-2 rounded-3">
+    <input type="text" name="q" class="form-control border-0"
+           placeholder="Search Here" value="{{ query }}">
+    <button class="btn bg-transparent border-0 col_yell" type="submit">
+      <i class="fa fa-search"></i>
+    </button>
+  </div>
+</form>
+
+
+      <!-- Recent Posts -->
+      <div class="blog_pg1r1 mt-4">
+        <h5>Recent Posts</h5>
+        <hr class="line mb-4">
+
+        {% for p in recent_posts %}
+        <div class="row blog_pg1r1i">
+          <div class="col-4 pe-0">
+            <figure class="effect-jazz mb-0">
+              <a href="{{ p.get_absolute_url }}">
+                <img src="{{ p.image.url }}" class="w-100" alt="{{ p.title }}">
+              </a>
+            </figure>
+          </div>
+
+          <div class="col-8">
+            <h6 class="fw-bold">
+              <a href="{{ p.get_absolute_url }}">{{ p.title|truncatechars:40 }}</a>
+            </h6>
+            <h6 class="text-muted mb-0">{{ p.published_date|date:"F j, Y" }}</h6>
+          </div>
+        </div>
+
+        {% if not forloop.last %}<hr>{% endif %}
+        {% endfor %}
+      </div>
+
+      <!-- Contact Section -->
+      <div class="blog_pg1r1 mt-4 bg_dark text-center p-4">
+        <h4 class="text-white text-uppercase"><i class="fa fa-home col_yell"></i> Furniture</h4>
+        <h4 class="mt-4 text-white">Contact Us Daily</h4>
+        <h2 class="text-white">+(123) 456-7890</h2>
+        <h6 class="mb-0 mt-4"><a class="button" href="#">GET STARTED <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
+      </div>
+
+    </div>
+  </div>
+
  </div>
+</div>
 </section>
 
 {% include 'furniture/Footer.html' %}

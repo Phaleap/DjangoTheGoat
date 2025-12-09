@@ -1,6 +1,7 @@
 from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.utils import timezone
+from django.urls import reverse
 
 # Create your models here.
 
@@ -328,5 +329,4 @@ class BlogPost(models.Model):
         return self.title
         
     def get_absolute_url(self):
-        # Assuming you will map this to a blog detail page
-        return f"/blog/{self.slug}/"    
+        return reverse('blog_detail', kwargs={'id': self.id})  
