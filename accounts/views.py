@@ -392,4 +392,40 @@ def remove_from_cart(request):
         print(f"Server Error in remove_from_cart: {e}")
         return JsonResponse({'error': f'Internal Server Error: {str(e)}'}, status=500)
     
-    
+def shopping_cart(request):
+    cart_data = get_cart_data(request)
+    return render(request, 'furniture/cart.html', cart_data)
+
+@require_POST
+def update_cart_quantity(request):
+    product_id = request.POST.get("product_id")
+    quantity = int(request.POST.get("quantity"))
+
+    cart = request.session.get("cart", {})
+
+    if product_id in cart:
+        cart[product_id]['qty'] = quantity  # FIXED
+
+    request.session['cart'] = cart
+    request.session.modified = True
+
+    # FIXED total + count
+    count = sum(item["qty"] for item in cart.values())
+    total = sum(item["qty"] * float(item["price"]) for item in cart.values())
+
+    # Return updated items
+    items = []
+    for pid, item in cart.items():
+        items.append({
+            "id": pid,
+            "name": item["name"],
+            "qty": item["qty"],
+            "price": item["price"],
+            "image": "",  # optional
+        })
+
+    return JsonResponse({
+        "count": count,
+        "total": total,
+        "items": items
+    })

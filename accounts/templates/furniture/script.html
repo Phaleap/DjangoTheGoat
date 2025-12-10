@@ -1,7 +1,166 @@
 {% load static %}
 
 <script>
+
+    document.addEventListener('click', function(e){
+    // REMOVE ITEM
+    if (e.target.classList.contains('remove-item')) {
+        let productId = e.target.dataset.productId;
+
+        fetch("{% url 'remove_from_cart' %}", {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}",
+            },
+            body: new URLSearchParams({
+                product_id: productId
+            })
+        })
+        .then(res => res.json())
+        .then(() => location.reload());
+    }
+
+    // UPDATE QTY
+    if (e.target.classList.contains('update-item')) {
+    let productId = e.target.dataset.productId;
+    let qtyInput = document.querySelector(`.qty-input[data-product-id="${productId}"]`);
+    let newQty = qtyInput.value;
+
+    fetch("{% url 'update_cart_quantity' %}", {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+        },
+        body: new URLSearchParams({
+            product_id: productId,
+            quantity: newQty
+        })
+    })
+    .then(res => res.json())
+    .then(() => location.reload());
+}
+});
 // furniture/script.html or your final combined script block
+
+
+/* === Cart Utility Functions (for Local Storage) === */
+
+function getCart() {
+    // Retrieve cart from Local Storage, default to an empty object if not found
+    const cart = localStorage.getItem('cart');
+    return cart ? JSON.parse(cart) : {};
+}
+
+function saveCart(cart) {
+    // Save the cart object to Local Storage
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+function updateCartDisplay(cart) {
+    // Updates the cart count and total in the navbar dropdown
+    const cartCountElement = document.getElementById('cart-count');
+    const cartTotalElement = document.getElementById('cart-total');
+    const cartItemsDropdown = document.getElementById('cart-items');
+    
+    let totalItems = 0;
+    let totalPrice = 0;
+    
+    // Clear previous items in the dropdown
+    cartItemsDropdown.innerHTML = '';
+    
+    for (let sku in cart) {
+        const item = cart[sku];
+        const itemPrice = parseFloat(item.price); // Ensure price is a number
+        const itemQuantity = parseInt(item.quantity); // Ensure quantity is a number
+        
+        totalItems += itemQuantity;
+        totalPrice += itemPrice * itemQuantity;
+        
+        // Add item to the navbar dropdown for preview
+        const itemHtml = `
+            <div class="drop_1i1 row mb-2">
+                <div class="col-md-3 col-3">
+                    <div class="drop_1i1i">
+                        <img src="${item.image}" alt="item" class="w-100">
+                    </div>
+                </div>
+                <div class="col-md-9 col-9">
+                    <div class="drop_1i1i1">
+                        <h6 class="fw-bold"><a href="#">${item.name}</a></h6>
+                        <h6 class="font_14 mt-1">${item.quantity} x <span class="col_red">$${item.price}</span></h6>
+                        <a href="#" class="remove-btn" data-sku="${sku}"><i class="fa fa-times me-1"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="m-0">
+        `;
+        cartItemsDropdown.insertAdjacentHTML('beforeend', itemHtml);
+    }
+
+    if (totalItems === 0) {
+        cartItemsDropdown.innerHTML = '<p class="text-center mt-2">Your cart is empty</p>';
+    }
+
+    // Update the count and total display
+    if (cartCountElement) {
+        cartCountElement.textContent = totalItems + (totalItems === 1 ? ' ITEM' : ' ITEMS');
+    }
+    if (cartTotalElement) {
+        cartTotalElement.textContent = '$' + totalPrice.toFixed(2);
+    }
+
+    // Attach event listeners to the new remove buttons in the dropdown
+    document.querySelectorAll('.remove-btn').forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            const skuToRemove = e.currentTarget.dataset.sku;
+            removeItemFromCart(skuToRemove);
+        });
+    });
+}
+
+function addItemToCart(sku, name, price, image, quantity = 1) {
+    const cart = getCart();
+    quantity = parseInt(quantity);
+    
+    // Check if the product already exists
+    if (cart[sku]) {
+        cart[sku].quantity += quantity;
+    } else {
+        // Add new product
+        cart[sku] = {
+            sku: sku,
+            name: name,
+            price: parseFloat(price).toFixed(2), // Store price as a fixed string
+            image: image,
+            quantity: quantity
+        };
+    }
+    
+    saveCart(cart);
+    updateCartDisplay(cart);
+    alert(`${quantity} of ${name} added to cart!`);
+}
+
+function removeItemFromCart(sku) {
+    const cart = getCart();
+    if (cart[sku]) {
+        delete cart[sku];
+        saveCart(cart);
+        updateCartDisplay(cart);
+        // If on the cart page, re-render it
+        if (document.getElementById('cart_page')) {
+            renderCartPage();
+        }
+    }
+}
+
+// Initial load: update the cart display when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    const cart = getCart();
+    updateCartDisplay(cart);
+});
+
 
 window.onscroll = function() {myFunction()};
 var navbar_sticky = document.getElementById("navbar_sticky");
