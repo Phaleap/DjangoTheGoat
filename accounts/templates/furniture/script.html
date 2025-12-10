@@ -1,261 +1,127 @@
-{% load static %}
-
 <script>
+/* -----------------------------------------------------
+   REMOVE ITEM (navbar + cart page)
+----------------------------------------------------- */
+document.addEventListener("click", function (e) {
+    const rmBtn = e.target.closest(".remove-item-btn");
+    if (!rmBtn) return;
 
-    document.addEventListener('click', function(e){
-    // REMOVE ITEM
-    if (e.target.classList.contains('remove-item')) {
-        let productId = e.target.dataset.productId;
+    const productId = rmBtn.dataset.productId;
 
-        fetch("{% url 'remove_from_cart' %}", {
-            method: "POST",
-            headers: {
-                "X-CSRFToken": "{{ csrf_token }}",
-            },
-            body: new URLSearchParams({
-                product_id: productId
-            })
-        })
-        .then(res => res.json())
-        .then(() => location.reload());
-    }
+    sendCartAction(
+        "{% url 'remove_from_cart' %}",
+        `product_id=${productId}`,
+        "removing item"
+    );
 
-    // UPDATE QTY
-    if (e.target.classList.contains('update-item')) {
+    // Remove the item from cart page immediately
+    const itemDiv = rmBtn.closest('.cart_3l1');
+    if (itemDiv) itemDiv.remove();
+});
+
+document.addEventListener("click", function (e) {
+    if (!e.target.classList.contains("update-item")) return;
+
     let productId = e.target.dataset.productId;
-    let qtyInput = document.querySelector(`.qty-input[data-product-id="${productId}"]`);
+    let qtyInput = document.querySelector(
+        `.qty-input[data-product-id="${productId}"]`
+    );
     let newQty = qtyInput.value;
 
-    fetch("{% url 'update_cart_quantity' %}", {
+    sendCartAction(
+        "{% url 'update_cart_quantity' %}",
+        `product_id=${productId}&quantity=${newQty}`,
+        "updating quantity"
+    );
+});
+
+/* -----------------------------------------------------
+   ADD TO CART (product page)
+----------------------------------------------------- */
+document.addEventListener("DOMContentLoaded", function () {
+    const addToCartButton = document.getElementById("add-to-cart");
+    if (!addToCartButton) return;
+
+    addToCartButton.addEventListener("click", function (e) {
+        e.preventDefault();
+
+        const productId = this.dataset.productId;
+        const quantity = document.getElementById("cart-quantity").value;
+
+        sendCartAction(
+            "{% url 'add_to_cart' %}",
+            `product_id=${productId}&quantity=${quantity}`,
+            "adding item"
+        );
+    });
+});
+
+/* -----------------------------------------------------
+   UNIVERSAL AJAX HANDLER
+----------------------------------------------------- */
+function sendCartAction(url, body, actionName) {
+    fetch(url, {
         method: "POST",
         headers: {
             "X-CSRFToken": "{{ csrf_token }}",
+            "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: new URLSearchParams({
-            product_id: productId,
-            quantity: newQty
-        })
+        body: body,
     })
-    .then(res => res.json())
-    .then(() => location.reload());
-}
-});
-// furniture/script.html or your final combined script block
+        .then((res) => res.json())
+        .then((data) => {
+            if (data.error) {
+                alert(`Error while ${actionName}: ${data.error}`);
+                return;
+            }
 
+            // Update navbar count + total
+            document.getElementById("cart-count").textContent =
+                `${data.count} ITEMS`;
+            document.getElementById("cart-total").textContent =
+                `$${data.total.toFixed(2)}`;
 
-/* === Cart Utility Functions (for Local Storage) === */
+            // Update subtotal on cart page dynamically
+            const subtotalEl = document.querySelector('.cart_3r h5.text-center.col_red');
+            if (subtotalEl) {
+                subtotalEl.textContent = `$${data.total.toFixed(2)}`;
+            }
 
-function getCart() {
-    // Retrieve cart from Local Storage, default to an empty object if not found
-    const cart = localStorage.getItem('cart');
-    return cart ? JSON.parse(cart) : {};
-}
+            // Also update the input values in case they changed
+            data.items.forEach(item => {
+                const inputEl = document.querySelector(`.qty-input[data-product-id="${item.id}"]`);
+                if (inputEl) inputEl.value = item.qty;
+            });
 
-function saveCart(cart) {
-    // Save the cart object to Local Storage
-    localStorage.setItem('cart', JSON.stringify(cart));
-}
-
-function updateCartDisplay(cart) {
-    // Updates the cart count and total in the navbar dropdown
-    const cartCountElement = document.getElementById('cart-count');
-    const cartTotalElement = document.getElementById('cart-total');
-    const cartItemsDropdown = document.getElementById('cart-items');
-    
-    let totalItems = 0;
-    let totalPrice = 0;
-    
-    // Clear previous items in the dropdown
-    cartItemsDropdown.innerHTML = '';
-    
-    for (let sku in cart) {
-        const item = cart[sku];
-        const itemPrice = parseFloat(item.price); // Ensure price is a number
-        const itemQuantity = parseInt(item.quantity); // Ensure quantity is a number
-        
-        totalItems += itemQuantity;
-        totalPrice += itemPrice * itemQuantity;
-        
-        // Add item to the navbar dropdown for preview
-        const itemHtml = `
-            <div class="drop_1i1 row mb-2">
-                <div class="col-md-3 col-3">
-                    <div class="drop_1i1i">
-                        <img src="${item.image}" alt="item" class="w-100">
-                    </div>
-                </div>
-                <div class="col-md-9 col-9">
-                    <div class="drop_1i1i1">
-                        <h6 class="fw-bold"><a href="#">${item.name}</a></h6>
-                        <h6 class="font_14 mt-1">${item.quantity} x <span class="col_red">$${item.price}</span></h6>
-                        <a href="#" class="remove-btn" data-sku="${sku}"><i class="fa fa-times me-1"></i></a>
-                    </div>
-                </div>
-            </div>
-            <hr class="m-0">
-        `;
-        cartItemsDropdown.insertAdjacentHTML('beforeend', itemHtml);
-    }
-
-    if (totalItems === 0) {
-        cartItemsDropdown.innerHTML = '<p class="text-center mt-2">Your cart is empty</p>';
-    }
-
-    // Update the count and total display
-    if (cartCountElement) {
-        cartCountElement.textContent = totalItems + (totalItems === 1 ? ' ITEM' : ' ITEMS');
-    }
-    if (cartTotalElement) {
-        cartTotalElement.textContent = '$' + totalPrice.toFixed(2);
-    }
-
-    // Attach event listeners to the new remove buttons in the dropdown
-    document.querySelectorAll('.remove-btn').forEach(button => {
-        button.addEventListener('click', (e) => {
-            e.preventDefault();
-            const skuToRemove = e.currentTarget.dataset.sku;
-            removeItemFromCart(skuToRemove);
-        });
-    });
-}
-
-function addItemToCart(sku, name, price, image, quantity = 1) {
-    const cart = getCart();
-    quantity = parseInt(quantity);
-    
-    // Check if the product already exists
-    if (cart[sku]) {
-        cart[sku].quantity += quantity;
-    } else {
-        // Add new product
-        cart[sku] = {
-            sku: sku,
-            name: name,
-            price: parseFloat(price).toFixed(2), // Store price as a fixed string
-            image: image,
-            quantity: quantity
-        };
-    }
-    
-    saveCart(cart);
-    updateCartDisplay(cart);
-    alert(`${quantity} of ${name} added to cart!`);
-}
-
-function removeItemFromCart(sku) {
-    const cart = getCart();
-    if (cart[sku]) {
-        delete cart[sku];
-        saveCart(cart);
-        updateCartDisplay(cart);
-        // If on the cart page, re-render it
-        if (document.getElementById('cart_page')) {
-            renderCartPage();
-        }
-    }
-}
-
-// Initial load: update the cart display when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-    const cart = getCart();
-    updateCartDisplay(cart);
-});
-
-
-window.onscroll = function() {myFunction()};
-var navbar_sticky = document.getElementById("navbar_sticky");
-var sticky = navbar_sticky.offsetTop;
-var navbar_height = document.querySelector('.navbar').offsetHeight;
-
-function myFunction() {
-    if (window.pageYOffset >= sticky + navbar_height) {
-        navbar_sticky.classList.add("sticky")
-        document.body.style.paddingTop = navbar_height + 'px';
-    } else {
-        navbar_sticky.classList.remove("sticky");
-        document.body.style.paddingTop = '0'
-    }
-}
-
-// -----------------------------------------------------
-// 1. ADD TO CART Listener (Missing from your last snippet)
-// -----------------------------------------------------
-document.addEventListener('DOMContentLoaded', function() {
-    // Check if the add-to-cart button exists on this page before adding the listener
-    const addToCartButton = document.getElementById('add-to-cart');
-
-    if (addToCartButton) {
-        addToCartButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            const productId = this.dataset.productId;
-            const quantity = document.getElementById('cart-quantity').value;
-
-            // Ensure the reusable update function is called after success
-            sendCartAction("{% url 'add_to_cart' %}", `product_id=${productId}&quantity=${quantity}`, "adding item to cart");
-        });
-    }
-});
-
-
-// -----------------------------------------------------
-// 2. DELETE/REMOVE FROM CART Listener (The one you provided)
-// -----------------------------------------------------
-document.addEventListener('click', function(e) {
-    const removeButton = e.target.closest('.remove-item-btn');
-    
-    if (removeButton) {
-        e.preventDefault();
-        const productId = removeButton.dataset.productId;
-        
-        // Ensure the reusable update function is called after success
-        sendCartAction("{% url 'remove_from_cart' %}", `product_id=${productId}`, "removing item from cart");
-    }
-});
-
-
-// -----------------------------------------------------
-// 3. REUSABLE AJAX and UI Update Function (DRY Principle)
-// -----------------------------------------------------
-
-function sendCartAction(url, body, actionName) {
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': '{{ csrf_token }}',
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: body 
-    })
-    .then(response => {
-        if (!response.ok) {
-             // Handle 400/500 errors gracefully
-             return response.json().then(data => Promise.reject(data.error || response.statusText));
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (!data.error) {
-            // Update navbar count and total
-            document.getElementById('cart-count').textContent = `${data.count} ITEMS`;
-            document.getElementById('cart-total').textContent = `$${data.total.toFixed(2)}`;
-
-            const itemsContainer = document.getElementById('cart-items');
-            if (data.items.length > 0) {
-                let html = '';
-                data.items.forEach(item => {
-                    // RE-BUILD THE HTML FOR ALL REMAINING ITEMS (including the delete button with its ID)
+            // Update navbar items
+            const itemsContainer = document.getElementById("cart-items");
+            if (data.items.length === 0) {
+                itemsContainer.innerHTML =
+                    `<p class="text-center mt-2">Your cart is empty</p>`;
+            } else {
+                let html = "";
+                data.items.forEach((item) => {
                     html += `
                         <div class="drop_1i1 row">
                             <div class="col-md-6 col-6">
-                                <div class="drop_1i1l"><h6><a href="#">${item.name}</a> <br> <span class="fw-normal d-inline-block mt-1">${item.qty}x - $${item.price}</span></h6></div>
+                                <div class="drop_1i1l">
+                                    <h6>
+                                        <a href="#">${item.name}</a><br>
+                                        <span class="fw-normal d-inline-block mt-1">
+                                            ${item.qty}x - $${item.price}
+                                        </span>
+                                    </h6>
+                                </div>
                             </div>
                             <div class="col-md-4 col-4">
-                                <div class="drop_1i1r"><a href="#"><img src="${item.image}" class="w-100" alt="abc"></a></div>
+                                <div class="drop_1i1r">
+                                    <img src="${item.image}" class="w-100">
+                                </div>
                             </div>
                             <div class="col-md-2 col-2">
                                 <div class="drop_1i1l text-end">
-                                    <h6> 
-                                        <span class="remove-item-btn" data-product-id="${item.id}" style="cursor: pointer;">
+                                    <h6>
+                                        <span class="remove-item-btn" data-product-id="${item.id}" style="cursor:pointer;">
                                             <i class="fa fa-trash"></i>
                                         </span>
                                     </h6>
@@ -264,19 +130,14 @@ function sendCartAction(url, body, actionName) {
                         </div>
                     `;
                 });
+
                 itemsContainer.innerHTML = html;
-            } else {
-                itemsContainer.innerHTML = '<p class="text-center mt-2">Your cart is empty</p>';
             }
-        } else {
-            // This is for errors returned by the Django view (e.g., status 400 with {'error': '...'})
-            alert(`Error ${actionName}: ${data.error}`);
-        }
-    })
-    .catch(error => {
-        // This is for network/unexpected errors or promises rejected above
-        console.error(`Error during ${actionName}:`, error);
-        alert(`An error occurred while trying to complete your request: ${error}`);
-    });
+        })
+        .catch((err) => {
+            console.error(err);
+            alert("Something went wrong!");
+        });
 }
+
 </script>

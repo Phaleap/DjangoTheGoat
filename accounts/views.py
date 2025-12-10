@@ -396,6 +396,13 @@ def remove_from_cart(request):
 def billing_add(request):
     cart = request.session.get('cart', {})
 
+    # Calculate subtotal
+    subtotal = sum(item["qty"] * float(item["price"]) for item in cart.values())
+
+    # If you want to add shipping (example: $20)
+    shipping = 20  
+    total = subtotal + shipping
+
     if request.method == "POST":
         data = request.POST
         qr_image = request.FILES.get('qr_code_image')
@@ -416,7 +423,10 @@ def billing_add(request):
     
     return render(request, 'furniture/checkout.html', {
         'cart': cart,
-    })  
+        'subtotal': subtotal,
+        'shipping': shipping,
+        'total': total,
+    })
 
 
 def billing_list(request):

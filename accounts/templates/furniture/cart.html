@@ -45,10 +45,8 @@
                     <input type="number" min="1" value="{{ item.qty }}" 
                            class="form-control qty-input" 
                            data-product-id="{{ item.id }}">
-
-                    <h6><a class="button_1 remove-item" 
-                           data-product-id="{{ item.id }}" 
-                           style="cursor:pointer;">REMOVE</a></h6>
+					<br>
+                    <h6><a class="button_1 remove-item-btn" data-product-id="{{ item.id }}" style="cursor:pointer;">REMOVE</a></h6>
 
                     <h6><a class="button_2 update-item" 
                            data-product-id="{{ item.id }}" 
@@ -70,27 +68,7 @@
 	   <h6 class="font_14">Additional comments</h6>
 	   <textarea class="form-control"></textarea>
 	   <h6 class="text-center mt-3"><a class="button_2" href="{% url 'checkout' %}">PROCEED TO CHECKOUT</a></h6><br>
-	   <h5>GET SHIPPING ESTIMATES</h5>
-	   <hr>
-	  </div>
-	  <div class="cart_3r1">
-	    <h6 class="font_14">Country</h6>
-	   <select class="form-select" id="subject" name="subject">
-		<option>America</option>
-		<option>India</option>
-		<option>England</option>
-		<option>Africa</option>
-		</select><br>
-		<h6 class="font_14">State</h6>
-	   <select class="form-select" id="subject_1" name="subject">
-		<option>Delhi</option>
-		<option>Uttar Pradesh</option>
-		<option>Punjab</option>
-		<option>Madhya Pradesh</option>
-		</select><br>
-	  <h6 class="font_14">Postal/Zip Code</h6>
-	   <input class="form-control" type="text">
-	   <h6 class="text-center mt-3"><a class="button_2" href="#">CALCULATE SHIPPING</a></h6>
+	
 	   </div>
 	 </div>
 	</div>

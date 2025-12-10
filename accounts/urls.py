@@ -10,7 +10,7 @@ urlpatterns = [
     path('aboutFur/', views.aboutFur, name='aboutFur'),
     path('blog/<int:id>/', views.blog_detail, name='blog_detail'),
     path('cart/', views.cart, name='shoppingcart'),
-    path('checkout/', views.checkOut, name='checkout'),
+    path('checkout/', views.billing_add, name='checkout'),
     path('contact/', views.contact, name='contact'),
     path('shopdetail/<int:id>/', views.detail, name='detail'),
     path('pricing/', views.pricing, name='pricing'),
@@ -21,14 +21,10 @@ urlpatterns = [
     path('blog/tag/<slug:slug>/', views.blogTag, name='blog_tag_detail'),
     path('add-to-cart/', views.add_to_cart, name='add_to_cart'),
     path('remove-from-cart/', views.remove_from_cart, name='remove_from_cart'),
-<<<<<<< HEAD
     path('billing_list/', views.billing_list, name='billing_list'),
     path('billing/add/', views.billing_add, name='billing_add'),
     path('BillingList/', views.billing_list, name='BillingList'),
-
-
-=======
     path('shopping-cart/', views.shopping_cart, name='shoppingcart'),
     path('update_cart_quantity/', views.update_cart_quantity, name='update_cart_quantity'),
->>>>>>> 37958e88bf964f9d4d35192bccb62fd214363430
+
 ]
