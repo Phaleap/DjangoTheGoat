@@ -392,10 +392,9 @@ def remove_from_cart(request):
         print(f"Server Error in remove_from_cart: {e}")
         return JsonResponse({'error': f'Internal Server Error: {str(e)}'}, status=500)
     
-<<<<<<< HEAD
+
 def billing_add(request):
     cart = request.session.get('cart', {})
-    # total_price = sum(item['total'] for item in cart.values())
 
     if request.method == "POST":
         data = request.POST
@@ -411,23 +410,24 @@ def billing_add(request):
             phone=data['phone'],
             email=data['email'],
             qr_code_image=qr_image,
-            # total=data['total']
         )
         billing.save()
         return redirect('BillingList')
     
     return render(request, 'furniture/checkout.html', {
         'cart': cart,
-        # 'total_price': total_price,
     })  
+
+
 def billing_list(request):
     billings = BillingDetail.objects.all()
     return render(request, 'furniture/BillingList.html', {'billings': billings})
 
-=======
+
 def shopping_cart(request):
     cart_data = get_cart_data(request)
     return render(request, 'furniture/cart.html', cart_data)
+
 
 @require_POST
 def update_cart_quantity(request):
@@ -437,16 +437,14 @@ def update_cart_quantity(request):
     cart = request.session.get("cart", {})
 
     if product_id in cart:
-        cart[product_id]['qty'] = quantity  # FIXED
+        cart[product_id]['qty'] = quantity
 
     request.session['cart'] = cart
     request.session.modified = True
 
-    # FIXED total + count
     count = sum(item["qty"] for item in cart.values())
     total = sum(item["qty"] * float(item["price"]) for item in cart.values())
 
-    # Return updated items
     items = []
     for pid, item in cart.items():
         items.append({
@@ -454,7 +452,7 @@ def update_cart_quantity(request):
             "name": item["name"],
             "qty": item["qty"],
             "price": item["price"],
-            "image": "",  # optional
+            "image": "",
         })
 
     return JsonResponse({
@@ -462,4 +460,4 @@ def update_cart_quantity(request):
         "total": total,
         "items": items
     })
->>>>>>> 37958e88bf964f9d4d35192bccb62fd214363430
+
