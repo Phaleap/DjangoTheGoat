@@ -266,7 +266,6 @@ def team_detail(request, id):
     return render(request, 'furniture/team_detail.html', context)
 
 def get_cart_data(request):
-    """Retrieves current cart state (count, total, items) from the session."""
     cart_items = request.session.get('cart', {})
     cart_list = []
     total = 0
@@ -275,25 +274,39 @@ def get_cart_data(request):
     for product_id, item_data in cart_items.items():
         try:
             product = Product.objects.get(id=int(product_id))
-            quantity = item_data['qty']
-            price = float(product.price) # Ensure price is a float
+            quantity = item_data.get("qty", 1)
+            price = float(item_data.get("price", product.price))
+
+            # Safe image handling
+            try:
+                image_url = product.image.url
+            except:
+                try:
+                    image_url = product.productImage.url
+                except:
+                    image_url = ""
+
             subtotal = price * quantity
             total += subtotal
             count += quantity
             
             cart_list.append({
                 'id': product.id,
-                'name': product.productName,
+                'name': item_data.get("name", product.productName),
                 'qty': quantity,
                 'price': price,
-                # Ensure the image URL is correct
-                'image': product.productImage.url if product.productImage else '', 
+                'image': image_url,
             })
+
         except Product.DoesNotExist:
-            # Handle case where product might have been deleted
             continue
-        
-    return {'count': count, 'total': total, 'items': cart_list}
+
+    return {
+        'count': count,
+        'total': total,
+        'items': cart_list
+    }
+
 
 
 # --- The AJAX View Function ---
@@ -378,3 +391,5 @@ def remove_from_cart(request):
     except Exception as e:
         print(f"Server Error in remove_from_cart: {e}")
         return JsonResponse({'error': f'Internal Server Error: {str(e)}'}, status=500)
+    
+    
