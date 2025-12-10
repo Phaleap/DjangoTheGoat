@@ -1,17 +1,123 @@
 {% load static %}
 
 <script>
+// furniture/script.html or your final combined script block
+
 window.onscroll = function() {myFunction()};
 var navbar_sticky = document.getElementById("navbar_sticky");
 var sticky = navbar_sticky.offsetTop;
 var navbar_height = document.querySelector('.navbar').offsetHeight;
+
 function myFunction() {
-  if (window.pageYOffset >= sticky + navbar_height) {
-    navbar_sticky.classList.add("sticky")
-	document.body.style.paddingTop = navbar_height + 'px';
-  } else {
-    navbar_sticky.classList.remove("sticky");
-	document.body.style.paddingTop = '0'
-  }
+    if (window.pageYOffset >= sticky + navbar_height) {
+        navbar_sticky.classList.add("sticky")
+        document.body.style.paddingTop = navbar_height + 'px';
+    } else {
+        navbar_sticky.classList.remove("sticky");
+        document.body.style.paddingTop = '0'
+    }
+}
+
+// -----------------------------------------------------
+// 1. ADD TO CART Listener (Missing from your last snippet)
+// -----------------------------------------------------
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if the add-to-cart button exists on this page before adding the listener
+    const addToCartButton = document.getElementById('add-to-cart');
+
+    if (addToCartButton) {
+        addToCartButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            const productId = this.dataset.productId;
+            const quantity = document.getElementById('cart-quantity').value;
+
+            // Ensure the reusable update function is called after success
+            sendCartAction("{% url 'add_to_cart' %}", `product_id=${productId}&quantity=${quantity}`, "adding item to cart");
+        });
+    }
+});
+
+
+// -----------------------------------------------------
+// 2. DELETE/REMOVE FROM CART Listener (The one you provided)
+// -----------------------------------------------------
+document.addEventListener('click', function(e) {
+    const removeButton = e.target.closest('.remove-item-btn');
+    
+    if (removeButton) {
+        e.preventDefault();
+        const productId = removeButton.dataset.productId;
+        
+        // Ensure the reusable update function is called after success
+        sendCartAction("{% url 'remove_from_cart' %}", `product_id=${productId}`, "removing item from cart");
+    }
+});
+
+
+// -----------------------------------------------------
+// 3. REUSABLE AJAX and UI Update Function (DRY Principle)
+// -----------------------------------------------------
+
+function sendCartAction(url, body, actionName) {
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: body 
+    })
+    .then(response => {
+        if (!response.ok) {
+             // Handle 400/500 errors gracefully
+             return response.json().then(data => Promise.reject(data.error || response.statusText));
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (!data.error) {
+            // Update navbar count and total
+            document.getElementById('cart-count').textContent = `${data.count} ITEMS`;
+            document.getElementById('cart-total').textContent = `$${data.total.toFixed(2)}`;
+
+            const itemsContainer = document.getElementById('cart-items');
+            if (data.items.length > 0) {
+                let html = '';
+                data.items.forEach(item => {
+                    // RE-BUILD THE HTML FOR ALL REMAINING ITEMS (including the delete button with its ID)
+                    html += `
+                        <div class="drop_1i1 row">
+                            <div class="col-md-6 col-6">
+                                <div class="drop_1i1l"><h6><a href="#">${item.name}</a> <br> <span class="fw-normal d-inline-block mt-1">${item.qty}x - $${item.price}</span></h6></div>
+                            </div>
+                            <div class="col-md-4 col-4">
+                                <div class="drop_1i1r"><a href="#"><img src="${item.image}" class="w-100" alt="abc"></a></div>
+                            </div>
+                            <div class="col-md-2 col-2">
+                                <div class="drop_1i1l text-end">
+                                    <h6> 
+                                        <span class="remove-item-btn" data-product-id="${item.id}" style="cursor: pointer;">
+                                            <i class="fa fa-trash"></i>
+                                        </span>
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                itemsContainer.innerHTML = html;
+            } else {
+                itemsContainer.innerHTML = '<p class="text-center mt-2">Your cart is empty</p>';
+            }
+        } else {
+            // This is for errors returned by the Django view (e.g., status 400 with {'error': '...'})
+            alert(`Error ${actionName}: ${data.error}`);
+        }
+    })
+    .catch(error => {
+        // This is for network/unexpected errors or promises rejected above
+        console.error(`Error during ${actionName}:`, error);
+        alert(`An error occurred while trying to complete your request: ${error}`);
+    });
 }
 </script>

@@ -4,6 +4,9 @@ from accounts.models import *
 from .models import BlogCategory, BlogTag
 from django.core.paginator import Paginator
 from django.db.models import Count, Q  # Q needed for advanced filtering/searching if implemented
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from .models import Product
 
 # Create your views here.
 
@@ -249,3 +252,117 @@ def team_detail(request, id):
     }
 
     return render(request, 'furniture/team_detail.html', context)
+
+def get_cart_data(request):
+    """Retrieves current cart state (count, total, items) from the session."""
+    cart_items = request.session.get('cart', {})
+    cart_list = []
+    total = 0
+    count = 0
+
+    for product_id, item_data in cart_items.items():
+        try:
+            product = Product.objects.get(id=int(product_id))
+            quantity = item_data['qty']
+            price = float(product.price) # Ensure price is a float
+            subtotal = price * quantity
+            total += subtotal
+            count += quantity
+            
+            cart_list.append({
+                'id': product.id,
+                'name': product.productName,
+                'qty': quantity,
+                'price': price,
+                # Ensure the image URL is correct
+                'image': product.productImage.url if product.productImage else '', 
+            })
+        except Product.DoesNotExist:
+            # Handle case where product might have been deleted
+            continue
+        
+    return {'count': count, 'total': total, 'items': cart_list}
+
+
+# --- The AJAX View Function ---
+@require_POST # Restricts access to POST method only
+def add_to_cart(request):
+    # This try/except is crucial for debugging and robust error handling
+    try:
+        # 1. Get data from the POST request
+        product_id = request.POST.get('product_id')
+        quantity = request.POST.get('quantity')
+        
+        # Validation and Type Conversion
+        if not product_id or not quantity:
+            return JsonResponse({'error': 'Missing product ID or quantity.'}, status=400)
+            
+        try:
+            product_id = int(product_id)
+            quantity = int(quantity)
+        except ValueError:
+            return JsonResponse({'error': 'Invalid ID or quantity format.'}, status=400)
+            
+        if quantity <= 0:
+            return JsonResponse({'error': 'Quantity must be positive.'}, status=400)
+
+        # 2. Get the product object
+        product = Product.objects.get(id=product_id)
+        
+        # 3. Update the cart in the session
+        cart = request.session.get('cart', {})
+        product_key = str(product_id)
+        
+        # Add or update the item
+        if product_key in cart:
+            cart[product_key]['qty'] += quantity
+        else:
+            cart[product_key] = {
+                'qty': quantity,
+                # Optional: store price/name for faster access, but fetching from DB is safer
+                'price': float(product.price), 
+                'name': product.productName,
+            }
+        
+        request.session['cart'] = cart
+        request.session.modified = True
+        
+        # 4. Return updated cart data
+        cart_data = get_cart_data(request)
+        
+        return JsonResponse(cart_data)
+
+    except Product.DoesNotExist:
+        # Handle case where the product ID sent from the frontend is invalid
+        return JsonResponse({'error': 'Product not found.'}, status=404)
+
+    except Exception as e:
+        # Catch any other unexpected server-side error
+        print(f"Server Error in add_to_cart: {e}") 
+        # Return a 500 response so the JS promise rejects gracefully
+        return JsonResponse({'error': f'Internal Server Error: {str(e)}'}, status=500)
+    
+@require_POST
+def remove_from_cart(request):
+    try:
+        product_id = request.POST.get('product_id')
+        
+        if not product_id:
+            return JsonResponse({'error': 'Missing product ID.'}, status=400)
+            
+        product_key = str(product_id)
+        cart = request.session.get('cart', {})
+        
+        # Check if the product is in the cart and remove it
+        if product_key in cart:
+            del cart[product_key]
+            request.session['cart'] = cart
+            request.session.modified = True
+        
+        # Return the updated cart data (count, total, and new item list)
+        cart_data = get_cart_data(request)
+        return JsonResponse(cart_data)
+
+    except Exception as e:
+        print(f"Server Error in remove_from_cart: {e}")
+        return JsonResponse({'error': f'Internal Server Error: {str(e)}'}, status=500)
