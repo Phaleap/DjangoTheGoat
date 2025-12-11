@@ -1,7 +1,5 @@
 <script>
-/* -----------------------------------------------------
-   REMOVE ITEM (navbar + cart page)
------------------------------------------------------ */
+
 document.addEventListener("click", function (e) {
     const rmBtn = e.target.closest(".remove-item-btn");
     if (!rmBtn) return;
@@ -14,7 +12,7 @@ document.addEventListener("click", function (e) {
         "removing item"
     );
 
-    // Remove the item from cart page immediately
+
     const itemDiv = rmBtn.closest('.cart_3l1');
     if (itemDiv) itemDiv.remove();
 });
@@ -35,9 +33,6 @@ document.addEventListener("click", function (e) {
     );
 });
 
-/* -----------------------------------------------------
-   ADD TO CART (product page)
------------------------------------------------------ */
 document.addEventListener("DOMContentLoaded", function () {
     const addToCartButton = document.getElementById("add-to-cart");
     if (!addToCartButton) return;
@@ -56,9 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-/* -----------------------------------------------------
-   UNIVERSAL AJAX HANDLER
------------------------------------------------------ */
+
 function sendCartAction(url, body, actionName) {
     fetch(url, {
         method: "POST",
@@ -75,25 +68,22 @@ function sendCartAction(url, body, actionName) {
                 return;
             }
 
-            // Update navbar count + total
             document.getElementById("cart-count").textContent =
                 `${data.count} ITEMS`;
             document.getElementById("cart-total").textContent =
                 `$${data.total.toFixed(2)}`;
 
-            // Update subtotal on cart page dynamically
+  
             const subtotalEl = document.querySelector('.cart_3r h5.text-center.col_red');
             if (subtotalEl) {
                 subtotalEl.textContent = `$${data.total.toFixed(2)}`;
             }
 
-            // Also update the input values in case they changed
             data.items.forEach(item => {
                 const inputEl = document.querySelector(`.qty-input[data-product-id="${item.id}"]`);
                 if (inputEl) inputEl.value = item.qty;
             });
 
-            // Update navbar items
             const itemsContainer = document.getElementById("cart-items");
             if (data.items.length === 0) {
                 itemsContainer.innerHTML =

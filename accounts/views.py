@@ -7,6 +7,8 @@ from django.db.models import Count, Q  # Q needed for advanced filtering/searchi
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from .models import Product
+import math
+
 
 # Create your views here.
 
@@ -25,7 +27,16 @@ def indexFur(request):
     project_header = ProjectSectionHeader.objects.first()
     projects = Project.objects.all()
     team_header = TeamSectionHeader.objects.first()
+    projects = Project.objects.all()
     
+    # NEW LOGIC: Group projects into slides of 3
+    projects_per_slide = 3
+    grouped_projects = []
+    
+    # Iterate through the projects in chunks of 3
+    for i in range(0, len(projects), projects_per_slide):
+        # The slice projects[i:i + projects_per_slide] gets the next 3 items
+        grouped_projects.append(projects[i:i + projects_per_slide])
     # --- Testimonial Logic ---
     testimonials = TestimonialClient.objects.all()
     slide_groups = testimonials.values_list('slide_group', flat=True).distinct()
@@ -34,14 +45,18 @@ def indexFur(request):
         slide_testimonials = testimonials.filter(slide_group=group_id)
         testimonial_slides.append(list(slide_testimonials[:3]))
     # --- End Testimonial Logic ---
+    projects = Project.objects.all()
+    project_slide_count = math.ceil(projects.count() / 3)
 
     latest_posts = BlogPost.objects.all()[:3]
 
     context = {
         'slides': slides,
+        'projects_slides': grouped_projects,
         'about_images': about_images,
         'project_header': project_header,
         'projects': projects,
+        'project_slide_count': project_slide_count,
         'team_header': team_header, 
         'testimonial_slides': testimonial_slides,
         'latest_posts': latest_posts,
@@ -49,7 +64,22 @@ def indexFur(request):
     return render(request, 'furniture/index.html', context)
 
 def aboutFur(request):
-    return render(request, 'furniture/about.html')
+    about_images = AboutHeroImages.objects.first()
+
+    testimonials = TestimonialClient.objects.all()
+    slide_groups = testimonials.values_list('slide_group', flat=True).distinct()
+    testimonial_slides = []
+    for group_id in slide_groups:
+        slide_testimonials = testimonials.filter(slide_group=group_id)
+        testimonial_slides.append(list(slide_testimonials[:3]))
+
+    context = {
+        'about_images': about_images,
+        'testimonial_slides': testimonial_slides,
+    }
+
+    return render(request, 'furniture/about.html', context)
+
 
 def blog_detail(request, id):
     post = get_object_or_404(BlogPost, id=id)

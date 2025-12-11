@@ -26,23 +26,39 @@
  <div class="container-fluid">
   <div class="row about_h1">
     <div class="col-md-7">
-	 <div class="about_h1l position-relative">
-	  <div class="about_h1l1 position-absolute w-100">
-	   <img src="{% static 'img/Sofa.png' %}" alt="abc">
-	  </div>
-	  <div class="about_h1l2 position-absolute w-100">
-	     <img src="{% static 'img/Sofa2.png' %}" alt="abc">
-	  </div>
-	 </div>
-	</div>
-	<div class="col-md-5">
-	 <div class="about_h1r p-5 px-3">
-	  <h5 class="col_yell">ABOUT US</h5>
-	  <h1 class="mt-3 mb-4">Creative Sofa <br> by professional <br>  designers</h1>
-	  <p>At [Your Brand Name], we believe a sofa is more than a place to sit—it's the heart of every home. Since our beginning, we’ve been dedicated to crafting sofas that bring comfort, style, and lasting quality into living spaces around the world. Each piece is thoughtfully designed, combining timeless aesthetics with modern functionality to create a perfect balance of beauty and practicality. From hand-selected materials to meticulous craftsmanship, our sofas are built to support everyday moments—family gatherings, quiet evenings, and everything in between. We’re passionate about helping people create spaces they love, one sofa at a time.</p>
-	 </div>
-	</div>
-  </div>
+        <div class="about_h1l position-relative">
+            {% if about_images and about_images.image_main %}
+            <div class="about_h1l1 position-absolute w-100">
+                <img src="{{ about_images.image_main.url }}" alt="Main About Image">
+            </div>
+            {% endif %}
+
+            {% if about_images and about_images.image_overlay %}
+            <div class="about_h1l2 position-absolute w-100">
+                <img src="{{ about_images.image_overlay.url }}" alt="Overlay About Image">
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-md-5">
+        {% if about_images %}
+        <div class="about_h1r p-5 px-3">
+            <h5 class="col_yell">{{ about_images.tagline }}</h5>
+            
+            <h1 class="mt-3 mb-4">{{ about_images.title|safe }}</h1>
+            
+            <p>{{ about_images.content }}</p>
+            
+            
+        </div>
+        {% else %}
+        <div class="about_h1r p-5 px-3">
+            <p>About section content not available.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+<br>
    <div class="row about_h2">
     <div class="col-md-4">
 	 <div class="about_h2i">
@@ -55,7 +71,7 @@
 	   <div class="col-md-9">
 	    <div class="about_h2i1r">
 		 <h5>Reasonable Prices</h5>
-		 <p class="mt-3 mb-0">Enjoy exceptional quality at a price that truly fits your budget.</p>
+		 <p class="mt-3 mb-0">We produce furniture to fulfill needs of all people and offer it at affordable and fair prices</p>
 		</div>
 	   </div>
 	  </div>
@@ -72,7 +88,7 @@
 	   <div class="col-md-9">
 	    <div class="about_h2i1r">
 		 <h5>Exclusive Design</h5>
-		 <p class="mt-3 mb-0">Our sofas feature exclusive designs crafted to bring a unique and sophisticated touch to your home.</p>
+		 <p class="mt-3 mb-0">We produce furniture to fulfill needs of all people and offer it at affordable and fair prices</p>
 		</div>
 	   </div>
 	  </div>
@@ -89,7 +105,7 @@
 	   <div class="col-md-9">
 	    <div class="about_h2i1r">
 		 <h5>Professional Team</h5>
-		 <p class="mt-3 mb-0">Our professional team delivers expert service with care and dedication.</p>
+		 <p class="mt-3 mb-0">We produce furniture to fulfill needs of all people and offer it at affordable and fair prices</p>
 		</div>
 	   </div>
 	  </div>
@@ -97,6 +113,122 @@
 	</div>
    </div>
  </div>
+</section>
+<!-- EXPANDED ABOUT STORY SECTION -->
+<section id="about_story" class="py-5">
+    <div class="container-xl">
+        <div class="row align-items-center">
+            <div class="col-md-6 mb-4">
+                <img src="https://cosyinternational.com/wp-content/uploads/2022/06/Interior-A-scaled.jpg" class="w-100 rounded shadow" alt="Our Story">
+            </div>
+            <div class="col-md-6">
+                <h5 class="col_yell fw-bold">Our Story</h5>
+                <h2 class="mt-3 mb-4">Crafting Comfort for Every Home</h2>
+
+                <p class="text-muted">
+                    For years, our mission has been simple—bring stylish, durable, and affordable furniture 
+                    to every home. We believe that the space you live in shapes your life, your feelings, 
+                    and your memories. That’s why every piece we design is crafted with care, comfort, 
+                    and timeless beauty.
+                </p>
+
+                <p class="text-muted">
+                    From modern living room collections to elegant bedroom sets, we work with experienced 
+                    designers and skilled craftsmen to ensure every product meets the highest quality 
+                    standards. Whether you're furnishing a new home or upgrading your current space, we’re 
+                    here to help you create a place you’ll love coming back to.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- OUR MISSION, VISION, VALUES -->
+<section id="mission" class="py-5 bg-light">
+    <div class="container-xl">
+        <div class="text-center mb-5">
+            <h5 class="col_yell">Who We Are</h5>
+            <h2 class="fw-bold">Our Mission, Vision & Values</h2>
+            <p class="text-muted w-75 mx-auto">
+                A company built on trust, craftsmanship, and a deep understanding of what makes a home truly feel like home.
+            </p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="p-4 bg-white shadow rounded h-100">
+                    <h4 class="mb-3"><i class="fa fa-bullseye col_yell me-2"></i>Our Mission</h4>
+                    <p class="text-muted">
+                        To provide beautifully designed and durable furniture that brings comfort, style, 
+                        and value into every home — without ever compromising on quality.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="p-4 bg-white shadow rounded h-100">
+                    <h4 class="mb-3"><i class="fa fa-lightbulb-o col_yell me-2"></i>Our Vision</h4>
+                    <p class="text-muted">
+                        To become the most trusted furniture brand in the region, known for innovation, 
+                        craftsmanship, and customer satisfaction.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="p-4 bg-white shadow rounded h-100">
+                    <h4 class="mb-3"><i class="fa fa-heart col_yell me-2"></i>Our Values</h4>
+                    <p class="text-muted mb-2"><i class="fa fa-check col_yell me-1"></i>Honesty & Responsibility</p>
+                    <p class="text-muted mb-2"><i class="fa fa-check col_yell me-1"></i>Quality Craftsmanship</p>
+                    <p class="text-muted mb-0"><i class="fa fa-check col_yell me-1"></i>Customer Satisfaction First</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- WHY CHOOSE US SECTION -->
+<section id="why_us" class="py-5">
+    <div class="container-xl">
+        <div class="text-center mb-5">
+            <h5 class="col_yell">Why Choose Us?</h5>
+            <h2 class="fw-bold">We Do More Than Just Sell Furniture</h2>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="text-center p-4 shadow-sm rounded h-100">
+                    <span class="font_50 col_yell"><i class="fa fa-couch"></i></span>
+                    <h5 class="mt-3">Premium Materials</h5>
+                    <p class="text-muted">We use high-quality woods, fabrics, and metals designed to last for years.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-4">
+                <div class="text-center p-4 shadow-sm rounded h-100">
+                    <span class="font_50 col_yell"><i class="fa fa-paint-brush"></i></span>
+                    <h5 class="mt-3">Modern Designs</h5>
+                    <p class="text-muted">Our furniture blends modern aesthetics with everyday usability.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-4">
+                <div class="text-center p-4 shadow-sm rounded h-100">
+                    <span class="font_50 col_yell"><i class="fa fa-headphones"></i></span>
+                    <h5 class="mt-3">Great Support</h5>
+                    <p class="text-muted">We offer help at every step — before purchase and long after.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3 mb-4">
+                <div class="text-center p-4 shadow-sm rounded h-100">
+                    <span class="font_50 col_yell"><i class="fa fa-truck"></i></span>
+                    <h5 class="mt-3">Fast Delivery</h5>
+                    <p class="text-muted">Your orders are delivered safely, quickly, and with full care.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
 <section id="offer_o" class="bg_dark pt-5 pb-5">

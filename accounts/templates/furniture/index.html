@@ -202,41 +202,41 @@ Design Process</h5>
         </div>
         {% endif %}
         
-        {% if projects %}
-        <div class="project_2 row">
+        {% if projects_slides %} <div class="project_2 row">
             <div id="carouselExampleCaptions1" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-indicators">
-                    {% for project in projects %}
-                        {% if forloop.counter0|divisibleby:3 %}
-                            <button type="button" data-bs-target="#carouselExampleCaptions1" data-bs-slide-to="{{ forloop.counter0|divisibleby:3 }}" class="{% if forloop.first %}active{% endif %}" aria-label="Slide {{ forloop.counter0|divisibleby:3 }}"></button>
-                        {% endif %}
+                    {% for slide in projects_slides %}
+                        <button 
+                            type="button" 
+                            data-bs-target="#carouselExampleCaptions1" 
+                            data-bs-slide-to="{{ forloop.counter0 }}" 
+                            class="{% if forloop.first %}active{% endif %}" 
+                            aria-label="Slide {{ forloop.counter }}">
+                        </button>
                     {% endfor %}
                 </div>
 
                 <div class="carousel-inner">
-                    {% for project in projects %}
-                        {% if forloop.counter0|divisibleby:3 %}
-                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                                <div class="project_2i row">
-                        {% endif %}
-
-                        <div class="col-md-4">
-                            <div class="project_2i1 text-center">
-                                <div class="grid clearfix">
-                                    <figure class="effect-jazz mb-0">
-        <a href="{% url 'detail' id=project.id %}"><img src="{{ project.image.url }}" class="w-100" alt="{{ project.title }}"></a>
-    </figure>
-                                </div>
-                                <h4 class="mt-3">
-        <a class="text-white" href="{% url 'detail' id=project.id %}">{{ project.title }}</a>
-    </h4>
+                    {% for slide in projects_slides %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <div class="project_2i row">
+                                {% for project in slide %}
+                                    <div class="col-md-4">
+                                        <div class="project_2i1 text-center">
+                                            
+                                            <div class="grid clearfix">
+                                                <figure class="effect-jazz mb-0">
+                                                        <img src="{{ project.image.url }}" class="w-100" alt="{{ project.title }}">
+                                                </figure>
+                                            </div>
+                                            <h4 class="mt-3">
+                                                <h1 class="text-white" href="{% url 'detail' id=project.id %}">{{ project.title }}</h1>
+                                            </h4>
+                                            </div>
+                                    </div>
+                                {% endfor %}
                             </div>
                         </div>
-                        
-                        {% if forloop.counter|divisibleby:3 or forloop.last %}
-                            </div>
-                            </div>
-                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
@@ -289,138 +289,58 @@ Design Process</h5>
 </section>
 
 <section id="quote" class="p_3 px-4 bg-light">
- <div class="container-fluid">
-   <div class="quote_1 row">
-    <div class="col-md-6">
-	 <div class="quote_1l position-relative">
-	  <div class="quote_1l1">
-	    <div class="grid clearfix">
-				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="https://www.ikea.com/ca/en/images/products/tvaerhand-table-lamp-black-bamboo__1013695_pe829296_s5.jpg?f=s" class="w-100" alt="abc"></a>
-				  </figure>
-			  </div>
-	  </div>
-	  <div class="quote_1l2 position-absolute w-100 text-end pe-5">
-	     <h1 class="bg_yell text-white rounded-circle d-inline-block text-center">22 <br> <span class="font_14 d-inline-block">YEARS <br>  GURANTEE</span></h1>
-	  </div>
-	 </div>
-	</div>
-	<div class="col-md-6">
-	 <div class="quote_1r">
-	   <h6 class="col_yell fw-bold">GET FREE QUOTE</h6>
-	  <h1 class="mt-3">Schedule a free designer <br> consultation</h1>
-	  <div class="quote_1ri row">
-	   <div class="col-md-6">
-	    <div class="quote_1ril">
-		 <input placeholder="Full Name *" class="form-control mt-3" type="text">
-		</div>
-	   </div>
-	   <div class="col-md-6">
-	    <div class="quote_1ril">
-		 <input placeholder="Email Address *" class="form-control mt-3" type="text">
-		</div>
-	   </div>
-	  </div>
-	  <div class="quote_1ri row">
-	   <div class="col-md-12">
-	    <div class="quote_1ril">
-		 <textarea placeholder="Message Details" class="form-control mt-3 form_text"></textarea>
-		 <h6 class="mb-0 mt-4"><a class="button_1" href="#">SUBMIT <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
-		</div>
-	   </div>
-	  </div>
-	 </div>
-	</div>
-   </div> 
- </div>
-</section>
+  <div class="container-fluid">
+    <div class="quote_1 row">
 
-<section id="client" class="p_3 px-4 carousel_p">
-<div class="container-fluid">
-    {# --- HARDCODED HEADER (Per User Request) --- #}
-    <div class="project_1 row mb-4 text-center">
-        <div class="col-md-12">
-            <h6 class="col_yell fw-bold">OUR CLIENTS</h6>
-            <h1 class="mt-3 mb-0">Here's what our satisfied <br> clients are saying</h1>
+      <!-- Left Image Section -->
+      <div class="col-md-6">
+        <div class="quote_1l position-relative">
+          <div class="quote_1l1">
+            <div class="grid clearfix">
+              <figure class="effect-jazz mb-0">
+                <a href="#"><img src="https://www.ikea.com/ca/en/images/products/tvaerhand-table-lamp-black-bamboo__1013695_pe829296_s5.jpg?f=s" class="w-100" alt="abc"></a>
+              </figure>
+            </div>
+          </div>
+
+          <div class="quote_1l2 position-absolute w-100 text-end pe-5">
+            <h1 class="bg_yell text-white rounded-circle d-inline-block text-center">
+              22 <br>
+              <span class="font_14 d-inline-block">YEARS <br> GUARANTEE</span>
+            </h1>
+          </div>
         </div>
-    </div>
-    {# --- END HARDCODED HEADER --- #}
-    
-  <div class="testim_1 row">
-   <div id="carouselExampleCaptions2" class="carousel slide" data-bs-ride="carousel">
- 
-        {# --- DYNAMIC CAROUSEL INDICATORS --- #}
-        <div class="carousel-indicators">
-            {% for slide in testimonial_slides %}
-                <button type="button" 
-                    data-bs-target="#carouselExampleCaptions2" 
-                    data-bs-slide-to="{{ forloop.counter0 }}" 
-                    class="{% if forloop.first %}active{% endif %}" 
-                    aria-label="Slide {{ forloop.counter }}"
-                    {% if forloop.first %}aria-current="true"{% endif %}
-                ></button>
-            {% empty %}
-                {# Fallback indicator #}
-                <button type="button" data-bs-target="#carouselExampleCaptions2" data-bs-slide-to="0" class="active" aria-label="Slide 1" aria-current="true"></button>
-            {% endfor %}
+      </div>
+
+      <!-- Right Text Section (No Form) -->
+      <div class="col-md-6">
+        <div class="quote_1r">
+          <h6 class="col_yell fw-bold">GET FREE QUOTE</h6>
+          <h1 class="mt-3">Schedule a free designer <br> consultation</h1>
+
+          <p class="mt-4">
+            Our expert designers are ready to help you transform your space into something truly exceptional.
+            Whether you’re upgrading a single room or redesigning your entire home, we provide personalized
+            guidance tailored to your style and needs.
+          </p>
+
+          <p class="mt-3">
+            Simply reach out to us, and our team will assist you with planning, design suggestions, materials,
+            budgeting, and more. No forms needed — just direct, friendly support to bring your vision to life.
+          </p>
+
+          <p class="fw-bold mt-4 col_yell">
+            Contact us today and start your transformation.
+          </p>
         </div>
-        {# --- END DYNAMIC CAROUSEL INDICATORS --- #}
+      </div>
 
-        <div class="carousel-inner">
-            {# --- DYNAMIC CAROUSEL SLIDES (EACH SLIDE CONTAINS UP TO 3 TESTIMONIALS) --- #}
-            {% for slide in testimonial_slides %}
-                <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                    <div class="testim_1i row">
-                        
-                        {# Iterate over the 1-3 testimonials in the current slide group #}
-                        {% for testimonial in slide %}
-                            <div class="col-md-4">
-                                <div class="testim_1i1 bg-light p-4 clearfix">
-                                    <span class="d-inline-block bg_yell text-white text-center span_1 rounded-circle"><i class="fa fa-quote-left"></i></span>
-                                    
-                                    <div class="testim_1i1i clearfix mt-3">
-                                        <span>
-                                            {# Use testimonial.image.url for the dynamic image #}
-                                            <img src="{{ testimonial.image.url }}" alt="{{ testimonial.client_name }}" class="rounded-circle me-3 float-start">
-                                        </span>
-                                        <h6 class="mb-0 fw-bold text-uppercase lh-base"> 
-                                            {{ testimonial.client_name }} <br> 
-                                            <span class="col_yell font_14 fw-normal">{{ testimonial.designation }}</span>
-                                        </h6>
-                                    </div>
-                                    <p class="mb-0 mt-3">{{ testimonial.quote }}</p>
-                                </div> 
-                            </div>
-                        {% endfor %}
-
-                        {# Optional: Add empty columns if you need exactly 3 columns per row for styling consistency #}
-                        {% with slide|length as count %}
-                            {% if count == 1 %}
-                                <div class="col-md-4"></div>
-                                <div class="col-md-4"></div>
-                            {% elif count == 2 %}
-                                <div class="col-md-4"></div>
-                            {% endif %}
-                        {% endwith %}
-
-                    </div>
-                </div>
-            {% empty %}
-                {# Fallback content if no testimonials exist #}
-                <div class="carousel-item active">
-                    <div class="testim_1i row">
-                        <div class="col-md-12 text-center">
-                            <p>No testimonials available yet. Please add some in the admin panel.</p>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-            {# --- END DYNAMIC CAROUSEL SLIDES --- #}
-        </div>
     </div>
   </div>
-</div>
 </section>
+
+
+{% include 'furniture/Client.html' %}
 
 
 <section id="blog" class="p_3 px-4">
