@@ -8,7 +8,9 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from .models import Product
 import math
-
+from django.shortcuts import render, redirect
+from .models import ContactMessage
+from django.contrib import messages
 
 # Create your views here.
 
@@ -501,3 +503,14 @@ def update_cart_quantity(request):
         "items": items
     })
 
+def save_contact(request):
+    if request.method == "POST":
+        ContactMessage.objects.create(
+            full_name=request.POST.get("full_name"),
+            email=request.POST.get("email"),
+            phone=request.POST.get("phone"),
+            message=request.POST.get("message"),
+        )
+        messages.success(request, "Your message has been sent successfully!")
+        # Corrected: Redirect using the URL pattern name 'contact'
+        return redirect('contact')

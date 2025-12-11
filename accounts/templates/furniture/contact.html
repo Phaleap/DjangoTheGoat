@@ -98,34 +98,33 @@ info@gmail.com</h6>
 	 <div class="quote_1r p-4">
 	   <h4>We would love to hear from you.</h4>
 	  <p>Your email address will not be published. Required fields are marked *</p>
-	  <div class="quote_1ri row">
-	   <div class="col-md-6">
-	    <div class="quote_1ril">
-		 <input placeholder="Full Name *" class="form-control mt-3" type="text">
-		</div>
-	   </div>
-	   <div class="col-md-6">
-	    <div class="quote_1ril">
-		 <input placeholder="Email Address *" class="form-control mt-3" type="text">
-		</div>
-	   </div>
-	  </div>
-	  <div class="quote_1ri row">
-	   <div class="col-md-12">
-	    <div class="quote_1ril">
-		 <input placeholder="Your Phone" class="form-control mt-3" type="text">
-		</div>
-	   </div>
-	  </div>
-	  <div class="quote_1ri row">
-	   <div class="col-md-12">
-	    <div class="quote_1ril">
-		 <textarea placeholder="Your Message" class="form-control mt-3 form_text"></textarea>
-		 <h6 class="mb-0 mt-4"><a class="button_1" href="#">SUBMIT <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
-		</div>
-	   </div>
-	  </div>
-	 </div>
+	  {% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-success mt-3">{{ message }}</div>
+  {% endfor %}
+{% endif %}
+	<form method="POST" action="{% url 'save_contact' %}">
+    {% csrf_token %}
+
+    <div class="quote_1ri row">
+        <div class="col-md-6">
+            <input name="full_name" placeholder="Full Name *" class="form-control mt-3" type="text" required>
+        </div>
+
+        <div class="col-md-6">
+            <input name="email" placeholder="Email Address *" class="form-control mt-3" type="email" required>
+        </div>
+    </div>
+
+    <input name="phone" placeholder="Your Phone" class="form-control mt-3" type="text">
+
+    <textarea name="message" placeholder="Your Message" class="form-control mt-3 form_text" required></textarea>
+
+    <button class="button_1 mt-4" type="submit">
+        SUBMIT <i class="fa fa-long-arrow-right ms-1"></i>
+    </button>
+</form>
+
 	</div>
    </div> 
  </div>

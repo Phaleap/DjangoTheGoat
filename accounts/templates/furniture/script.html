@@ -1,5 +1,25 @@
 <script>
 
+window.onscroll = function() {
+    stickyNavbar();
+};
+
+// Get the navbar element by its ID
+var navbar = document.getElementById("navbar_sticky");
+
+// Get the offset position of the navbar
+var sticky = navbar.offsetTop;
+
+function stickyNavbar() {
+    // Check if the current scroll position (window.pageYOffset) is greater than the initial position of the navbar
+    if (window.pageYOffset > sticky) {
+        // If scrolled past the navbar, add the 'sticky' class
+        navbar.classList.add("sticky");
+    } else {
+        navbar.classList.remove("sticky");
+    }
+}
+
 document.addEventListener("click", function (e) {
     const rmBtn = e.target.closest(".remove-item-btn");
     if (!rmBtn) return;
@@ -73,7 +93,19 @@ function sendCartAction(url, body, actionName) {
             document.getElementById("cart-total").textContent =
                 `$${data.total.toFixed(2)}`;
 
-  
+            const cartBadgeEl = document.getElementById("cart-count-badge");
+            if (cartBadgeEl) {
+                // Set the numerical count
+                cartBadgeEl.textContent = data.count; 
+
+                // Show/hide the badge based on the count
+                if (data.count > 0) {
+                    cartBadgeEl.style.display = 'inline-block';
+                } else {
+                    cartBadgeEl.style.display = 'none';
+                }
+            }
+            
             const subtotalEl = document.querySelector('.cart_3r h5.text-center.col_red');
             if (subtotalEl) {
                 subtotalEl.textContent = `$${data.total.toFixed(2)}`;

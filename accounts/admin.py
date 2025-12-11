@@ -29,3 +29,4 @@ class BlogTagAdmin(admin.ModelAdmin):
 admin.site.register(BlogPost, BlogPostAdmin)
 admin.site.register(BlogCategory, BlogCategoryAdmin)
 admin.site.register(BlogTag, BlogTagAdmin)
+admin.site.register(ContactMessage)
