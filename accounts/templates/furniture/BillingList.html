@@ -1,19 +1,33 @@
 {% load static %}
 <h2>Billing List</h2>
 <table border="1">
-    <tr>
-        <th>Name</th><th>Phone</th><th>Email</th><th>Address</th><th>Total</th><th>Receipt</th>
-    </tr>
-    {% for bill in billings %}
-    <tr>
-        <td>{{ bill.first_name }} {{ bill.last_name }}</td>
-        <td>{{ bill.phone }}</td>
-        <td>{{ bill.email }}</td>
-        <td>{{ bill.address }}</td>
-        <td>{{ bill.total }}</td>
-        <td>
-            <img src="{% static bill.qr_code_image %}" width="150">
-        </td>
-    </tr>
-    {% endfor %}
+  {% for bill in billings %}
+  <tr>
+    <th>Name</th>
+    <th>Phone</th>
+    <th>Email</th>
+    <th>Address</th>
+    <th>Total</th>
+    <th>Receipt</th>
+  </tr>
+  <tr>
+    <td>{{ bill.first_name }} {{ bill.last_name }}</td>
+    <td>{{ bill.phone }}</td>
+    <td>{{ bill.email }}</td>
+    <td>{{ bill.address }}</td>
+    <td>{{ bill.total }}</td>
+
+    <td>
+      {% if bill.qr_code_image %}
+      <img
+        src="{{ bill.qr_code_image.url }}"
+        width="150"
+        alt="Receipt QR Code"
+      />
+      {% else %}
+      <p>No QR Code</p>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
 </table>

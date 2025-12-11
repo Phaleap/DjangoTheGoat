@@ -449,6 +449,7 @@ def billing_add(request):
             phone=data['phone'],
             email=data['email'],
             qr_code_image=qr_image,
+             total=total
         )
         billing.save()
         return redirect('BillingList')
