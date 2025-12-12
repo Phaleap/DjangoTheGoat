@@ -1,54 +1,61 @@
 {% load static %}
 <section id="header">
-<nav class="navbar navbar-expand-md navbar-light bg-white mx-auto shadow_box px-3" id="navbar_sticky">
-  <div class="container-fluid">
-    <a class="navbar-brand p-0  fw-bold" href="{% url 'indexFur' %}"><i class="fa fa-home col_yell"></i> Furniture</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-	   <ul class="navbar-nav mb-0 nav_1">
-	    
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'indexFur' %}">Home</a>
-        </li>
-		 
-		<li class="nav-item">
-          <a class="nav-link" href="{% url 'aboutFur' %}">About </a>
-        </li>
-		
-		
+  <nav
+    class="navbar navbar-expand-md navbar-light bg-white mx-auto shadow_box px-3"
+    id="navbar_sticky"
+  >
+    <div class="container-fluid">
+      <a class="navbar-brand p-0 fw-bold" href="{% url 'indexFur' %}"
+        ><i class="fa fa-home col_yell"></i> Furniture</a
+      >
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mb-0 nav_1">
           <li class="nav-item">
-          <a class="nav-link" href="{% url 'shop' %}">Shop </a>
-        </li>
- 
+            <a
+              class="nav-link active"
+              aria-current="page"
+              href="{% url 'indexFur' %}"
+              >Home</a
+            >
+          </li>
 
-		<li class="nav-item">
-    <a class="nav-link" href="{% url 'blog' %}">Blog</a>
-</li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'aboutFur' %}">About </a>
+          </li>
 
-		<!-- Ozai Team -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'shop' %}">Shop </a>
+          </li>
 
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'blog' %}">Blog</a>
+          </li>
 
-		<li class="nav-item">
-          <a class="nav-link" href="{% url 'team' %}">Team</a>
-        </li>
-		
-		<!-- Ozai end -->
-       
-		
-	
-		
-		<li class="nav-item">
-          <a class="nav-link" href="{% url 'contact' %}">Contact </a>
-        </li>
+          <!-- Ozai Team -->
 
-      </ul>
-       <ul class="navbar-nav mb-0 ms-auto">
-	    
-        
-		
-		<!-- <li class="nav-item dropdown">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'team' %}">Team</a>
+          </li>
+
+          <!-- Ozai end -->
+
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'contact' %}">Contact </a>
+          </li>
+        </ul>
+        <ul class="navbar-nav mb-0 ms-auto">
+          <!-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle dropdown_search nav_hide fs-6" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="fa fa-user"></i>
           </a>
@@ -64,65 +71,85 @@
 			</li>
           </ul>
         </li> -->
-		 
-		<li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle drop_togn nav_hide fs-6 cart-icon-badge-wrapper" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="fa fa-shopping-bag"></i>
-        <span class="cart-count-badge" id="cart-count-badge">{{ navbar_cart_count }}</span>
 
-    </a>
-         <ul class="dropdown-menu drop_cart rounded-0 border-0" aria-labelledby="navbarDropdown" style="">
-  <li>
-    <div class="drop_1i row">
-      <div class="col-md-6 col-6">
-        <h5 id="cart-count">{{ navbar_cart_count }} ITEMS</h5>
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link dropdown-toggle drop_togn nav_hide fs-6 cart-icon-badge-wrapper"
+              href="#"
+              id="navbarDropdown"
+              role="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="fa fa-shopping-bag"></i>
+              <span class="cart-count-badge" id="cart-count-badge"
+                >{{ navbar_cart_count }}</span
+              >
+            </a>
+            <ul
+              class="dropdown-menu drop_cart rounded-0 border-0"
+              aria-labelledby="navbarDropdown"
+              style=""
+            >
+              <li>
+                <div class="drop_1i row">
+                  <div class="col-md-6 col-6">
+                    <h5 id="cart-count">{{ navbar_cart_count }} ITEMS</h5>
+                  </div>
+                  <div class="col-md-6 col-6">
+                    <div class="drop_1il text-end">
+                      <h5><a href="cart.html">VIEW CART</a></h5>
+                    </div>
+                  </div>
+                </div>
 
-      </div>
-      <div class="col-md-6 col-6">
-        <div class="drop_1il text-end"><h5><a href="cart.html">VIEW CART</a></h5></div>
+                <!-- Cart items will go here -->
+                <div id="cart-items">
+                  {% if navbar_cart %} {% for key, item in navbar_cart.items %}
+                  <div class="d-flex align-items-center mb-2">
+                    <img
+                      src="{{ item.image }}"
+                      width="50"
+                      height="50"
+                      class="me-2"
+                    />
+                    <div>
+                      <p class="mb-0">{{ item.name }}</p>
+                      <small>{{ item.qty }} × ${{ item.price }}</small>
+                    </div>
+                  </div>
+                  {% endfor %} {% else %}
+                  <p class="text-center mt-2">Your cart is empty</p>
+                  {% endif %}
+                </div>
+
+                <div class="drop_1i2 row">
+                  <div class="col-md-6 col-6">
+                    <div class="drop_1il"><h5>TOTAL</h5></div>
+                  </div>
+                  <div class="col-md-6 col-6">
+                    <div class="drop_1il text-end">
+                      <h5 id="cart-total">${{ navbar_cart_total }}</h5>
+                    </div>
+                  </div>
+                </div>
+                <div class="drop_1i3 text-center row mt-2">
+                  <div class="col-md-12 col-12">
+                    <h6 class="mb-0">
+                      <a
+                        class="button_2 d-block"
+                        href="{% url 'shoppingcart' %}"
+                        >SHOPPING CART
+                        <i class="fa fa-long-arrow-right ms-1"></i
+                      ></a>
+                    </h6>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
       </div>
     </div>
-
-    <!-- Cart items will go here -->
-    <div id="cart-items">
-  {% if navbar_cart %}
-    {% for key, item in navbar_cart.items %}
-      <div class="d-flex align-items-center mb-2">
-        <img src="{{ item.image }}" width="50" height="50" class="me-2">
-        <div>
-          <p class="mb-0">{{ item.name }}</p>
-          <small>{{ item.qty }} × ${{ item.price }}</small>
-        </div>
-      </div>
-    {% endfor %}
-  {% else %}
-    <p class="text-center mt-2">Your cart is empty</p>
-  {% endif %}
-</div>
-
-
-    <div class="drop_1i2 row">
-      <div class="col-md-6 col-6">
-        <div class="drop_1il"><h5>TOTAL</h5></div>
-      </div>
-      <div class="col-md-6 col-6">
-        <div class="drop_1il text-end"><h5 id="cart-total">${{ navbar_cart_total }}</h5>
-</div>
-      </div>
-    </div>
-
-    <div class="drop_1i3 text-center row mt-2">
-      <div class="col-md-12 col-12">
-        <h6 class="mb-0"><a class="button_2 d-block" href="{% url 'shoppingcart' %}">SHOPPING CART <i class="fa fa-long-arrow-right ms-1"></i></a></h6>
-      </div>
-    </div>
-  </li>
-</ul>
-
-        </li>
-
-      </ul>
-    </div>
-  </div>
-</nav>
+  </nav>
 </section>
