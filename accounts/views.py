@@ -341,63 +341,52 @@ def get_cart_data(request):
 
 
 
-# --- The AJAX View Function ---
-@require_POST # Restricts access to POST method only
+@require_POST
 def add_to_cart(request):
-    # This try/except is crucial for debugging and robust error handling
     try:
-        # 1. Get data from the POST request
         product_id = request.POST.get('product_id')
         quantity = request.POST.get('quantity')
-        
-        # Validation and Type Conversion
+
         if not product_id or not quantity:
             return JsonResponse({'error': 'Missing product ID or quantity.'}, status=400)
-            
+
         try:
             product_id = int(product_id)
             quantity = int(quantity)
         except ValueError:
             return JsonResponse({'error': 'Invalid ID or quantity format.'}, status=400)
-            
+
         if quantity <= 0:
             return JsonResponse({'error': 'Quantity must be positive.'}, status=400)
 
-        # 2. Get the product object
         product = Product.objects.get(id=product_id)
-        
-        # 3. Update the cart in the session
+
         cart = request.session.get('cart', {})
         product_key = str(product_id)
-        
-        # Add or update the item
+
         if product_key in cart:
             cart[product_key]['qty'] += quantity
         else:
             cart[product_key] = {
-                'qty': quantity,
-                # Optional: store price/name for faster access, but fetching from DB is safer
-                'price': float(product.price), 
                 'name': product.productName,
+                'price': float(product.price),
+                'qty': quantity,
+                'image': product.productImage.url if product.productImage else ''
             }
-        
+
         request.session['cart'] = cart
         request.session.modified = True
-        
-        # 4. Return updated cart data
+
         cart_data = get_cart_data(request)
-        
         return JsonResponse(cart_data)
 
     except Product.DoesNotExist:
-        # Handle case where the product ID sent from the frontend is invalid
         return JsonResponse({'error': 'Product not found.'}, status=404)
 
     except Exception as e:
-        # Catch any other unexpected server-side error
-        print(f"Server Error in add_to_cart: {e}") 
-        # Return a 500 response so the JS promise rejects gracefully
+        print(f"Server Error in add_to_cart: {e}")
         return JsonResponse({'error': f'Internal Server Error: {str(e)}'}, status=500)
+
     
 @require_POST
 def remove_from_cart(request):
@@ -515,3 +504,4 @@ def save_contact(request):
         messages.success(request, "Your message has been sent successfully!")
         # Corrected: Redirect using the URL pattern name 'contact'
         return redirect('contact')
+    
