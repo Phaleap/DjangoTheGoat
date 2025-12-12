@@ -213,6 +213,7 @@ def cart(request):
     return render(request, 'furniture/cart.html')
 
 def checkOut(request):
+    
     return render(request, 'furniture/checkout.html')
 
 def contact(request):
