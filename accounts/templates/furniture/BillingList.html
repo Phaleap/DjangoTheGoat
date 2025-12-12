@@ -11,11 +11,11 @@
     <th>Receipt</th>
   </tr>
   <tr>
-    <td>{{ bill.first_name }} {{ bill.last_name }}</td>
-    <td>{{ bill.phone }}</td>
-    <td>{{ bill.email }}</td>
-    <td>{{ bill.address }}</td>
-    <td>{{ bill.total }}</td>
+    <td style="padding: 0px 20px">{{ bill.first_name }} {{ bill.last_name }}</td>
+    <td  style="padding: 0px 20px">{{ bill.phone }}</td>
+    <td  style="padding: 0px 20px">{{ bill.email }}</td>
+    <td  style="padding: 0px 20px">{{ bill.address }}</td>
+    <td style="padding: 0px 20px" >$ {{ bill.total }}</td>
 
     <td>
       {% if bill.qr_code_image %}
@@ -31,3 +31,6 @@
   </tr>
   {% endfor %}
 </table>
+<br>
+<br>
+<a style="padding: 13px 20px;color: white; background-color: rgb(34, 52, 168); text-decoration: none; border-radius: 5px;" href="{% url 'indexFur' %}">Back to home</a>

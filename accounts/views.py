@@ -14,14 +14,7 @@ from django.contrib import messages
 
 # Create your views here.
 
-def home(request):
-    return HttpResponse('Home_page')
 
-def products(request):
-    return HttpResponse('Products_page')
-
-def customer(request):
-    return HttpResponse('Customer_page')
 
 def indexFur(request):
     slides = CarouselSlide.objects.all() 
@@ -415,6 +408,38 @@ def remove_from_cart(request):
     
 
 def billing_add(request):
+    cart_data = get_cart_data(request)
+
+    subtotal = cart_data['total']
+    shipping = 20
+    total = subtotal + shipping
+
+    if request.method == "POST":
+        data = request.POST
+        qr_image = request.FILES.get('qr_code_image')
+
+        billing = BillingDetail(
+            first_name=data['first_name'],
+            last_name=data['last_name'],
+            country=data['country'],
+            address=data['address'],
+            town=data['town'],
+            postcode=data['postcode'],
+            phone=data['phone'],
+            email=data['email'],
+            qr_code_image=qr_image,
+            total=total
+        )
+        billing.save()
+        return redirect('BillingList')
+
+    return render(request, 'furniture/checkout.html', {
+        'items': cart_data['items'],  # <— list of items with id, name, price, qty
+        'subtotal': subtotal,
+        'shipping': shipping,
+        'total': total,
+    })
+
     cart = request.session.get('cart', {})
 
     # Calculate subtotal

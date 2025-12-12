@@ -1,101 +1,150 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  {% include 'furniture/Head.html' %}
+{% include 'furniture/Head.html' %}
 
-  <body>
-    {% include 'furniture/SecTop.html' %} {% include 'furniture/Header.html' %}
+<body class="bg-light">
+    {% include 'furniture/SecTop.html' %}
+    {% include 'furniture/Header.html' %}
 
-    <section href="{% url 'billing_add' %}" class="center_check">
-      <div class="promo_m center_om">
-        <div class="container-fluid">
-          <div class="center_o1 row text-center">
-            <div class="col-md-12">
-              <h6 class="col_yell fw-bold">
-                <a class="text-white" href="#">HOME PAGE</a>
-                <span class="mx-2 text-muted">/</span> CHECKOUT
-              </h6>
-              <h1 class="mb-0 font_60 text-white mt-3">Checkout</h1>
-            </div>
-          </div>
+    <!-- PAGE HEADER -->
+    <section class="center_check py-5" style="background:#111;">
+        <div class="container text-center text-white">
+            <h6 class="fw-bold">
+                <a class="text-white-50" href="#">HOME PAGE</a>
+                <span class="mx-2">/</span>
+                <span class="text-white">CHECKOUT</span>
+            </h6>
+            <h1 class="display-5 fw-bold mt-2">Checkout</h1>
         </div>
-      </div>
     </section>
 
-    <section id="checkout" class="p_3">
-      <div class="container-xl">
-        <div class="checkout_1 row">
-          <div class="col-md-8">
-            <div class="checkout_1l">
-              <h5>Make Your Checkout Here</h5>
-              <p>Please register in order to checkout more quickly</p>
-            </div>
-            <form method="POST" action="{% url 'billing_add' %}">
-              {% csrf_token %}
-              <div class="checkout_1l1 row">
-                <div class="col-md-6 ps-0">
-                  <h6>First Name <span>*</span></h6>
-                  <input type="text" name="first_name" required />
+    <!-- CHECKOUT SECTION -->
+    <section id="checkout" class="py-5">
+        <div class="container-xl">
+            <div class="row g-4">
+
+                <!-- LEFT FORM -->
+                <div class="col-lg-8">
+                    <div class="p-4 shadow-sm bg-white rounded-3">
+                        <h4 class="fw-bold mb-1">Billing Details</h4>
+                        <p class="text-muted small mb-4">Please fill in the information below.</p>
+
+                        <form method="POST" action="{% url 'billing_add' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">First Name <span class="text-danger">*</span></label>
+                                    <input type="text" name="first_name" class="form-control" style="border: 1px solid #111;" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Last Name <span class="text-danger">*</span></label>
+                                    <input type="text" name="last_name" class="form-control" style="border: 1px solid #111;" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Email <span class="text-danger">*</span></label>
+                                    <input type="email" name="email" class="form-control" style="border: 1px solid #111;" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Phone <span class="text-danger">*</span></label>
+                                    <input type="text" name="phone" class="form-control" style="border: 1px solid #111;" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Country <span class="text-danger">*</span></label>
+                                    <input type="text" name="country" class="form-control" style="border: 1px solid #111;" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">State / Division <span class="text-danger">*</span></label>
+                                    <input type="text" name="town" class="form-control" style="border: 1px solid #111;" required>
+                                </div>
+
+                                <div class="col-md-8">
+                                    <label class="form-label">Address <span class="text-danger">*</span></label>
+                                    <input type="text" name="address" class="form-control" style="border: 1px solid #111;" required>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label">Postal Code <span class="text-danger">*</span></label>
+                                    <input type="text" name="postcode" class="form-control" style="border: 1px solid #111;" required>
+                                </div>
+
+                                <!-- Hidden Total -->
+                                <input type="hidden" name="total" value="{{ total }}">
+                            </div>
+
+                            <!-- EXTRA SPACE BEFORE ORDER SUMMARY ON MOBILE -->
+                            <div class="d-lg-none mt-4"></div>
+                    </div>
                 </div>
 
-                <div class="col-md-6 ps-0">
-                  <h6>Last Name <span>*</span></h6>
-                  <input type="text" name="last_name" required />
-                </div>
-              </div>
+                <!-- RIGHT ORDER SUMMARY -->
+                <div class="col-lg-4">
+    <div class="checkout__order p-4 shadow-sm bg-white rounded-3">
+        <h4 class="fw-bold">Your Order</h4>
 
-              <div class="checkout_1l1 row">
-                <div class="col-md-6 ps-0">
-                  <h6>Email <span>*</span></h6>
-                  <input type="email" name="email" required />
-                </div>
-
-                <div class="col-md-6 ps-0">
-                  <h6>Phone <span>*</span></h6>
-                  <input type="text" name="phone" required />
-                </div>
-              </div>
-
-              <div class="checkout_1l1 row">
-                <div class="col-md-6 ps-0">
-                  <h6>Country <span>*</span></h6>
-                  <input type="text" name="country" required />
-                </div>
-
-                <div class="col-md-6 ps-0">
-                  <h6>State / Division <span>*</span></h6>
-                  <input type="text" name="town" required />
-                </div>
-              </div>
-
-              <div class="checkout_1l1 row">
-                <div class="col-md-6 ps-0">
-                  <h6>Address <span>*</span></h6>
-                  <input type="text" name="address" required />
-                </div>
-                <div class="col-md-6 ps-0">
-                  <h6>Postal Code <span>*</span></h6>
-                  <input type="text" name="postcode" required />
-                </div>
-              </div>
-
-              <!-- TOTAL -->
-              <input type="hidden" name="total" value="{{ total }}" />
-
-              <!-- SUBMIT BUTTON -->
-              <button
-                type="submit"
-                class="button_2 d-block text-center w-100 mt-3"
-              >
-                CHECKOUT
-              </button>
-            </form>
-          </div>
+        <div class="checkout__order__products border-bottom pb-2 mb-3">
+            <span class="fw-semibold">Products</span>
+            <span class="float-end fw-semibold">Total</span>
         </div>
-      </div>
+
+        {% for item in items %}
+        <ul class="list-unstyled mb-1">
+            <li class="d-flex justify-content-between">
+                <span>{{ item.name }} × {{ item.qty }}</span>
+                <span class="fw-bold">${{ item.price|floatformat:2 }}</span>
+            </li>
+        </ul>
+        {% endfor %}
+
+        <div class="checkout__order__subtotal d-flex justify-content-between mt-4">
+            <span>Subtotal</span>
+            <span class="fw-bold">${{ subtotal|floatformat:2 }}</span>
+        </div>
+
+        <div class="d-flex justify-content-between mt-2">
+            <span>Shipping</span>
+            <span class="fw-bold">${{ shipping|floatformat:2 }}</span>
+        </div>
+
+        <div class="checkout__order__total d-flex justify-content-between mt-3 mb-4">
+            <span class="fs-5 fw-bold">Total</span>
+            <span class="fs-5 fw-bold">${{ total|floatformat:2 }}</span>
+        </div>
+        <img src="/media/qrcodes/qr.jpg" style="width: 300px" alt="">
+
+        <input type="hidden" name="total" value="{{ total }}">
+        
+
+        <label class="form-label" style="font-weight: bold; margin: 20px 0px 20px 0px">Please upload reciept</label>
+        
+        <input type="file" class="form-control mb-3" name="qr_code_image">
+
+        <input type="submit" class="btn btn-dark w-100 py-2 fw-semibold" value="PLACE ORDER">
+    </div>
+</div>
+
+
+                <!-- SUBMIT BUTTON (FALLBACK) -->
+                <div class="col-12 mt-3 d-none">
+                    <button type="submit" class="btn btn-dark w-100 py-3 fw-bold">
+                        CHECKOUT
+                    </button>
+                </div>
+
+                </form>
+
+            </div>
+        </div>
     </section>
 
-    {% include 'furniture/Chatsec.html' %} {% include 'furniture/Footer.html' %}
+    {% include 'furniture/Chatsec.html' %}
+    {% include 'furniture/Footer.html' %}
     {% include 'furniture/script.html' %}
-  </body>
+</body>
 </html>
