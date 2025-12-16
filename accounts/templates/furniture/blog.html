@@ -84,15 +84,6 @@
   </div>
 </form>
 
-    {# Dynamic Categories (Requires a Category model and context variable: 'categories') #}
-    <div class="blog_pg1r1 mt-4">
-    <h5>Categories</h5>
-    <hr class="line mb-4">
-    {% for category, count in categories_with_count.items %}
-      <h6 class="mb-0"><a href="{% url 'blog_category_detail' category %}">{{ category }} <span class="pull-right">({{ count }})</span></a></h6><hr>
-    {% endfor %}
-    </div>
-
     {# Dynamic Recent Posts (Context variable: 'recent_posts') #}
     <div class="blog_pg1r1 mt-4">
     <h5>Recent Posts</h5>
