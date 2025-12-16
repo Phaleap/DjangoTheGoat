@@ -2,6 +2,7 @@
 
 from django.contrib import admin
 from accounts.models import *
+from .models import QRCode 
 
 # Product & other models
 admin.site.register(Category)
@@ -31,3 +32,9 @@ admin.site.register(BlogCategory, BlogCategoryAdmin)
 admin.site.register(BlogTag, BlogTagAdmin)
 admin.site.register(ContactMessage)
 admin.site.register(BillingDetail)
+
+@admin.register(QRCode)
+class QRCodeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'qr_image', 'is_active')   # Columns to show
+    list_editable = ('is_active',)                   # Toggle active in list view
+    list_filter = ('is_active',)       

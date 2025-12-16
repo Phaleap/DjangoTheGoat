@@ -7,7 +7,6 @@
     {% include 'furniture/SecTop.html' %}
     {% include 'furniture/Header.html' %}
 
-    <!-- PAGE HEADER -->
     <section class="center_check py-5" style="background:#111;">
         <div class="container text-center text-white">
             <h6 class="fw-bold">
@@ -19,12 +18,10 @@
         </div>
     </section>
 
-    <!-- CHECKOUT SECTION -->
     <section id="checkout" class="py-5">
         <div class="container-xl">
             <div class="row g-4">
 
-                <!-- LEFT FORM -->
                 <div class="col-lg-8">
                     <div class="p-4 shadow-sm bg-white rounded-3">
                         <h4 class="fw-bold mb-1">Billing Details</h4>
@@ -38,105 +35,106 @@
                                     <label class="form-label">First Name <span class="text-danger">*</span></label>
                                     <input type="text" name="first_name" class="form-control" style="border: 1px solid #111;" required>
                                 </div>
-
                                 <div class="col-md-6">
                                     <label class="form-label">Last Name <span class="text-danger">*</span></label>
                                     <input type="text" name="last_name" class="form-control" style="border: 1px solid #111;" required>
                                 </div>
-
                                 <div class="col-md-6">
                                     <label class="form-label">Email <span class="text-danger">*</span></label>
                                     <input type="email" name="email" class="form-control" style="border: 1px solid #111;" required>
                                 </div>
-
                                 <div class="col-md-6">
                                     <label class="form-label">Phone <span class="text-danger">*</span></label>
                                     <input type="text" name="phone" class="form-control" style="border: 1px solid #111;" required>
                                 </div>
-
                                 <div class="col-md-6">
                                     <label class="form-label">Country <span class="text-danger">*</span></label>
                                     <input type="text" name="country" class="form-control" style="border: 1px solid #111;" required>
                                 </div>
-
                                 <div class="col-md-6">
                                     <label class="form-label">State / Division <span class="text-danger">*</span></label>
                                     <input type="text" name="town" class="form-control" style="border: 1px solid #111;" required>
                                 </div>
-
                                 <div class="col-md-8">
                                     <label class="form-label">Address <span class="text-danger">*</span></label>
                                     <input type="text" name="address" class="form-control" style="border: 1px solid #111;" required>
                                 </div>
-
                                 <div class="col-md-4">
                                     <label class="form-label">Postal Code <span class="text-danger">*</span></label>
                                     <input type="text" name="postcode" class="form-control" style="border: 1px solid #111;" required>
                                 </div>
-
-                                <!-- Hidden Total -->
                                 <input type="hidden" name="total" value="{{ total }}">
                             </div>
 
-                            <!-- EXTRA SPACE BEFORE ORDER SUMMARY ON MOBILE -->
                             <div class="d-lg-none mt-4"></div>
+                        </div>
                     </div>
-                </div>
 
-                <!-- RIGHT ORDER SUMMARY -->
-                <div class="col-lg-4">
-    <div class="checkout__order p-4 shadow-sm bg-white rounded-3">
-        <h4 class="fw-bold">Your Order</h4>
+                    <div class="col-lg-4">
+                        <div class="checkout__order p-4 shadow-sm bg-white rounded-3">
+                            <h4 class="fw-bold">Your Order</h4>
 
-        <div class="checkout__order__products border-bottom pb-2 mb-3">
-            <span class="fw-semibold">Products</span>
-            <span class="float-end fw-semibold">Total</span>
+                            <div class="checkout__order__products border-bottom pb-2 mb-3">
+                                <span class="fw-semibold">Products</span>
+                                <span class="float-end fw-semibold">Total</span>
+                            </div>
+
+                            {% for item in items %}
+                            <ul class="list-unstyled mb-1">
+                                <li class="d-flex justify-content-between">
+                                    <span>{{ item.name }} × {{ item.qty }}</span>
+                                    <span class="fw-bold">${{ item.price|floatformat:2 }}</span>
+                                </li>
+                            </ul>
+                            {% endfor %}
+
+                            <div class="checkout__order__subtotal d-flex justify-content-between mt-4">
+                                <span>Subtotal</span>
+                                <span class="fw-bold">${{ subtotal|floatformat:2 }}</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between mt-2">
+                                <span>Shipping</span>
+                                <span class="fw-bold">${{ shipping|floatformat:2 }}</span>
+                            </div>
+
+                            <div class="checkout__order__total d-flex justify-content-between mt-3 mb-4">
+                                <span class="fs-5 fw-bold">Total</span>
+                                <span class="fs-5 fw-bold">${{ total|floatformat:2 }}</span>
+                            </div>
+
+                            <h5 class="fw-bold mt-4 mb-3 text-center">Scan to Pay</h5>
+
+{% if qrs %}
+    <div class="d-flex flex-column align-items-center">
+    {% for qr in qrs %}
+        <div class="text-center mb-4 p-3 border rounded w-100" style="max-width: 350px;">
+            <h6 class="fw-semibold">{{ qr.name }}</h6>
+            <img 
+                src="{{ qr.qr_image.url }}" 
+                style="width: 100%; height: auto; max-width: 300px;" 
+                alt="{{ qr.name }} Payment QR Code"
+                class="img-fluid rounded shadow-sm"
+            >
         </div>
-
-        {% for item in items %}
-        <ul class="list-unstyled mb-1">
-            <li class="d-flex justify-content-between">
-                <span>{{ item.name }} × {{ item.qty }}</span>
-                <span class="fw-bold">${{ item.price|floatformat:2 }}</span>
-            </li>
-        </ul>
-        {% endfor %}
-
-        <div class="checkout__order__subtotal d-flex justify-content-between mt-4">
-            <span>Subtotal</span>
-            <span class="fw-bold">${{ subtotal|floatformat:2 }}</span>
-        </div>
-
-        <div class="d-flex justify-content-between mt-2">
-            <span>Shipping</span>
-            <span class="fw-bold">${{ shipping|floatformat:2 }}</span>
-        </div>
-
-        <div class="checkout__order__total d-flex justify-content-between mt-3 mb-4">
-            <span class="fs-5 fw-bold">Total</span>
-            <span class="fs-5 fw-bold">${{ total|floatformat:2 }}</span>
-        </div>
-        <img src="/media/qrcodes/qr.jpg" style="width: 300px" alt="">
-
-        <input type="hidden" name="total" value="{{ total }}">
-        
-
-        <label class="form-label" style="font-weight: bold; margin: 20px 0px 20px 0px">Please upload reciept</label>
-        
-        <input type="file" class="form-control mb-3" name="qr_code_image">
-
-        <input type="submit" class="btn btn-dark w-100 py-2 fw-semibold" value="PLACE ORDER">
+    {% endfor %}
     </div>
-</div>
+{% else %}
+    <p class="text-center text-danger">No active payment QR codes available.</p>
+{% endif %}
+<input type="hidden" name="total" value="{{ total }}">
+<label class="form-label" style="font-weight: bold; margin: 20px 0px 20px 0px">Please upload receipt</label>
+<input type="file" class="form-control mb-3" name="qr_code_image">
 
+<input type="submit" class="btn btn-dark w-100 py-2 fw-semibold" value="PLACE ORDER">
+                        </div>
+                    </div>
 
-                <!-- SUBMIT BUTTON (FALLBACK) -->
-                <div class="col-12 mt-3 d-none">
-                    <button type="submit" class="btn btn-dark w-100 py-3 fw-bold">
-                        CHECKOUT
-                    </button>
-                </div>
-
+                    <div class="col-12 mt-3 d-none">
+                        <button type="submit" class="btn btn-dark w-100 py-3 fw-bold">
+                            CHECKOUT
+                        </button>
+                    </div>
                 </form>
 
             </div>

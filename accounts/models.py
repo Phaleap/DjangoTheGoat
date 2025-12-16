@@ -321,3 +321,12 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return self.full_name
+class QRCode(models.Model):
+    # Field to store the QR code image file
+    qr_image = models.ImageField(upload_to='qrcodes/', verbose_name="QR Code Image")
+    # Field for a payment method name (optional but recommended)
+    name = models.CharField(max_length=100, default="Payment Method") 
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.name} (Active: {self.is_active})"

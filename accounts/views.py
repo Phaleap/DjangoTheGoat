@@ -11,6 +11,7 @@ import math
 from django.shortcuts import render, redirect
 from .models import ContactMessage
 from django.contrib import messages
+from .models import QRCode 
 
 # Create your views here.
 
@@ -530,3 +531,23 @@ def save_contact(request):
         # Corrected: Redirect using the URL pattern name 'contact'
         return redirect('contact')
     
+
+# views.py (The 'checkout' view)
+
+def checkout(request):
+    # Get active QR codes (This is correct)
+    qrs = QRCode.objects.filter(is_active=True) 
+
+    # Get cart data
+    cart_data = get_cart_data(request)
+    subtotal = cart_data['total']
+    shipping = 20  # Example shipping cost
+    total = subtotal + shipping
+
+    return render(request, "furniture/checkout.html", {
+        "items": cart_data['items'],
+        "subtotal": subtotal,
+        "shipping": shipping,
+        "total": total,
+        "qrs": qrs, # This context variable is key
+    })

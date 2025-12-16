@@ -176,16 +176,26 @@ margin-right: 3%;
 content: "";
 }
 
-/* Styling for the cart icon badge */
+/* 1. Remove relative positioning from the link (dropdown-toggle) */
 .cart-icon-badge-wrapper {
-    position: relative; /* Allows absolute positioning of the badge inside */
+    /* Keep this selector if you have other styling on the link, but remove 'position: relative;' */
+    /* position: relative; <--- REMOVE THIS! */
 }
 
+/* 2. Add relative positioning to the new wrapper */
+.cart-icon-display {
+    position: relative; /* THIS is now the reference point for the badge */
+    display: inline-block; /* Ensure it wraps the icon cleanly */
+}
+
+/* 3. Adjust the badge positioning based on the new, smaller parent */
 .cart-count-badge {
     position: absolute;
-    top: 5px; /* Adjust as needed */
-    right: 0; /* Adjust as needed */
-    background-color: #daa14c; /* Use your color, e.g., yellow */
+    /* Adjust these values to perfectly place it over the top-right of the bag icon */
+    top: 0px; 
+    right: 0px; 
+    
+    background-color: #daa14c;
     color: white;
     border-radius: 50%;
     padding: 2px 6px;
@@ -193,15 +203,12 @@ content: "";
     font-weight: bold;
     line-height: 1;
     text-align: center;
-    min-width: 18px; /* Ensures circle shape even for single digit */
-    transform: translate(50%, -50%); /* Centers the badge more accurately */
-    /* Hide the badge if the count is 0 to start */
-    display: none; 
+    min-width: 18px;
+    transform: translate(70%, -50%); 
+    
+    display: block; 
 }
 
-/* Ensure the wrapper element is properly styled if needed, though 'position: relative' is the key */
-/* The badge might need adjustment based on the surrounding padding/margins. */
-/*********************header****************/
 .nav_hide:after{
 display:none; 
  }
