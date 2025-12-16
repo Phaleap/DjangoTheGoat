@@ -162,4 +162,49 @@ function sendCartAction(url, body, actionName) {
         });
 }
 
+
+let dropArea = document.getElementById("dropArea");
+let fileInput = document.getElementById("fileInput");
+let preview = document.getElementById("preview");
+
+fileInput.addEventListener("change", function () {
+    showFile(this.files[0]);
+});
+
+dropArea.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropArea.classList.add("active");
+});
+
+dropArea.addEventListener("dragleave", () => {
+    dropArea.classList.remove("active");
+});
+
+dropArea.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropArea.classList.remove("active");
+
+    let file = e.dataTransfer.files[0];
+    fileInput.files = e.dataTransfer.files;
+
+    showFile(file);
+});
+
+function showFile(file) {
+    let validExtensions = ["image/jpeg", "image/jpg", "image/png"];
+    if (validExtensions.includes(file.type)) {
+        let fileReader = new FileReader();
+
+        fileReader.onload = () => {
+            preview.classList.remove("d-none");
+            preview.innerHTML = `<img src="${fileReader.result}" alt="Preview">`;
+        };
+
+        fileReader.readAsDataURL(file);
+    } else {
+        alert("Invalid file type! Only images allowed.");
+    }
+}
+
+
 </script>
