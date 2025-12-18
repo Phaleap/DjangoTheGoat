@@ -1,5 +1,6 @@
 from django.urls import path, include
 from . import views
+from .views import login_view, register_view, logout_view
 
 urlpatterns = [
     path('blog/', views.blog_list_view, name='blog'),
@@ -24,4 +25,7 @@ urlpatterns = [
     path('shopping-cart/', views.shopping_cart, name='shoppingcart'),
     path('update_cart_quantity/', views.update_cart_quantity, name='update_cart_quantity'),
     path("save_contact/", views.save_contact, name="save_contact"),
+    path("login/", login_view, name="login"),
+    path("register/", register_view, name="register"),
+    path("logout/", logout_view, name="logout"),
 ]
