@@ -3,10 +3,26 @@
 from django.contrib import admin
 from accounts.models import *
 from .models import QRCode 
+from django.utils.html import format_html
 
 # Product & other models
+
+class ProductAdmin(admin.ModelAdmin):
+    def image_preview(self, obj):
+        if obj.productImage:
+            return format_html('<img src="{}" width="100" />', obj.productImage.url)
+        return "No Image"
+    image_preview.short_description = 'Image Preview'
+    list_display = ["image_preview","productName","price","categoryID","availability" ]
+    list_filter = ["categoryID","availability"]
+    search_fields = ["productName"]
+    list_per_page = 6
+    readonly_fields = ["image_preview"]
+
+
+# Register your models here.
 admin.site.register(Category)
-admin.site.register(Product)
+admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductDetail)
 admin.site.register(CarouselSlide)
 admin.site.register(AboutHeroImages)

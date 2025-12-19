@@ -175,6 +175,7 @@ class Product(models.Model):
     productDescript =  RichTextUploadingField(null=True)
     availability = models.CharField(max_length=200, null=True)
     productImage = models.ImageField(upload_to='images/Products/',null=True,blank=True)
+    
     rating = models.FloatField(default=0)
     is_bestseller = models.BooleanField(default=False)
     def __str__(self):         
