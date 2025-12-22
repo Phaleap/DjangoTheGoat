@@ -20,7 +20,7 @@ SECRET_KEY = os.environ.get(
     "django-insecure-change-this-in-render-env"
 )
 
-DEBUG = False  # ✅ MUST be False in production
+DEBUG = True  # ✅ MUST be False in production
 
 ALLOWED_HOSTS = [
     "localhost",
