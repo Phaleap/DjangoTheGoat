@@ -47,6 +47,40 @@ JAZZMIN_SETTINGS = {
     "site_header": "Furniture Dashboard",
     "welcome_sign": "Welcome to the Furniture Admin Panel",
     "site_brand": "Furniture Admin",
+
+    "icons": {
+        # --- Authentication ---
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+
+        # --- Shop & Inventory ---
+        "accounts.Category": "fas fa-stream",
+        "accounts.Product": "fas fa-couch",
+        "accounts.ProductDetail": "fas fa-info-circle",
+        
+        # --- Sales & Contacts ---
+        "accounts.BillingDetail": "fas fa-file-invoice-dollar",
+        "accounts.ContactMessage": "fas fa-envelope-open-text",
+        "accounts.QRCode": "fas fa-qrcode",
+
+        # --- Blog Section ---
+        "accounts.BlogCategory": "fas fa-folder",
+        "accounts.BlogTag": "fas fa-tags",
+        "accounts.BlogPost": "fas fa-blog",
+
+        # --- Website Content & Design ---
+        "accounts.CarouselSlide": "fas fa-images",
+        "accounts.AboutHeroImages": "fas fa-address-card",
+        "accounts.ProjectSectionHeader": "fas fa-heading",
+        "accounts.Project": "fas fa-tasks",
+        "accounts.TeamSectionHeader": "fas fa-users-cog",
+        "accounts.TeamMembers": "fas fa-user-tie",
+        "accounts.TestimonialClient": "fas fa-comments",
+    },
+    # This sets default icons for any new models you add later
+    "default_icon_parents": "fas fa-chevron-circle-right",
+    "default_icon_children": "fas fa-circle",
 }
 
 
