@@ -156,26 +156,46 @@
 
                             <h5 class="fw-bold mt-4 mb-3 text-center">Scan to Pay</h5>
 
-{% if qrs %}
-    <div class="d-flex flex-column align-items-center">
-        <hr>
-            <a target="blank" href="https://link.payway.com.kh/aba?id=5BDC4CB78BA6&dynamic=true&source_caller=api&pid=app_to_app&link_action=abaqr&shortlink=4b4xzamg&amount={{total|floatformat:2}}&created_from_app=true&acc=995555061&userid=5BDC4CB78BA6&code=838141&c=abaqr">Pay Now</a>
-        <hr>
-    {% for qr in qrs %}
-        <div class="text-center mb-4 p-3 border rounded w-100" style="max-width: 350px;">
-            <h6 class="fw-semibold">{{ qr.name }}</h6>
-            <img 
-                src="{{ qr.qr_image.url }}" 
-                style="width: 100%; height: auto; max-width: 300px;" 
-                alt="{{ qr.name }} Payment QR Code"
-                class="img-fluid rounded shadow-sm"
-            >
-        </div>
-    {% endfor %}
-    </div>
-{% else %}
-    <p class="text-center text-danger">No active payment QR codes available.</p>
-{% endif %}
+                       <a href="https://link.payway.com.kh/aba?id=5BDC4CB78BA6&dynamic=true&source_caller=api&pid=app_to_app&link_action=abaqr&shortlink=4b4xzamg&amount={{total|floatformat:2}}&created_from_app=true&acc=995555061&userid=5BDC4CB78BA6&code=838141&c=abaqr" 
+   target="_blank" 
+   style="
+       display: block;
+       position: relative;
+       width: 100%;
+       padding: 12px 20px;
+       font-size: 16px;
+       font-weight: bold;
+       color: white;
+       background-color: #007bff;
+       border: none;
+       border-radius: 8px;
+       cursor: pointer;
+       text-decoration: none;
+       text-align: center;
+       transition: background 0.3s;
+   "
+   onmouseover="this.style.backgroundColor='#0056b3'" 
+   onmouseout="this.style.backgroundColor='#007bff'">
+    
+    <!-- Logo on the left -->
+    <img src="https://i.pinimg.com/736x/e2/33/f5/e233f5b0c5a358449398f202b03f063a.jpg" 
+         alt="ABA Logo" 
+         style="
+             height: 48px; 
+             position: absolute; 
+             left: 0px; 
+             top: 50%; 
+             transform: translateY(-50%);
+             border-radius: 8px;
+         ">
+    
+    <!-- Centered text -->
+    Pay with ABA Bank
+</a>
+
+
+
+<br>
 <input type="hidden" name="total" value="{{ total }}">
 <label class="form-label" style="font-weight: bold; margin: 20px 0px 20px 0px">Please upload receipt</label>
 <div id="dropArea" class="upload-container">

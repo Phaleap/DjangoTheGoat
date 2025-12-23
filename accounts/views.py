@@ -241,23 +241,37 @@ def pricing(request):
     return render(request, 'furniture/pricing.html')
 
 
-def shop(request):
-    DTproducts = Product.objects.all()
+def shop(request, category_id=None):
     DTCategory = Category.objects.all()
+    DTproducts = Product.objects.all()
     bestsellers = Product.objects.filter(is_bestseller=True)[:3]
 
+    # CATEGORY FILTER
+    if category_id:
+        category = get_object_or_404(Category, id=category_id)
+        DTproducts = DTproducts.filter(categoryID=category)
+    else:
+        category = None
+
+    # PRICE FILTER
     min_price = request.GET.get('min')
     max_price = request.GET.get('max')
-
     if min_price:
         DTproducts = DTproducts.filter(price__gte=Decimal(min_price))
     if max_price:
         DTproducts = DTproducts.filter(price__lte=Decimal(max_price))
 
+    # PAGINATION
+    paginator = Paginator(DTproducts, 6)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'Objproducts': DTproducts,
+        'Objproducts': page_obj,
         'ObjDTCategory': DTCategory,
         'bestsellers': bestsellers,
+        'category': category,
+        'page_obj': page_obj,
     }
 
     return render(request, 'furniture/shop.html', context)

@@ -205,6 +205,20 @@ function showFile(file) {
         alert("Invalid file type! Only images allowed.");
     }
 }
+document.querySelectorAll(".category-btn").forEach((btn) => {
+        btn.addEventListener("click", function (e) {
+          e.preventDefault();
+          const filter = this.getAttribute("data-filter");
+          const products = document.querySelectorAll(".product-item");
 
+          products.forEach((item) => {
+            if (filter === "all" || item.getAttribute("data-category") === filter) {
+              item.style.display = "block";
+            } else {
+              item.style.display = "none";
+            }
+          });
+        });
+      });
 
 </script>
