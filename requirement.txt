@@ -1,4 +1,12 @@
 asgiref==3.11.0
-Django==6.0
+distlib==0.4.0
+Django==5.2.9
+django-ckeditor==6.7.3
+django-jazzmin==3.0.1
+django-js-asset==3.1.2
+filelock==3.19.1
+pillow==12.0.0
+platformdirs==4.4.0
 sqlparse==0.5.4
 tzdata==2025.2
+virtualenv==20.34.0
