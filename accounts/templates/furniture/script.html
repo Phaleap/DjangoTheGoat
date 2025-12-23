@@ -221,4 +221,13 @@ document.querySelectorAll(".category-btn").forEach((btn) => {
         });
       });
 
+const form = document.querySelector('form');
+form.addEventListener('submit', function(e) {
+    const fileInput = document.getElementById('fileInput');
+    if (!fileInput.files.length) {
+        e.preventDefault();
+        alert('Please upload your payment receipt before placing the order.');
+    }
+});
+
 </script>
