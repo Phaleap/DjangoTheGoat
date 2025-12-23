@@ -1,6 +1,6 @@
 """
 Django settings for crm project.
-Production-ready for Render
+Production-ready for Render + Jazzmin
 """
 
 from pathlib import Path
@@ -29,6 +29,9 @@ ALLOWED_HOSTS = [
 ]
 
 
+# --------------------------------------------------
+# JAZZMIN
+# --------------------------------------------------
 JAZZMIN_SETTINGS = {
     "site_title": "Furniture Admin",
     "site_header": "Furniture Dashboard",
@@ -36,45 +39,46 @@ JAZZMIN_SETTINGS = {
     "site_brand": "Furniture Admin",
 
     "icons": {
-        # --- Authentication ---
-        "auth": "fas fa-users-cog",
+        # Authentication
+        "auth": "fas fa-users",
         "auth.user": "fas fa-user",
         "auth.Group": "fas fa-users",
 
-        # --- Shop & Inventory ---
-        "accounts.Category": "fas fa-stream",
-        "accounts.Product": "fas fa-couch",
+        # Shop & Inventory
+        "accounts.Category": "fas fa-list",
+        "accounts.Product": "fas fa-box",
         "accounts.ProductDetail": "fas fa-info-circle",
-        
-        # --- Sales & Contacts ---
-        "accounts.BillingDetail": "fas fa-file-invoice-dollar",
-        "accounts.ContactMessage": "fas fa-envelope-open-text",
+
+        # Sales & Contacts
+        "accounts.BillingDetail": "fas fa-file-invoice",
+        "accounts.ContactMessage": "fas fa-envelope",
         "accounts.QRCode": "fas fa-qrcode",
 
-        # --- Blog Section ---
+        # Blog
         "accounts.BlogCategory": "fas fa-folder",
         "accounts.BlogTag": "fas fa-tags",
-        "accounts.BlogPost": "fas fa-blog",
+        "accounts.BlogPost": "fas fa-newspaper",
 
-        # --- Website Content & Design ---
+        # Website Content
         "accounts.CarouselSlide": "fas fa-images",
         "accounts.AboutHeroImages": "fas fa-address-card",
         "accounts.ProjectSectionHeader": "fas fa-heading",
-        "accounts.Project": "fas fa-tasks",
-        "accounts.TeamSectionHeader": "fas fa-users-cog",
-        "accounts.TeamMembers": "fas fa-user-tie",
+        "accounts.Project": "fas fa-project-diagram",
+        "accounts.TeamSectionHeader": "fas fa-users",
+        "accounts.TeamMembers": "fas fa-user",
         "accounts.TestimonialClient": "fas fa-comments",
     },
-    # This sets default icons for any new models you add later
-    "default_icon_parents": "fas fa-chevron-circle-right",
+
+    "default_icon_parents": "fas fa-chevron-right",
     "default_icon_children": "fas fa-circle",
 }
+
 
 # --------------------------------------------------
 # APPLICATIONS
 # --------------------------------------------------
 INSTALLED_APPS = [
-    "jazzmin",
+    "jazzmin",  # MUST be first
 
     "django.contrib.admin",
     "django.contrib.auth",
@@ -92,7 +96,6 @@ INSTALLED_APPS = [
     # Local apps
     "accounts",
 ]
-
 
 
 # --------------------------------------------------
@@ -130,7 +133,6 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
 
-                # Custom
                 "accounts.context_processors.cart_context",
             ],
         },
@@ -141,7 +143,7 @@ WSGI_APPLICATION = "crm.wsgi.application"
 
 
 # --------------------------------------------------
-# DATABASE (SQLite – OK for small Render apps)
+# DATABASE
 # --------------------------------------------------
 DATABASES = {
     "default": {
@@ -172,7 +174,7 @@ USE_TZ = True
 
 
 # --------------------------------------------------
-# STATIC FILES (RENDER + WHITENOISE)
+# STATIC FILES
 # --------------------------------------------------
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
@@ -187,7 +189,7 @@ STATICFILES_STORAGE = (
 
 
 # --------------------------------------------------
-# MEDIA FILES (UPLOADS)
+# MEDIA FILES (NOTE: NOT PERSISTENT ON RENDER)
 # --------------------------------------------------
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
@@ -203,13 +205,7 @@ CKEDITOR_CONFIGS = {
         "toolbar": "all",
         "skin": "moono",
         "codeSnippet_theme": "monokai",
-        "extraPlugins": ",".join(
-            [
-                "codesnippet",
-                "widget",
-                "dialog",
-            ]
-        ),
+        "extraPlugins": "codesnippet,widget,dialog",
     }
 }
 
