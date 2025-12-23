@@ -40,46 +40,80 @@ class CarouselSlide(models.Model):
 
 class AboutHeroImages(models.Model):
 
-    name = models.CharField(max_length=50, default="About Section Images & Text", unique=True, editable=False)
-    
-    # --- Existing Image Fields ---
+    name = models.CharField(
+        max_length=50,
+        default="About Section Images & Text",
+        unique=True,
+        editable=False
+    )
+
+    # ===== EXISTING HERO FIELDS (KEEP) =====
     image_main = models.ImageField(
         upload_to='images/about_hero/',
         verbose_name="Main Image (about_h1l1)",
         null=True,
         blank=True
     )
-    
+
     image_overlay = models.ImageField(
         upload_to='images/about_hero/',
         verbose_name="Overlay Image (about_h1l2)",
         null=True,
         blank=True
     )
-    
 
     tagline = models.CharField(
-        max_length=100, 
-        default="ABOUT US", 
+        max_length=100,
+        default="ABOUT US",
         verbose_name="H5 Tagline (e.g., ABOUT US)"
     )
-    
+
     title = models.CharField(
-        max_length=255, 
+        max_length=255,
         verbose_name="H1 Title (e.g., Creative solutions...)",
         help_text="Use <br> for line breaks."
     )
-    
+
     content = models.TextField(
         verbose_name="Paragraph Content",
         help_text="The main description paragraph."
     )
 
     button_text = models.CharField(
-        max_length=50, 
-        default="CONTINUE READING", 
+        max_length=50,
+        default="CONTINUE READING",
         verbose_name="Button Text"
     )
+
+    # ===== NEW: OUR STORY SECTION =====
+    story_image = models.ImageField(
+        upload_to='images/about_story/',
+        verbose_name="Our Story Image",
+        null=True,
+        blank=True
+    )
+
+    story_small_title = models.CharField(
+        max_length=100,
+        default="Our Story",
+        verbose_name="Our Story Small Title (H5)"
+    )
+
+    story_main_title = models.CharField(
+        max_length=255,
+        default="Crafting Comfort For Every Home",
+        verbose_name="Our Story Main Title (H2)"
+    )
+
+    story_paragraph_1 = models.TextField(
+    blank=True,
+    verbose_name="Our Story Paragraph 1"
+)
+
+    story_paragraph_2 = models.TextField(
+    blank=True,
+    verbose_name="Our Story Paragraph 2"
+)
 
     class Meta:
         verbose_name = "About Section Image & Text"
@@ -87,6 +121,7 @@ class AboutHeroImages(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class ProjectSectionHeader(models.Model):
     name = models.CharField(max_length=50, default="Project Section Header", unique=True, editable=False)
@@ -338,3 +373,49 @@ class QRCode(models.Model):
 
     def __str__(self):
         return f"{self.name} (Active: {self.is_active})"
+
+
+class WhatWeOffer(models.Model):
+    name = models.CharField(
+        max_length=50,
+        default="What We Offer Section",
+        unique=True,
+        editable=False
+    )
+
+    small_title = models.CharField(
+        max_length=100,
+        default="What We Offer?"
+    )
+
+    main_title = models.CharField(
+        max_length=255,
+        default="Our Company Make You Feel More Confident"
+    )
+
+    description_1 = models.TextField(
+        help_text="First description paragraph"
+    )
+
+    description_2 = models.TextField(
+        help_text="Second description paragraph"
+    )
+
+    # Feature list
+    feature_1 = models.CharField(max_length=100, default="Best Sofa")
+    feature_2 = models.CharField(max_length=100, default="Best Quality")
+    feature_3 = models.CharField(max_length=100, default="Good Prices")
+    feature_4 = models.CharField(max_length=100, default="Fast Delivery")
+
+    image = models.ImageField(
+        upload_to="images/what_we_offer/",
+        null=True,
+        blank=True
+    )
+
+    class Meta:
+        verbose_name = "What We Offer Section"
+        verbose_name_plural = "What We Offer Section"
+
+    def __str__(self):
+        return self.name

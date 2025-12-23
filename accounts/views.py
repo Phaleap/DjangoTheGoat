@@ -64,6 +64,7 @@ def indexFur(request):
 
 def aboutFur(request):
     about_images = AboutHeroImages.objects.first()
+    what_we_offer = WhatWeOffer.objects.first()
 
     testimonials = TestimonialClient.objects.all()
     slide_groups = testimonials.values_list('slide_group', flat=True).distinct()
@@ -74,10 +75,12 @@ def aboutFur(request):
 
     context = {
         'about_images': about_images,
+        'what_we_offer': what_we_offer,
         'testimonial_slides': testimonial_slides,
     }
 
     return render(request, 'furniture/about.html', context)
+
 
 
 def blog_detail(request, id):

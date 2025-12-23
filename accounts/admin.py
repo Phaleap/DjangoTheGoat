@@ -54,3 +54,32 @@ class QRCodeAdmin(admin.ModelAdmin):
     list_display = ('id', 'qr_image', 'is_active')   # Columns to show
     list_editable = ('is_active',)                   # Toggle active in list view
     list_filter = ('is_active',)       
+
+class AboutHeroImagesAdmin(admin.ModelAdmin):
+    fieldsets = (
+        ("Hero Section", {
+            "fields": (
+                "image_main",
+                "image_overlay",
+                "tagline",
+                "title",
+                "content",
+                "button_text",
+            )
+        }),
+        ("Our Story Section", {
+            "fields": (
+                "story_image",
+                "story_small_title",
+                "story_main_title",
+                "story_paragraph_1",
+                "story_paragraph_2",
+            )
+        }),
+    )
+
+@admin.register(WhatWeOffer)
+class WhatWeOfferAdmin(admin.ModelAdmin):
+    list_display = ("name", "small_title", "main_title")
+
+

@@ -115,30 +115,40 @@
  </div>
 </section>
 <!-- EXPANDED ABOUT STORY SECTION -->
-<section id="about_story" class="py-5">
+<section id="about_story" class="py-5 bg-light">
     <div class="container-xl">
         <div class="row align-items-center">
+
+            <!-- Story Image -->
             <div class="col-md-6 mb-4">
-                <img src="https://cosyinternational.com/wp-content/uploads/2022/06/Interior-A-scaled.jpg" class="w-100 rounded shadow" alt="Our Story">
+                {% if about_images.story_image %}
+                    <img src="{{ about_images.story_image.url }}"
+                         class="w-100 rounded shadow"
+                         alt="Our Story">
+                {% endif %}
             </div>
+
+            <!-- Story Content -->
             <div class="col-md-6">
-                <h5 class="col_yell fw-bold">Our Story</h5>
-                <h2 class="mt-3 mb-4">Crafting Comfort for Every Home</h2>
+                {% if about_images %}
+                    <h5 class="col_yell fw-bold">
+                        {{ about_images.story_small_title }}
+                    </h5>
 
-                <p class="text-muted">
-                    For years, our mission has been simple—bring stylish, durable, and affordable furniture 
-                    to every home. We believe that the space you live in shapes your life, your feelings, 
-                    and your memories. That’s why every piece we design is crafted with care, comfort, 
-                    and timeless beauty.
-                </p>
+                    <h2 class="fw-bold mt-3 mb-4">
+                        {{ about_images.story_main_title }}
+                    </h2>
 
-                <p class="text-muted">
-                    From modern living room collections to elegant bedroom sets, we work with experienced 
-                    designers and skilled craftsmen to ensure every product meets the highest quality 
-                    standards. Whether you're furnishing a new home or upgrading your current space, we’re 
-                    here to help you create a place you’ll love coming back to.
-                </p>
+                    <p class="text-muted">
+                        {{ about_images.story_paragraph_1 }}
+                    </p>
+
+                    <p class="text-muted">
+                        {{ about_images.story_paragraph_2 }}
+                    </p>
+                {% endif %}
             </div>
+
         </div>
     </div>
 </section>
@@ -231,49 +241,55 @@
     </div>
 </section>
 
-<section id="offer_o" class="bg_dark pt-5 pb-5">
- <div class="container-xl">
-       <div class="row work_1">
-   <div class="col-md-6">
-    <div class="offer_l">
-	   <h5 class="icon_line col_yell">What We Offer?</h5>
-	   <h1 class="mt-3 text-white">Our Company <span class="col_yell">Make You</span>
-Feel More Confident</h1>
-	  <div class="offer_li row mt-3">
-	   <div class="col-md-6">
-	    <div class="offer_lil">
-		 <ul class="mb-0">
-		  <li class="text-light"><i class="fa fa-check col_yell me-1"></i> Best Sofa</li>
-		  <li class="text-light mt-2"><i class="fa fa-check col_yell me-1"></i> Best Quality</li>
-		 </ul>
-		</div> 
-	   </div>
-	   <div class="col-md-6">
-	    <div class="offer_lil">
-		 <ul class="mb-0">
-		  <li class="text-light"><i class="fa fa-check col_yell me-1"></i> Good Prices </li>
-		  <li class="text-light mt-2"><i class="fa fa-check col_yell me-1"></i> Fast Delivery</li>
-		 </ul>
-		</div> 
-	   </div>
-	  </div>
-	  <p class="mt-3 text-white-50">We offer a carefully curated range of high-quality furniture, designed to bring comfort, style, and lasting value to every home.</p>
-	  <p class="text-white-50">We’re following all protocols to ensure your safety and
-vaccination drives are underway to ensure our employees
-are ready to meet you safely.</p>
-	</div>
-   </div>
-   <div class="col-md-6">
-    <div class="offer_r">
-	   <div class="grid clearfix">
-				  <figure class="effect-jazz mb-0">
-					<a href="#"><img src="{% static 'img/Sofa3.png' %}"  class="w-100" alt="abc"></a>
-				  </figure>
-			  </div>
-	</div>
-   </div>
-  </div>
- </div>
+<section id="what_we_offer" class="py-5" style="background-color:#2f3a40;">
+    <div class="container-xl">
+        <div class="row align-items-center">
+
+            <!-- Text -->
+            <div class="col-md-6 text-white mb-4">
+                {% if what_we_offer %}
+                    <h6 class="text-warning fw-bold mb-3">
+                        {{ what_we_offer.small_title }}
+                    </h6>
+
+                    <h2 class="fw-bold mb-4">
+                        {{ what_we_offer.main_title }}
+                    </h2>
+
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <p class="text-white">✔ {{ what_we_offer.feature_1 }}</p>
+                            <p class="text-white">✔ {{ what_we_offer.feature_2 }}</p>
+                        </div>
+
+                        <div class="col-6">
+                            <p class="text-white">✔ {{ what_we_offer.feature_3 }}</p>
+                            <p class="text-white">✔ {{ what_we_offer.feature_4 }}</p>
+                        </div>
+                    </div>
+
+
+                    <p class="text-white opacity-75">
+                        {{ what_we_offer.description_1 }}
+                    </p>
+
+                    <p class="text-white opacity-75">
+                        {{ what_we_offer.description_2 }}
+                    </p>
+                {% endif %}
+            </div>
+
+            <!-- Image -->
+            <div class="col-md-6 text-center">
+                {% if what_we_offer.image %}
+                    <img src="{{ what_we_offer.image.url }}"
+                         class="img-fluid rounded shadow"
+                         alt="What We Offer">
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
 </section>
 
 
