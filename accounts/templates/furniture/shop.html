@@ -65,29 +65,29 @@
                 <h5>Filter By Price</h5>
                 <hr class="line mb-4" />
 
-                <form method="GET" action="">
-                  <input
-                    type="number"
-                    name="min"
-                    placeholder="Min Price"
-                    class="form-control mb-2"
-                    value="{{ request.GET.min }}"
-                  />
-                  <input
-                    type="number"
-                    name="max"
-                    placeholder="Max Price"
-                    class="form-control mb-2"
-                    value="{{ request.GET.max }}"
-                  />
+               <form method="GET" action="">
+  <input
+    type="number"
+    name="min"
+    placeholder="Min Price"
+    class="form-control mb-2"
+    value="{{ request.GET.min }}"
+  />
+  <input
+    type="number"
+    name="max"
+    placeholder="Max Price"
+    class="form-control mb-2"
+    value="{{ request.GET.max }}"
+  />
+  <button
+    class="bg_yell text-white p-2 px-4 border-0 w-100"
+    type="submit"
+  >
+    FILTER
+  </button>
+</form>
 
-                  <button
-                    class="bg_yell text-white p-2 px-4 border-0"
-                    type="submit"
-                  >
-                    FILTER
-                  </button>
-                </form>
               </div>
               <!-- Bestsellers -->
               <div class="shop_1l1 mt-4">

@@ -66,7 +66,14 @@
 	   <h5 class="text-center col_red mt-3">${{ total }}</h5>
 	   <hr>
 
-	   <h6 class="text-center mt-3"><a class="button_2" href="{% url 'checkout' %}">PROCEED TO CHECKOUT</a></h6><br>
+	   <h6 class="text-center mt-3">
+  {% if items %}
+    <a class="button_2" href="{% url 'checkout' %}">PROCEED TO CHECKOUT</a>
+  {% else %}
+    <a class="button_2 disabled" href="#" onclick="alert('Your cart is empty!'); return false;">PROCEED TO CHECKOUT</a>
+  {% endif %}
+</h6>
+
 	
 	   </div>
 	 </div>

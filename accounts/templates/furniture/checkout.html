@@ -158,6 +158,9 @@
 
 {% if qrs %}
     <div class="d-flex flex-column align-items-center">
+        <hr>
+            <a target="blank" href="https://link.payway.com.kh/aba?id=5BDC4CB78BA6&dynamic=true&source_caller=api&pid=app_to_app&link_action=abaqr&shortlink=4b4xzamg&amount={{total|floatformat:2}}&created_from_app=true&acc=995555061&userid=5BDC4CB78BA6&code=838141&c=abaqr">Pay Now</a>
+        <hr>
     {% for qr in qrs %}
         <div class="text-center mb-4 p-3 border rounded w-100" style="max-width: 350px;">
             <h6 class="fw-semibold">{{ qr.name }}</h6>

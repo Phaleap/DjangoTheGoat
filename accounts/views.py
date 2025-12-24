@@ -15,7 +15,7 @@ from .models import QRCode
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-
+from decimal import Decimal
 # Create your views here.
 
 
@@ -237,6 +237,7 @@ def detail(request, id):
 def pricing(request):
     return render(request, 'furniture/pricing.html')
 
+
 def shop(request):
     DTproducts = Product.objects.all()
     DTCategory = Category.objects.all()
@@ -246,10 +247,9 @@ def shop(request):
     max_price = request.GET.get('max')
 
     if min_price:
-        DTproducts = DTproducts.filter(price__gte=min_price)
-
+        DTproducts = DTproducts.filter(price__gte=Decimal(min_price))
     if max_price:
-        DTproducts = DTproducts.filter(price__lte=max_price)
+        DTproducts = DTproducts.filter(price__lte=Decimal(max_price))
 
     context = {
         'Objproducts': DTproducts,
@@ -258,7 +258,6 @@ def shop(request):
     }
 
     return render(request, 'furniture/shop.html', context)
-
 
 def team(request):
     DTmembers = TeamMembers.objects.all()
