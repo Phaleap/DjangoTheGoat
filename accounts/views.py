@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from accounts.models import *
 from .models import BlogCategory, BlogTag
 from django.core.paginator import Paginator
-from django.db.models import Count, Q  # Q needed for advanced filtering/searching if implemented
+from django.db.models import Count, Q  
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from .models import Product
@@ -27,26 +27,18 @@ def indexFur(request):
     projects = Project.objects.all()
     team_header = TeamSectionHeader.objects.first()
     projects = Project.objects.all()
-    
-    # NEW LOGIC: Group projects into slides of 3
     projects_per_slide = 3
     grouped_projects = []
-    
-    # Iterate through the projects in chunks of 3
     for i in range(0, len(projects), projects_per_slide):
-        # The slice projects[i:i + projects_per_slide] gets the next 3 items
         grouped_projects.append(projects[i:i + projects_per_slide])
-    # --- Testimonial Logic ---
     testimonials = TestimonialClient.objects.all()
     slide_groups = testimonials.values_list('slide_group', flat=True).distinct()
     testimonial_slides = []
     for group_id in slide_groups:
         slide_testimonials = testimonials.filter(slide_group=group_id)
         testimonial_slides.append(list(slide_testimonials[:3]))
-    # --- End Testimonial Logic ---
     projects = Project.objects.all()
     project_slide_count = math.ceil(projects.count() / 3)
-
     latest_posts = BlogPost.objects.all()[:3]
 
     context = {
@@ -85,8 +77,6 @@ def aboutFur(request):
 
 def blog_detail(request, id):
     post = get_object_or_404(BlogPost, id=id)
-
-    # Recent posts (excluding the current one)
     recent_posts = BlogPost.objects.exclude(id=post.id).order_by('-published_date')[:3]
 
     related_posts = BlogPost.objects.filter(
@@ -103,7 +93,7 @@ def blog_detail(request, id):
 
     context = {
         'post': post,
-        'recent_posts': recent_posts,     # <<< IMPORTANT
+        'recent_posts': recent_posts,   
         'related_posts': related_posts,
         'categories': categories,
         'tags': tags,
@@ -112,10 +102,6 @@ def blog_detail(request, id):
     return render(request, 'furniture/blog_detail.html', context)
 
 
-
-# ----------------------------------------------------
-# 🌟 NEW: Blog Category View (Fixes the blogCategory error)
-# ----------------------------------------------------
 def blogCategory(request, slug):
     category = get_object_or_404(BlogCategory, slug=slug)
     post_list = BlogPost.objects.filter(category=category).order_by('-published_date')
@@ -548,7 +534,6 @@ def save_contact(request):
             message=request.POST.get("message"),
         )
         messages.success(request, "Your message has been sent successfully!")
-        # Corrected: Redirect using the URL pattern name 'contact'
         return redirect('contact')
     
 

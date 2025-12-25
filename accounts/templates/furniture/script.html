@@ -11,9 +11,7 @@ var navbar = document.getElementById("navbar_sticky");
 var sticky = navbar.offsetTop;
 
 function stickyNavbar() {
-    // Check if the current scroll position (window.pageYOffset) is greater than the initial position of the navbar
     if (window.pageYOffset > sticky) {
-        // If scrolled past the navbar, add the 'sticky' class
         navbar.classList.add("sticky");
     } else {
         navbar.classList.remove("sticky");
