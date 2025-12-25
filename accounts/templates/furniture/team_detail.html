@@ -40,9 +40,14 @@
             <div class="team_1dt1r">
               <h1>{{ member.name }}</h1>
               <h6>{{ member.role }}</h6>
-
+              <h5>About Short :</h5>
               <p class="mt-3">{{ member.about_short }}</p>
+              <h5>About Long :</h5>
               <p class="mt-3 mb-4">{{ member.about_long }}</p>
+              <h5>Honors :</h5>
+              <p class="mt-3 mb-4">{{ member.honors|safe }}</p>
+              <h5>Awards :</h5>
+              <p class="mt-3 mb-4">{{ member.awards|safe }}</p> 
 
               <h6 class="fw-bold">
                 <i class="fa fa-phone col_yell me-2 fs-4 align-middle"></i>
@@ -80,8 +85,6 @@
             </div>
           </div>
         </div>
-
-
       </div>
     </section>
 
@@ -92,5 +95,4 @@
 {% include 'furniture/script.html' %}
 
 </body>
-
 </html>

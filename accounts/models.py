@@ -248,8 +248,8 @@ class TeamMembers(models.Model):
     about_short = models.TextField(blank=True, null=True)
     about_long = models.TextField(blank=True, null=True)
 
-    honors = models.TextField(blank=True, null=True)
-    awards = models.TextField(blank=True, null=True)
+    honors = RichTextUploadingField(blank=True, null=True)
+    awards = RichTextUploadingField(blank=True, null=True)
 
     skill_1_name = models.CharField(max_length=50, blank=True, null=True)
     skill_1_value = models.IntegerField(blank=True, null=True)
