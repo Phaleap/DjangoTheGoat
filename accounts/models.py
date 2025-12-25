@@ -6,14 +6,9 @@ from django.urls import reverse
 # Create your models here.
 
 class CarouselSlide(models.Model):
-    # Field to track if this slide is the active one (the first one)
     is_active = models.BooleanField(default=False, help_text="Check this for the first slide to be 'active'.")
-    
-    # Text content
     headline = models.CharField(max_length=255, verbose_name="H1 Headline")
     description = models.TextField(verbose_name="Paragraph Text")
-    
-    # Image upload
     image = models.ImageField(
         upload_to='images/carousel/',
         verbose_name="Slide Image (1920x800 recommended)",
@@ -21,11 +16,9 @@ class CarouselSlide(models.Model):
         blank=True
     )
     
-    # Optional: Button link/text (based on your template)
     button_text = models.CharField(max_length=50, default="VISIT SHOWROOM")
     button_link = models.URLField(default="#")
     
-    # Ordering field to control the display order
     order = models.IntegerField(default=0, help_text="Lower numbers appear first.")
     
     class Meta:
@@ -36,7 +29,6 @@ class CarouselSlide(models.Model):
     def __str__(self):
         return self.headline
 
-# accounts/models.py
 
 class AboutHeroImages(models.Model):
 
@@ -46,8 +38,6 @@ class AboutHeroImages(models.Model):
         unique=True,
         editable=False
     )
-
-    # ===== EXISTING HERO FIELDS (KEEP) =====
     image_main = models.ImageField(
         upload_to='images/about_hero/',
         verbose_name="Main Image (about_h1l1)",
@@ -160,10 +150,6 @@ class Project(models.Model):
         max_length=255,
         help_text="Enter categories separated by commas (e.g., Modern, Coastal, Top Sellers)"
     )
-    
-    # Optional: If you have a separate Detail page for each project
-    # project_url = models.URLField(max_length=200, blank=True, null=True) 
-
     class Meta:
         verbose_name = "Project"
         verbose_name_plural = "Projects"
@@ -231,7 +217,6 @@ class ProductDetail(models.Model):
         return f'{self.id} - {self.productID.productName}'
     
 
-# Ozai Team and Team Detail 
     
 class TeamMembers(models.Model):
     name = models.CharField(max_length=100)
