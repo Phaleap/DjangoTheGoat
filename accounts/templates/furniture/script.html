@@ -69,7 +69,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-
 function sendCartAction(url, body, actionName) {
     fetch(url, {
         method: "POST",
@@ -86,38 +85,60 @@ function sendCartAction(url, body, actionName) {
                 return;
             }
 
-            document.getElementById("cart-count").textContent =
-                `${data.count} ITEMS`;
-            document.getElementById("cart-total").textContent =
-                `$${data.total.toFixed(2)}`;
+            // 1. Update general counts and totals
+            document.getElementById("cart-count").textContent = `${data.count} ITEMS`;
+            document.getElementById("cart-total").textContent = `$${data.total.toFixed(2)}`;
 
+            // 2. Update Navbar Cart Badge
             const cartBadgeEl = document.getElementById("cart-count-badge");
             if (cartBadgeEl) {
-                // Set the numerical count
                 cartBadgeEl.textContent = data.count; 
-
-                // Show/hide the badge based on the count
-                if (data.count > 0) {
-                    cartBadgeEl.style.display = 'inline-block';
-                } else {
-                    cartBadgeEl.style.display = 'none';
-                }
+                cartBadgeEl.style.display = data.count > 0 ? 'inline-block' : 'none';
             }
             
+            // 3. Update Subtotal on the Cart Page
             const subtotalEl = document.querySelector('.cart_3r h5.text-center.col_red');
             if (subtotalEl) {
                 subtotalEl.textContent = `$${data.total.toFixed(2)}`;
             }
 
+            // 4. Update individual item quantities if they exist
             data.items.forEach(item => {
                 const inputEl = document.querySelector(`.qty-input[data-product-id="${item.id}"]`);
                 if (inputEl) inputEl.value = item.qty;
             });
 
+            // 5. Handle the Checkout Button and Empty State
+            const checkoutBtn = document.getElementById("checkout-btn");
+            if (checkoutBtn) {
+                if (data.count === 0) {
+                    // Disable the button
+                    checkoutBtn.classList.add("disabled");
+                    checkoutBtn.setAttribute("href", "#");
+                    // Add the alert if they try to click it
+                    checkoutBtn.onclick = function(e) {
+                        e.preventDefault();
+                        alert('Your cart is empty!');
+                        return false;
+                    };
+                } else {
+                    // Enable the button
+                    checkoutBtn.classList.remove("disabled");
+                    checkoutBtn.setAttribute("href", "{% url 'checkout' %}");
+                    checkoutBtn.onclick = null; // Remove the alert
+                }
+            }
+
+            // 6. Update the Cart Dropdown items
             const itemsContainer = document.getElementById("cart-items");
             if (data.items.length === 0) {
-                itemsContainer.innerHTML =
-                    `<p class="text-center mt-2">Your cart is empty</p>`;
+                itemsContainer.innerHTML = `<p class="text-center mt-2">Your cart is empty</p>`;
+                
+                // Also update the main cart list if the user is on the cart page
+                const mainCartList = document.getElementById("main-cart-list");
+                if (mainCartList) {
+                    mainCartList.innerHTML = '<p>Your cart is empty.</p>';
+                }
             } else {
                 let html = "";
                 data.items.forEach((item) => {
@@ -150,7 +171,6 @@ function sendCartAction(url, body, actionName) {
                         </div>
                     `;
                 });
-
                 itemsContainer.innerHTML = html;
             }
         })
@@ -159,7 +179,6 @@ function sendCartAction(url, body, actionName) {
             alert("Something went wrong!");
         });
 }
-
 
 let dropArea = document.getElementById("dropArea");
 let fileInput = document.getElementById("fileInput");

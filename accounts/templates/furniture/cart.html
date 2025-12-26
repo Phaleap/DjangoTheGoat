@@ -10,75 +10,64 @@
 {% include 'furniture/Header.html' %}
 
 <section id="cart_page" class="cart p_3">
- <div class="container-xl">
-   <div class="cart_2 row">
-	 <div class="col-md-6">
-	  <h5>MY CART</h5>
-	 </div>
-	 <div class="col-md-6">
-      <h5 class="text-end text-uppercase"><a href="{% url 'shop' %}">Continue Shopping</a></h5>
-	 </div>
-	</div>
-	<div class="cart_3 row mt-3">
-	 <div class="cart_3 row mt-3">
- <div class="col-md-8">
-
-    {% if items %}
-        {% for item in items %}
-        <div class="cart_3l1 mt-3 row ms-0 me-0">
+  <div class="container-xl">
+    <div class="cart_2 row">
+      <div class="col-md-6">
+        <h5>MY CART</h5>
+      </div>
+      <div class="col-md-6">
+        <h5 class="text-end text-uppercase"><a href="{% url 'shop' %}">Continue Shopping</a></h5>
+      </div>
+    </div>
+    
+    <div class="cart_3 row mt-3">
+      <div class="col-md-8" id="main-cart-list">
+        {% if items %}
+          {% for item in items %}
+          <div class="cart_3l1 mt-3 row ms-0 me-0">
             <div class="col-md-3 ps-0 col-3">
-                <div class="cart_3l1i">
-                    <a href="#">
-                        <img src="{{ item.image }}" alt="{{ item.name }}" class="w-100">
-                    </a>
-                </div>
+              <div class="cart_3l1i">
+                <a href="#"><img src="{{ item.image }}" alt="{{ item.name }}" class="w-100"></a>
+              </div>
             </div>
-
             <div class="col-md-9 col-9">
-                <div class="cart_3l1i1">
-                    <h6 class="fw-bold"><a href="#">{{ item.name }}</a></h6>
-                    <h5 class="col_red mt-3">${{ item.price }}</h5>
-                    <h6 class="font_14 mt-3 mb-3">Quantity</h6>
-                </div>
-
-                <div class="cart_3l1i2">
-                    <input type="number" min="1" value="{{ item.qty }}" 
-                           class="form-control qty-input" 
-                           data-product-id="{{ item.id }}">
-					<br>
-                    <h6><a class="button_1 remove-item-btn" data-product-id="{{ item.id }}" style="cursor:pointer;">REMOVE</a></h6>
-
-                    <h6><a class="button_2 update-item" 
-                           data-product-id="{{ item.id }}" 
-                           style="cursor:pointer;">UPDATE CART</a></h6>
-                </div>
+              <div class="cart_3l1i1">
+                <h6 class="fw-bold"><a href="#">{{ item.name }}</a></h6>
+                <h5 class="col_red mt-3">${{ item.price }}</h5>
+                <h6 class="font_14 mt-3 mb-3">Quantity</h6>
+              </div>
+              <div class="cart_3l1i2">
+                <input type="number" min="1" value="{{ item.qty }}" class="form-control qty-input" data-product-id="{{ item.id }}">
+                <br>
+                <h6><a class="button_1 remove-item-btn" data-product-id="{{ item.id }}" style="cursor:pointer;">REMOVE</a></h6>
+                <h6><a class="button_2 update-item" data-product-id="{{ item.id }}" style="cursor:pointer;">UPDATE CART</a></h6>
+              </div>
             </div>
+          </div>
+          {% endfor %}
+        {% else %}
+          <p>Your cart is empty.</p>
+        {% endif %}
+      </div>
+
+      <div class="col-md-4">
+        <div class="cart_3r">
+          <h6 class="head_1">SUBTOTAL</h6>
+          <h5 class="text-center col_red mt-3" id="cart-total-page">${{ total }}</h5>
+          <hr>
+          
+          <h6 class="text-center mt-3">
+            <a id="checkout-btn" 
+               class="button_2 {% if not items %}disabled{% endif %}" 
+               href="{% if items %}{% url 'checkout' %}{% else %}#{% endif %}" 
+               {% if not items %}onclick="alert('Your cart is empty!'); return false;"{% endif %}>
+               PROCEED TO CHECKOUT
+            </a>
+          </h6>
         </div>
-        {% endfor %}
-    {% else %}
-        <p>Your cart is empty.</p>
-    {% endif %}
- </div>
-
-	 <div class="col-md-4">
-	  <div class="cart_3r">
-	   <h6 class="head_1">SUBTOTAL</h6>
-	   <h5 class="text-center col_red mt-3">${{ total }}</h5>
-	   <hr>
-
-	   <h6 class="text-center mt-3">
-  {% if items %}
-    <a class="button_2" href="{% url 'checkout' %}">PROCEED TO CHECKOUT</a>
-  {% else %}
-    <a class="button_2 disabled" href="#" onclick="alert('Your cart is empty!'); return false;">PROCEED TO CHECKOUT</a>
-  {% endif %}
-</h6>
-
-	
-	   </div>
-	 </div>
-	</div>
- </div>	 
+      </div>
+    </div>
+  </div>  
 </section>
 
 
