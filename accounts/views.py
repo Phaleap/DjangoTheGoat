@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from accounts.models import *
 from .models import BlogCategory, BlogTag
 from django.core.paginator import Paginator
-from django.db.models import Count, Q  # Q needed for advanced filtering/searching if implemented
+from django.db.models import Count, Q  
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from .models import Product

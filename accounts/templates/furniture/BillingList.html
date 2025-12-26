@@ -1,102 +1,149 @@
 {% load static %}
+<!DOCTYPE html>
+{% include 'furniture/Head.html' %}
+
+<body>
+
+{% include 'furniture/SecTop.html' %}
+{% include 'furniture/Header.html' %}
 
 <style>
   body {
     font-family: "Segoe UI", Arial, sans-serif;
-    background: #f5f7fa;
+    background: #eef2f7;
     margin: 0;
-    padding: 20px;
+  }
+
+  .billing-wrapper {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 30px;
+  }
+
+  .billing-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0px 8px 25px rgba(0,0,0,0.08);
   }
 
   h2 {
-    font-family: "Stack Sans Headline", sans-serif;
     text-align: center;
     color: #daa14c;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
+    font-weight: 700;
   }
 
   table {
     width: 100%;
     border-collapse: collapse;
-    background:#daa14c;
-    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0px 2px 10px rgba(0,0,0,0.08);
+    border-radius: 8px;
   }
 
   table th {
     background: #b7761c;
     color: white;
-    padding: 14px 15px;
+    padding: 14px;
     text-align: left;
     font-weight: 600;
   }
 
   table td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #e5e5e5;
+    padding: 14px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
   }
 
+  table tr:nth-child(even) {
+    background: #fafafa;
+  }
 
+  table tr:hover {
+    background: #f3f3f3;
+  }
 
-  img {
-    border-radius: 5px;
-    box-shadow: 0px 2px 5px rgba(0,0,0,0.15);
+  .total-price {
+    font-weight: 700;
+    color: #333;
+  }
+
+  .qr-img {
+    width: 110px;
+    border-radius: 6px;
+    box-shadow: 0px 3px 6px rgba(0,0,0,0.15);
+  }
+
+  .no-qr {
+    color: #999;
+    font-style: italic;
   }
 
   .back-btn {
     display: inline-block;
-    padding: 12px 25px;
-    color: white;
-    background-color: #daa14c;;
+    margin-top: 30px;
+    padding: 12px 30px;
+    background: #daa14c;
+    color: #fff;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 6px;
     font-weight: 600;
-    margin-top: 25px;
-    transition: 0.2s ease;
+    transition: all 0.2s ease;
   }
 
   .back-btn:hover {
-    background-color: #a38b68;;
+    background: #b98a3c;
+    transform: translateY(-2px);
   }
 
+  .btn-wrapper {
+    text-align: center;
+  }
 </style>
 
-<h2>Billing List</h2>
+<div class="billing-wrapper">
+  <div class="billing-card">
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Phone</th>
-    <th>Email</th>
-    <th>Address</th>
-    <th>Total</th>
-    <th>Receipt</th>
-  </tr>
+    <h2>Billing List</h2>
 
-  {% for bill in billings %}
-  <tr>
-    <td>{{ bill.first_name }} {{ bill.last_name }}</td>
-    <td>{{ bill.phone }}</td>
-    <td>{{ bill.email }}</td>
-    <td>{{ bill.address }}</td>
-    <td><strong>$ {{ bill.total }}</strong></td>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Address</th>
+        <th>Total</th>
+        <th>Receipt</th>
+      </tr>
 
-    <td>
-      {% if bill.qr_code_image %}
-      <img
-        src="{{ bill.qr_code_image.url }}"
-        width="120"
-        alt="Receipt QR Code"
-      />
-      {% else %}
-      <span style="color: gray;">No QR Code</span>
-      {% endif %}
-    </td>
-  </tr>
-  {% endfor %}
-</table>
+      {% for bill in billings %}
+      <tr>
+        <td>{{ bill.first_name }} {{ bill.last_name }}</td>
+        <td>{{ bill.phone }}</td>
+        <td>{{ bill.email }}</td>
+        <td>{{ bill.address }}</td>
+        <td class="total-price">$ {{ bill.total }}</td>
+        <td>
+          {% if bill.qr_code_image %}
+            <img src="{{ bill.qr_code_image.url }}" class="qr-img" alt="Receipt QR Code">
+          {% else %}
+            <span class="no-qr">No QR Code</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
 
-<div style="text-align: center;">
-  <a class="back-btn" href="{% url 'indexFur' %}">Back to home</a>
+    <div class="btn-wrapper">
+      <a class="back-btn" href="{% url 'indexFur' %}">Back to Home</a>
+    </div>
+
+  </div>
 </div>
+
+{% include 'furniture/Chatsec.html' %}
+{% include 'furniture/Footer.html' %}
+{% include 'furniture/script.html' %}
+
+</body>
+</html>
